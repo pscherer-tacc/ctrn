@@ -106,7 +106,7 @@ select
     sa2.source_subject_id as subjectkey
     ,sa2.subject_id as src_subject_id
     ,to_char(sched.interview_date,'mm/dd/yyyy') as interview_date
-    ,months_between(sched.interview_date, ctau_dem.dem_ch_dob) as interview_age
+    ,nda_months_between(sched.interview_date, ctau_dem.dem_ch_dob) as interview_age
     ,case
         when pfhc.hc_sex_birth_cert='1' then 'F'
         when pfhc.hc_sex_birth_cert='2' then 'M'
@@ -238,13 +238,13 @@ order by source_subject_id, event_name, si_tube_id;
 
 
 
------ checking the months_between function
+----- checking the nda_months_between (used to be months_between) function
 select
     sa2.source_subject_id as subjectkey
     ,sa2.subject_id as src_subject_id
     ,sched.interview_date as interview_date
     ,ctau_dem.dem_ch_dob
-    ,months_between(sched.interview_date, ctau_dem.dem_ch_dob) as interview_age
+    ,nda_months_between(sched.interview_date, ctau_dem.dem_ch_dob) as interview_age
 from rcap_ctau_biosample_agg_view bs
 inner join subject_alias sa1
     on sa1.source_subject_id = bs.source_subject_id

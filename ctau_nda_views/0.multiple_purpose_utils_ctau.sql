@@ -1,10 +1,33 @@
----- This file contains utility tools (helper views, functions, etc) that are
----- utilized by multiple views. 
+/*
+This file contains utility tools (helper views, functions, etc) that are
+utilized by multiple views.
+*/ 
 
+/*
+nda_months_between (substitute for month_between function)
+calculates the difference between two dates in month (adjusted for NDA sumission standards)
+(https://stackoverflow.com/questions/11012629/count-months-between-two-timestamp-on-postgresql)
+*/
 
--- month_between function
--- calculates the difference between two dates in month (adjusted for NDA sumission standards)
--- (https://stackoverflow.com/questions/11012629/count-months-between-two-timestamp-on-postgresql)
+create function nda_months_between (sch timestamp, dob timestamp)
+returns integer
+as
+$$
+    select 
+        round( 
+            extract(year from age(sch, dob)) * 12 
+            + extract(month from age(sch, dob))
+            + extract(day FROM age(sch, dob)) / 30.437
+    );
+$$
+language sql
+immutable
+returns null on null input;
+
+/*
+The months_between function (defined below) was used only once 
+to submit initial genomics_subject02 data to NDA;
+it was later replaced by nda_months_between function (defined above).
 
 create function months_between (sch timestamp, dob timestamp)
 returns integer
@@ -26,6 +49,7 @@ $$
 language sql
 immutable
 returns null on null input;
+*/
 
 
 -- a helper view based on rcap_ctau_scheduling_form

@@ -1,6 +1,11 @@
 ---- Creating deq_view
 
--- Step 1: Create a helper view based on rcap_ctau_scheduling_form
+/*
+Step 1: Create a helper view based on rcap_ctau_scheduling_form.
+
+The definition of rcap_ctau_scheduling_form_agg_view was moved 
+to 0.multiple_purpose_utils_ctau.sql file since it is employed by other NDA views.
+
 create view rcap_ctau_scheduling_form_agg_view 
 as 
 select 
@@ -26,14 +31,16 @@ inner join rcap_ctau_scheduling_form sch2
 	and sch2.event_name like 'baseline%'
 order by sch1.source_subject_id, sch1.event_name;
 
+*/
+
 
 -- Step 2: Creat deq_view itself
 
 select 
     sa2.source_subject_id as subjectkey
     ,sa2.subject_id as src_subject_id
-    ,sched.interview_date as interview_date
-    ,months_between(sched.interview_date, ctau_dem.dem_ch_dob) as interview_age
+    ,to_char(sched.interview_date,'mm/dd/yyyy') as interview_date
+    ,nda_months_between(sched.interview_date, ctau_dem.dem_ch_dob) as interview_age
     ,case 
         when pfhc.hc_sex_birth_cert='1' then 'F'
         when pfhc.hc_sex_birth_cert='2' then 'M'
@@ -47,7 +54,7 @@ select
 		when deq.event_name like '18_month%' then '18_month'
 		when deq.event_name like '24_month%' then '24_month'
 	end as timepoint_label
-	,deq.deq_alc_use_dt
+	,to_char(deq.deq_alc_use_dt,'mm/dd/yyyy') as interview_date
 	,deq.deq_alc_last_amt
 	,deq.deq_alc_dur
 	,deq.deq_alc_mem_diff
@@ -57,7 +64,7 @@ select
 	,deq.deq_alc_effects_2
 	,deq.deq_alc_effects_3
 	,deq.deq_alc_effects_4
-	,deq.deq_drug_use_dt
+	,to_char(deq.deq_drug_use_dt,'mm/dd/yyyy')
 	,deq.deq_drug_mdma
 	,deq.deq_drug_heroin
 	,deq.deq_drug_cocaine
