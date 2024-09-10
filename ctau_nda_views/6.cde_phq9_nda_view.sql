@@ -1,9 +1,3 @@
-/*
-!!!!!!! This is the original pseudo-script written by Pat Scherer
-!!!!!!! For modifications see the 6.cde_phq9_nda_view.sql file 
-*/
-
-
 ---- Creating NDA cde_phqa_view
 
 /*
