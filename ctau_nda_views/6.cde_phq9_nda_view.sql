@@ -55,7 +55,6 @@ left join rcap_demographics dem
     on dem.source_subject_id = phqa.source_subject_id
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = phqa.source_subject_id
-
 order by sa1.subject_id;
 
 
