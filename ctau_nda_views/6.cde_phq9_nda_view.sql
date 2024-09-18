@@ -39,7 +39,7 @@ select
 	,case 
 		when phqa.language = 'sp' then '70' -- Spanish for the United States
 		else '1' -- English
-	end as phqa9_10
+	end as phq9_10
 	,phqa.phqa_complete
 from rcap_phqa phqa -- Attention! rcap_phqa is not a CTAU table.
 inner join rcap_ctau_scheduling_form sched -- to keep CTAU participants only
