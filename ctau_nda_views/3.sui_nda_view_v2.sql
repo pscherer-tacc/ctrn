@@ -43,7 +43,7 @@ select
 		when sui.event_name like '24_month%' then '24_month'
 	end as timepoint_label
 	,sui.sui_1 as asip30_alc
-	,sui.sui_2 as 30d
+	,sui.sui_2 as "30d"
 	,sui.sui_3 as tlfb_alc3
 	,sui.sui_4 as subu5b_drink_daily
 	,sui.sui_5 as c_nsduh1
@@ -52,7 +52,7 @@ select
 	,sui.sui_8 as avg_dollar_sub_use_most_30d
 from rcap_ctau_sui sui
 inner join subject_alias sa1
-    on sa1.source_subject_id = deq.source_subject_id
+    on sa1.source_subject_id = sui.source_subject_id
     and sa1.project_id = 2515 -- only ctau ids
     and sa1.id_type = 'redcap'
 inner join subject_alias sa2
