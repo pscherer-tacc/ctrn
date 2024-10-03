@@ -15,7 +15,7 @@ from rcap_bash
 union all
 select source_subject_id
 	,event_name
-	,'Parent' as respondent
+	,'Caregiver' as respondent
 	,bashp_3 as sashy_1
 	,bashp_1 as sashy_3
 	,bashp_4 as sashy_4
