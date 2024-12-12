@@ -62,6 +62,7 @@ from rcap_chrt16 chrt -- Attention! rcap_chrt16 is not a CTAU table.
 inner join rcap_ctau_scheduling_form sched -- to keep CTAU participants only
 	on sched.sched_ctrn_id = chrt.source_subject_id
 	and sched.event_name like 'baseline%'
+    and chrt.event_name not like 'unscheduled%'
 inner join subject_alias sa1
     on sa1.source_subject_id = chrt.source_subject_id
     and sa1.project_id = 696
