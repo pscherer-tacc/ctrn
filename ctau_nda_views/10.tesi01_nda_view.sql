@@ -51,12 +51,12 @@ select
         else null
     end as sex
     ,case
+        when pfhp.hp_parent1_relationship='0' or pfhp.hp_parent1_relationship is null then -999
         when pfhp.hp_parent1_relationship='1' then 89 -- Biological parent
         when pfhp.hp_parent1_relationship='2' then 92 -- Adoptive parent
         when pfhp.hp_parent1_relationship='3' then 93 -- Foster parent
         when pfhp.hp_parent1_relationship='4' then 91 -- Stepparent
         when pfhp.hp_parent1_relationship='5' then 90 -- Other legal guardian
-        when pfhp.hp_parent1_relationship='0' or pfhp.hp_parent1_relationship is null then -999
     end as relationship -- ??? Carefully check all values
     ,tesip.event_name -- ??? So, SHOULD WE OMIT THIS FIELD?
     ,nda_m99_to_2_converter(tp_1_1_stem) as tesi_1
@@ -95,11 +95,11 @@ select
     ,tp_1_4b_age_most_stressful as tesi_35
     ,nda_m99_to_2_converter(tp_1_4b_strongly_affected) as tesi_37
     ,case
-        when tp_1_4b_death_reason__4_unknown='1' then 5
-        when tp_1_4b_death_reason__3_violence='1' then 4
-        when tp_1_4b_death_reason__2_accident='1' then 3
-        when tp_1_4b_death_reason__1_illness='1' then 2
         when tp_1_4b_death_reason__0_natural='1' then 1
+        when tp_1_4b_death_reason__1_illness='1' then 2
+        when tp_1_4b_death_reason__2_accident='1' then 3
+        when tp_1_4b_death_reason__3_violence='1' then 4
+        when tp_1_4b_death_reason__4_unknown='1' then 5
         else null
     end as tesi_36
     ,nda_m99_to_2_converter(tp_1_5_stem) as tesi_38
