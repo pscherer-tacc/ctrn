@@ -1,4 +1,4 @@
----- chrt16 NDA view
+-- The main query for the CHRT16 VT View
 
 select
     dem.dem_guid as subjectkey
@@ -26,7 +26,7 @@ select
 		when chrt.event_name like 'one_month%' then sched_main.sched_1mo_complete
 		when chrt.event_name like 'six_month%' then sched_main.sched_6mo_complete
 		when chrt.event_name like 'one_year%' then sched_main.sched_1yr_complete
-		--when chrt.event_name like '18_month%' then sched.sched_18mo_complete
+		--when chrt.event_name like '18_month%' then sched_main.sched_18mo_complete
 		when chrt.event_name like '24_month%' then sched_main.sched_2yr_complete
 	end as complete -- only for validation; DELETE before submission
     ,case 
@@ -42,15 +42,15 @@ select
 		when chrt.event_name like '18_month%' then '18_month'
 		when chrt.event_name like '24_month%' then '24_month'
 	end as visit
-    ,chrt.chrt_1 as chrt_01
-    ,chrt.chrt_2 as chrt_02
-    ,chrt.chrt_3 as chrt_03
-    ,chrt.chrt_4 as chrt_04
-    ,chrt.chrt_5 as chrt_05
-    ,chrt.chrt_6 as chrt_06
-    ,chrt.chrt_7 as chrt_07
-    ,chrt.chrt_8 as chrt_08
-    ,chrt.chrt_9 as chrt_09
+    ,chrt.chrt_1
+    ,chrt.chrt_2
+    ,chrt.chrt_3
+    ,chrt.chrt_4
+    ,chrt.chrt_5
+    ,chrt.chrt_6
+    ,chrt.chrt_7
+    ,chrt.chrt_8
+    ,chrt.chrt_9
     ,chrt.chrt_10
     ,chrt.chrt_11
     ,chrt.chrt_12
@@ -59,10 +59,6 @@ select
     ,chrt.chrt_15
     ,chrt.chrt_16
 from rcap_chrt16 chrt -- Attention! rcap_chrt16 is not a CTAU table.
-inner join rcap_ctau_scheduling_form sched -- to keep CTAU participants only
-	on sched.sched_ctrn_id = chrt.source_subject_id
-	and sched.event_name like 'baseline%'
-    and chrt.event_name not like 'unscheduled%'
 inner join subject_alias sa1
     on sa1.source_subject_id = chrt.source_subject_id
     and sa1.project_id = 696

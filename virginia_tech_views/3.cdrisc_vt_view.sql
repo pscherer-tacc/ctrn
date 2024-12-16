@@ -1,23 +1,8 @@
----- CD-RISC NDA View
+-- The main query for the CDRISC VT View
 
--- The function that coverts NULL values to 99
-create function nda_null_to_99_converter (val VARCHAR)
-returns integer
-as
-$$
-    select case
-            when val is null then 99
-            else val::int
-        end;
-$$
-language sql
-immutable
-returns null on null input;
-
--- The main query for the view
 select
-    dem.dem_guid as subjectkey
-    ,sa1.subject_id as src_subject_id
+    dem.dem_guid
+    ,sa1.subject_id
 	,risc.source_subject_id -- only for validation; DELETE before submission
 	,risc.event_name -- only for validation; DELETE before submission
 	,case
@@ -57,20 +42,17 @@ select
 		when risc.event_name like '18_month%' then '18_month'
 		when risc.event_name like '24_month%' then '24_month'
 	end as timepoint_label
-    ,nda_null_to_99_converter(cdrisc_1_mtx) as cdrisc01
-    ,nda_null_to_99_converter(cdrisc_2_mtx) as cdrisc02
-    ,nda_null_to_99_converter(cdrisc_3_mtx) as cdrisc03
-    ,nda_null_to_99_converter(cdrisc_4_mtx) as cdrisc04
-    ,nda_null_to_99_converter(cdrisc_5_mtx) as cdrisc05
-    ,nda_null_to_99_converter(cdrisc_6_mtx) as cdrisc06
-    ,nda_null_to_99_converter(cdrisc_7_mtx) as cdrisc07
-    ,nda_null_to_99_converter(cdrisc_8_mtx) as cdrs16
-    ,nda_null_to_99_converter(cdrisc_9_mtx) as cdrisc09
-    ,nda_null_to_99_converter(cdrisc_10_mtx) as cdrisc10
+    ,nda_null_to_99_converter(cdrisc_1_mtx)
+    ,nda_null_to_99_converter(cdrisc_2_mtx)
+    ,nda_null_to_99_converter(cdrisc_3_mtx)
+    ,nda_null_to_99_converter(cdrisc_4_mtx)
+    ,nda_null_to_99_converter(cdrisc_5_mtx)
+    ,nda_null_to_99_converter(cdrisc_6_mtx)
+    ,nda_null_to_99_converter(cdrisc_7_mtx)
+    ,nda_null_to_99_converter(cdrisc_8_mtx)
+    ,nda_null_to_99_converter(cdrisc_9_mtx)
+    ,nda_null_to_99_converter(cdrisc_10_mtx)
 from rcap_cdrisc risc -- Attention! rcap_cdrisc is not a CTAU table.
-inner join rcap_ctau_scheduling_form sched -- to keep CTAU participants only
-	on sched.sched_ctrn_id = risc.source_subject_id
-	and sched.event_name like 'baseline%'
 inner join subject_alias sa1
     on sa1.source_subject_id = risc.source_subject_id
     and sa1.project_id = 696

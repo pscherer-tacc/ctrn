@@ -22,12 +22,12 @@ select
 		when ippa.event_name like '24_month%' then nda_months_between(sched_main.sched_2yr_complete_date, dem.dem_ch_dob)
 	end as interview_age
 	,case
-		when ippa.event_name like 'baseline%' then sched.sched_base_complete
-		when ippa.event_name like 'one_month%' then sched.sched_1mo_complete
-		when ippa.event_name like 'six_month%' then sched.sched_6mo_complete
-		when ippa.event_name like 'one_year%' then sched.sched_1yr_complete
-		when ippa.event_name like '18_month%' then sched.sched_18mo_complete
-		when ippa.event_name like '24_month%' then sched.sched_2yr_complete
+		when ippa.event_name like 'baseline%' then sched_main.sched_base_complete
+		when ippa.event_name like 'one_month%' then sched_main.sched_1mo_complete
+		when ippa.event_name like 'six_month%' then sched_main.sched_6mo_complete
+		when ippa.event_name like 'one_year%' then sched_main.sched_1yr_complete
+		when ippa.event_name like '18_month%' then sched_main.sched_18mo_complete
+		when ippa.event_name like '24_month%' then sched_main.sched_2yr_complete
 	end as complete -- only for validation; DELETE before submission
     ,case 
         when pfhc.hc_sex_birth_cert='1' then 'F'

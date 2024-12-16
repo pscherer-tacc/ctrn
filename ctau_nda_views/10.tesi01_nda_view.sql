@@ -38,12 +38,12 @@ select
 		when tesip.event_name like '24_month%' then nda_months_between(sched_main.sched_2yr_complete_date, dem.dem_ch_dob)
 	end as interview_age
 	,case
-		when tesip.event_name like 'baseline%' then sched.sched_base_complete
-		when tesip.event_name like 'one_month%' then sched.sched_1mo_complete
-		when tesip.event_name like 'six_month%' then sched.sched_6mo_complete
-		when tesip.event_name like 'one_year%' then sched.sched_1yr_complete
+		when tesip.event_name like 'baseline%' then sched_main.sched_base_complete
+		when tesip.event_name like 'one_month%' then sched_main.sched_1mo_complete
+		when tesip.event_name like 'six_month%' then sched_main.sched_6mo_complete
+		when tesip.event_name like 'one_year%' then sched_main.sched_1yr_complete
 		--when tesip.event_name like '18_month%' then sched.sched_18mo_complete
-		when tesip.event_name like '24_month%' then sched.sched_2yr_complete
+		when tesip.event_name like '24_month%' then sched_main.sched_2yr_complete
 	end as complete -- only for validation; DELETE before submission
     ,case 
         when pfhc.hc_sex_birth_cert='1' then 'F'
@@ -194,7 +194,7 @@ select
     ,nda_m99_to_2_converter(tp_4_1_witness) as tesi_119
     ,nda_m99_to_2_converter(tp_4_1_strongly_affected) as tesi_120
     ,nda_m99_to_2_converter(tp_4_2_stem) as tesi_121
-    ,tp_4_2_describe -- omitted
+    --,tp_4_2_describe -- omitted
     ,tp_4_2_age_first as tesi_122
     ,tp_4_2_age_last as tesi_123
     ,tp_4_2_age_most_stressful as tesi_124
