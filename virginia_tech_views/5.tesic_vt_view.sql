@@ -40,7 +40,7 @@ select
 		when tesic_u.event_name like '18_month%' then '18_month'
 		when tesic_u.event_name like '24_month%' then '24_month'
 	end as event_name
-    ,tesic_u.tesi_c_1
+    ,tesic_u.tc_1_1
     ,tesic_u.tcfu_1_1
     ,tesic_u.tc_1_1_crit_a1
     ,tesic_u.tc_1_1_crit_a2
@@ -578,7 +578,7 @@ union all
 select
     source_subject_id
     ,event_name
-    ,null as tesi_c_1
+    ,null as tc_1_1
     ,tcfu_1_1 as tcfu_1_1
     ,tcfu_1_1_crit_a1 as tc_1_1_crit_a1
     ,tcfu_1_1_crit_a2 as tc_1_1_crit_a2
