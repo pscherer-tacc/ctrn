@@ -316,7 +316,7 @@ as
 select
     source_subject_id
     ,event_name
-    ,tc_1_1 as tesi_c_1
+    ,tc_1_1 as tc_1_1
     ,null as tcfu_1_1
     ,tc_1_1_crit_a1 as tc_1_1_crit_a1
     ,tc_1_1_crit_a2 as tc_1_1_crit_a2
