@@ -1,5 +1,13 @@
--- The main query for the CDRISC VT View
+---- CDRISC VT View
+--- Name of the view: view_vt_cdrisc
 
+-- Query the data from the view
+select * from view_vt_cdrisc
+where interview_date is not null;
+
+-- The body of the view
+create or replace view view_vt_cdrisc
+as
 select
     dem.dem_guid
     ,sa1.subject_id
@@ -42,16 +50,16 @@ select
 		when risc.event_name like '18_month%' then '18_month'
 		when risc.event_name like '24_month%' then '24_month'
 	end as timepoint_label
-    ,nda_null_to_99_converter(cdrisc_1_mtx)
-    ,nda_null_to_99_converter(cdrisc_2_mtx)
-    ,nda_null_to_99_converter(cdrisc_3_mtx)
-    ,nda_null_to_99_converter(cdrisc_4_mtx)
-    ,nda_null_to_99_converter(cdrisc_5_mtx)
-    ,nda_null_to_99_converter(cdrisc_6_mtx)
-    ,nda_null_to_99_converter(cdrisc_7_mtx)
-    ,nda_null_to_99_converter(cdrisc_8_mtx)
-    ,nda_null_to_99_converter(cdrisc_9_mtx)
-    ,nda_null_to_99_converter(cdrisc_10_mtx)
+    ,cdrisc_1_mtx
+    ,cdrisc_2_mtx
+    ,cdrisc_3_mtx
+    ,cdrisc_4_mtx
+    ,cdrisc_5_mtx
+    ,cdrisc_6_mtx
+    ,cdrisc_7_mtx
+    ,cdrisc_8_mtx
+    ,cdrisc_9_mtx
+    ,cdrisc_10_mtx
 from rcap_cdrisc risc -- Attention! rcap_cdrisc is not a CTAU table.
 inner join subject_alias sa1
     on sa1.source_subject_id = risc.source_subject_id

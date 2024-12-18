@@ -1,5 +1,13 @@
--- The main query for the CHRT16 VT View
+---- CHRT16 VT View
+--- Name of the view: view_vt_chrt16
 
+-- Query the data from the view:
+select * from view_vt_chrt16
+where interview_date is not null;
+
+-- The body of the view
+create or replace view view_vt_chrt16
+as 
 select
     dem.dem_guid as subjectkey
     ,sa1.subject_id as src_subject_id
@@ -58,11 +66,12 @@ select
     ,chrt.chrt_14
     ,chrt.chrt_15
     ,chrt.chrt_16
-from rcap_chrt16 chrt -- Attention! rcap_chrt16 is not a CTAU table.
+from rcap_chrt16 chrt
 inner join subject_alias sa1
     on sa1.source_subject_id = chrt.source_subject_id
     and sa1.project_id = 696
     and sa1.id_type = 'redcap'
+	and chrt.event_name not like 'unscheduled%'
 left join rcap_scheduling_form sched_main 
     on sched_main.source_subject_id = chrt.source_subject_id 
 left join rcap_demographics dem

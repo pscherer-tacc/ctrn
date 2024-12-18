@@ -1,5 +1,12 @@
----- Reference (and metdata) script for VT
+---- Reference (and metdata) view for VT
+--- Name of the view: view_vt_metadata
 
+-- Query the data from the view
+select * from view_vt_metadata;
+
+-- The body of the view
+create or replace view view_vt_metadata
+as
 select
     map.dw_variable_name as dw_variable_name
     ,met.field_label

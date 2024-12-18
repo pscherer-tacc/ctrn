@@ -1,5 +1,13 @@
--- The main query for the CAPSCA VT View
+---- CAPSCA VT View
+--- Name of the view: view_vt_capsca
 
+-- Query the data from the view
+select * from view_vt_capsca
+where interview_date is not null;
+
+-- The body of the view
+create or replace view view_vt_capsca
+as
 select
     dem.dem_guid
     ,sa1.subject_id
@@ -71,6 +79,7 @@ inner join subject_alias sa1
     on sa1.source_subject_id = caps.source_subject_id
     and sa1.project_id = 696
     and sa1.id_type = 'redcap'
+	and caps.event_name not like 'unscheduled%'
 left join rcap_scheduling_form sched_main 
     on sched_main.source_subject_id = caps.source_subject_id 
 left join rcap_demographics dem
