@@ -49,7 +49,7 @@ select
 		when risc.event_name like 'one_year%' then 'one_year'
 		when risc.event_name like '18_month%' then '18_month'
 		when risc.event_name like '24_month%' then '24_month'
-	end as timepoint_label
+	end as visit
     ,cdrisc_1_mtx
     ,cdrisc_2_mtx
     ,cdrisc_3_mtx
