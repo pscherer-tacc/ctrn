@@ -105,8 +105,20 @@ from rcap_ctau_sample_info
 select
     sa2.source_subject_id as subjectkey
     ,sa2.subject_id as src_subject_id
-    ,to_char(sched.interview_date,'mm/dd/yyyy') as interview_date
-    ,nda_months_between(sched.interview_date, ctau_dem.dem_ch_dob) as interview_age
+	,case
+		when bs.event_name like 'baseline%' then to_char(sched.sched_base_complete_date,'mm/dd/yyyy')
+		when bs.event_name like 'one_month%' then to_char(sched.sched_1mo_complete_date,'mm/dd/yyyy')
+		when bs.event_name like 'six_month%' then to_char(sched.sched_6mo_complete_date,'mm/dd/yyyy')
+		when bs.event_name like 'one_year%' then to_char(sched.sched_1yr_date,'mm/dd/yyyy')
+		when bs.event_name like '24_month%' then to_char(sched.sched_2yr_complete_date,'mm/dd/yyyy')
+	end as interview_date
+	,case
+		when bs.event_name like 'baseline%' then nda_months_between(sched.sched_base_complete_date, ctau_dem.dem_ch_dob)
+		when bs.event_name like 'one_month%' then nda_months_between(sched.sched_1mo_complete_date, ctau_dem.dem_ch_dob)
+		when bs.event_name like 'six_month%' then nda_months_between(sched.sched_6mo_complete_date, ctau_dem.dem_ch_dob)
+		when bs.event_name like 'one_year%' then nda_months_between(sched.sched_1yr_date, ctau_dem.dem_ch_dob)
+		when bs.event_name like '24_month%' then nda_months_between(sched.sched_2yr_complete_date, ctau_dem.dem_ch_dob)
+	end as interview_age
     ,case
         when pfhc.hc_sex_birth_cert='1' then 'F'
         when pfhc.hc_sex_birth_cert='2' then 'M'
@@ -163,9 +175,9 @@ inner join subject_alias sa2
     on sa2.subject_id = sa1.subject_id
     and sa2.project_id = 696 -- not necessary, just to be explicit
     and sa2.id_type = 'nimh_guid'
-left join rcap_ctau_scheduling_form_agg_view sched
+left join rcap_ctau_scheduling_form sched
     on sched.source_subject_id = bs.source_subject_id 
-    and sched.event_name = bs.event_name
+    and sched.event_name like 'baseline%'
 left join rcap_ctau_dem ctau_dem
     on ctau_dem.source_subject_id = sa1.source_subject_id
 left join subject_alias sa3
