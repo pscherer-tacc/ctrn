@@ -34,7 +34,7 @@ select
 		when caps.event_name like '24_month%' then '24_month'
 	end as visit
 	,caps.caps_summary_improve_q28 as capsptsd76
-	,caps.caps_summary_a1 as capsptsd77
+	,caps.caps_summary_a1 as capsptsd77 -- might need to be substituted with caps_tc_a1 or deleted
 	,caps.caps_summary_b1_sev_q1 as caps5_b1
 	,caps.caps_summary_b2_sev_q2 as caps5_b2
 	,caps.caps_summary_b3_sev_q3 as caps5_b3
@@ -55,16 +55,32 @@ select
 	,caps.caps_summary_e4_sev_q18 as caps5_e4		
 	,caps.caps_summary_e5_sev_q19 as caps5_e5	
 	,caps.caps_summary_e6_sev_q20 as caps5_e6	
-	,caps.caps_summary_f1_q22 as caps5_22b	-- ! caps_summary_f1_sev_q22 doesn't exist
+	,case
+		when caps.caps_summary_f1_q22 = '0' then '2'
+		when caps.caps_summary_f1_q22 = '-999' then '999'
+		else caps.caps_summary_f1_q22
+	end as caps5_22b
 	,caps.caps_summary_g1_sev_q23 as caps5_23
 	,caps.caps_summary_g2_sev_q24 as caps5_24
 	,caps.caps_summary_g3_sev_q25 as caps5_25		
 	,caps.caps_summary_severity_q27 as caps5_27
 	,caps.caps_sum_depers_sev_q29 as caps5_29a
 	,caps.caps_sum_dereal_sev_q30 as caps5_30a		
-	,caps.caps_sum_ptsd_present as caps5_dxs_a		
-	,caps.caps_sum_dissociative as caps5_dxs_b	
-	,caps.caps_sum_delayed as caps5_dxs_c	
+	,case
+		when caps.caps_sum_ptsd_present = '0' then '2'
+		when caps.caps_sum_ptsd_present in ('999','-999') then null
+		else caps.caps_sum_ptsd_present
+	end as caps5_dxs_a
+	,case 
+		when caps.caps_summary_dissoc = '0' then '2'
+		when caps.caps_summary_dissoc = '-999' then '999'
+		else caps.caps_summary_dissoc
+	end as caps5_dxs_b	
+	,case 
+		when caps.caps_sum_delayed = '0' then '2'
+		when caps.caps_sum_delayed = '-999' then '999'
+		else caps.caps_sum_delayed
+	end as caps5_dxs_c	
 	,caps.caps_summary_validity_q26 as caps5_26
 from rcap_capsca5 caps
 inner join rcap_ctau_scheduling_form sched -- to keep CTAU participants only
