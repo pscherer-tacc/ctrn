@@ -34,7 +34,7 @@ select
 		when caps.event_name like '24_month%' then '24_month'
 	end as visit
 	,caps.caps_summary_improve_q28 as capsptsd76
-	,caps.caps_summary_a1 as capsptsd77 -- might need to be substituted with caps_tc_a1 or deleted
+	,caps.caps_summary_a as capsptsd77
 	,caps.caps_summary_b1_sev_q1 as caps5_b1
 	,caps.caps_summary_b2_sev_q2 as caps5_b2
 	,caps.caps_summary_b3_sev_q3 as caps5_b3
