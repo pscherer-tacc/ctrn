@@ -58,7 +58,6 @@ select
         when pfhp.hp_parent1_relationship='4' then 91 -- Stepparent
         when pfhp.hp_parent1_relationship='5' then 90 -- Other legal guardian
     end as relationship -- ??? Carefully check all values
-    ,tesip.event_name -- ??? So, SHOULD WE OMIT THIS FIELD?
     ,nda_m99_to_2_converter(tp_1_1_stem) as tesi_1
     --,tp_1_1_accident_type as tesi_2 -- omitted 
     --,tp_1_1_victim as tesi_3 -- omitted
@@ -162,9 +161,9 @@ select
     --,tp_3_1_relationship as tesi_90 -- omitted
     ,nda_m99_to_2_converter(tp_3_1_weapon) as tesi_91
     --,tp_3_1_weapon_text as tesi_92
-    ,tp_3_1_age_first as tesi_93
-    ,tp_3_1_age_last as tesi_94
-    ,tp_3_1_age_most_stressful as tesi_95
+    ,tp_3_1_age_first as tesi_92
+    ,tp_3_1_age_last as tesi_93
+    ,tp_3_1_age_most_stressful as tesi_94
     ,nda_m99_to_2_converter(tp_3_1_strongly_affected) as tesi_96
     ,nda_m99_to_2_converter(tp_3_2_stem) as tesi_97
     --,tp_3_2_relationship as tesi_98 -- omitted

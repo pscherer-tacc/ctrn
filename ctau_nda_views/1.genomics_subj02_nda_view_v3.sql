@@ -152,7 +152,10 @@ select
         when bs.general_sample_description = 'urine' and bs.sample_taken = 'Yes' then 'urine'
         else samp_info.sample_description
     end as sample_description
-    , 'UT Austin Dell Medical School' as biorepository
+    ,case
+        when bs.sample_taken = 'No' then null
+        else 'UT Austin Dell Medical School'
+        end as biorepository
     , sa2.source_subject_id as patient_id_biorepository ---------- ???????????
     ,case 
         when bs.general_sample_description = 'urine' then bs.container_id

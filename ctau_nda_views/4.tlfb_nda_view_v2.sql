@@ -37,7 +37,7 @@ select
 		when tlfb.event_name like 'six_month%' then 'six_month'
 		when tlfb.event_name like 'one_year%' then 'one_year'
 		when tlfb.event_name like '24_month%' then '24_month'
-	end as timepoint_label
+	end as visit
 	,tlfb.tlfb_drink_mo as number_alcholoic_drinks_a
 	,tlfb.tlfb_drink_days as last_month_frequency
 	,tlfb.tlfb_drink_per_day as subu5b_drink_daily

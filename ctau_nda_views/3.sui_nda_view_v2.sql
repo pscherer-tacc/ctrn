@@ -40,7 +40,7 @@ select
 		when sui.event_name like '24_month%' then '24_month'
 	end as timepoint_label
 	,sui.sui_1 as asip30_alc
-	,sui.sui_2 as "30d"
+	,sui.sui_2 as drink5_singleday_30d
 	,sui.sui_3 as tlfb_alc3
 	,sui.sui_4 as subu5b_drink_daily
 	,sui.sui_5 as c_nsduh1
