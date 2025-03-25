@@ -71,7 +71,7 @@ select
 	,caps.caps_sum_depers_sev_q29
 	,caps.caps_sum_dereal_sev_q30		
 	,caps.caps_sum_ptsd_present		
-	,caps.caps_sum_dissociative	
+	,caps.caps_summary_dissoc	
 	,caps.caps_sum_delayed	
 	,caps.caps_summary_validity_q26
 from rcap_capsca5 caps
