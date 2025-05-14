@@ -2,12 +2,12 @@
 --- Name of the view: view_vt_pfhparent
 
 -- Query the data from the view:
-select * from view_vt_pfhparent
-where interview_date is not null;
+---select * from view_vt_pfhparent
+---where interview_date is not null;
 
 -- The body of the view
-create or replace view view_vt_pfhparent
-as 
+---create or replace view view_vt_pfhparent
+---as 
 select
 	sa1.subject_id as src_subject_id
 	,case
