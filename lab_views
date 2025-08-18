@@ -109,8 +109,6 @@ SELECT
     ,tc.tc_7_how_often
 	,tp.tp_7_1_age_first
 	,tc.tc_7_worst
-    ,tc.tc_8_1
-    ,tc.tc_8_3
 	,mini.mini_primary_dx		-- from mini.mini_primary_dx with event_name=baseline
 	,aud.audit_score
 from rcap_ctau_sample_info si
