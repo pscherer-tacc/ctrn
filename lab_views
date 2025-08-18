@@ -46,7 +46,7 @@ SELECT
     ,tc.tc_1_5
     ,tc.tc_1_5_how_often
 	,tp.tp_1_5_age_first
-	.tc.tc_1_5_worst
+	,tc.tc_1_5_worst
     ,tc.tc_1_6
     ,tc.tc_1_6_how_often
 	,tp.tp_1_6_age_first			-- tesip has a 1_7 which isn't in tesic
