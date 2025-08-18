@@ -113,7 +113,7 @@ SELECT
     ,tc.tc_8_3 
 	,mini.mini_primary_dx		-- from mini.mini_primary_dx with event_name=baseline
 	,aud.audit_score
-from rcap_ctau_sample_info si;
+from rcap_ctau_sample_info si
 left join rcap_ctau_scheduling_form sched -- to keep CTAU participants who only
 	on sched.source_subject_id = si.source_subject_id
 	and sched.event_name like 'baseline%'
