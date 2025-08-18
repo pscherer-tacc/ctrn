@@ -22,8 +22,8 @@ SELECT
 	,pfhp.hp_parent1_relationship 					-- '1' is a 'Biological parent'
 	,pfhp.hp_parent1_sex  							-- '1' is 'F'       
 	,pfhp.hp_parent1_educ
-	,pfhp.hp_parent2_relationship 					-- '1' is a 'Biological parent'
-	,pfhp.hp_parent2_gender							-- No parent2_sex variable, '1' is 'F'       
+	-- ,pfhp.hp_parent2_relationship 					-- No data collected to confirm if parent2 is a 'Biological parent'
+	,pfhp.hp_parent2_gender AS parent2_sex							-- This field is misnomer for parent2_sex, '1' is 'F'       
 	,pfhp.hp_parent2_educ
 	,tlfb.tlfb_smoke_days    						-- Anomalies noted in comparing tlfb_smoke_days to tlfb_cig_mo
 	,tc.tc_1_1						-- calc number of traumas for each trauma category by multiplying trauma category by how_often from tesic
