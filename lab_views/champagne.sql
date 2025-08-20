@@ -1,147 +1,107 @@
--- This view provides phenotypic data associated with samples sent to Dr. Champagne's Lab for analysis.
--- Select CTAU baseline where si_tube_id=aud_ptsd_????_1_1  (The "_1_1" ending is what denotes the tube_ids that all other data should correspond to.)
--- Left joins of CTAU data use the source_subject_id from rcap_ctau_sample_info 
--- Left joins of CTRN Main data use the ctrn_id from the CTAU scheduling form, but could alternately use the subject_alias table. 
--- We need to calculate the age in days at the time of the visit (when blood sample was collected) 
-
-
-SELECT
-	si_tube_id         -- select samples sent to Dr. Champagne's Lab where si_tube_id = aud_ptsd_????_1_1
-	,si.source_subject_id  -- The CTAU record_id is only for validation; DELETE before sharing
-	,sched.event_name         -- only for validation; DELETE before sharing
-	,sched.sched_ctrn_id  		-- The Main CTRN record_id is to join and valid Main records; DELETE before sharing
-	,sa1.subject_id
-	,sched.sched_base_complete_date		-- Use to calculate participant age in days when sample collected; DELETE before sharing
-	,dem.dem_ch_dob						-- Use to calculate participant age in days when sample collected; DELETE before sharing
-	--,age_days_between(sched.sched_base_complete_date, dem.dem_ch_dob)as age_days
-	,case
-        when pfhc.hc_sex_birth_cert='1' then 'F'
-        when pfhc.hc_sex_birth_cert='2' then 'M'
-        else null
-    end as sex
-	,pfhp.hp_parent1_relationship 					-- '1' is a 'Biological parent'
-	,pfhp.hp_parent1_sex  							-- '1' is 'F'
-	,pfhp.hp_parent1_educ
-	--,pfhp.hp_parent2_relationship 				-- This field is missing from REDCap; no data collected
-	,pfhp.hp_parent2_gender							-- REDCap fieldname misapplied to form question indicating sex where '1' is 'F'
-	,pfhp.hp_parent2_educ
-	,tlfb.tlfb_smoke_days    						-- Anomalies noted in comparing tlfb_smoke_days to tlfb_cig_mo
-	,tc.tc_1_1						-- calc number of traumas for each trauma category by multiplying trauma category by how_often from tesic
-    ,tc.tc_1_1_how_often
-	,tp.tp_1_1_age_first		-- age at first trauma exposure from tesip.*_age_first(age is in yrs)
-	,tc.tc_1_1_worst
-    ,tc.tc_1_2
-    ,tc.tc_1_2_how_often
-	,tp.tp_1_2_age_first
-	,tc.tc_1_2_worst
-    ,tc.tc_1_3
-    ,tc.tc_1_3_how_often
-	,tp.tp_1_3_age_first
-	,tc.tc_1_3_worst
-    ,tc.tc_1_4
-    ,tc.tc_1_4_how_often
-	,tp.tp_1_4a_age_first 		-- Severe illnee or injury to someone close; a and b are combined in tc_1_4
-	,tp.tp_1_4b_age_first		-- Death of someone close; a and b are combined in tc_1_4
-	,tc.tc_1_4_worst
-    ,tc.tc_1_5
-    ,tc.tc_1_5_how_often
-	,tp.tp_1_5_age_first
-	,tc.tc_1_5_worst
-    ,tc.tc_1_6
-    ,tc.tc_1_6_how_often
-	,tp.tp_1_6_age_first			-- tesip has a 1_7 which isn't in tesic
-	,tc.tc_1_6_worst
-    ,tc.tc_2_1
-    ,tc.tc_2_1_how_often
-    ,tp.tp_2_1_age_first
-	,tc.tc_2_1_worst
-    ,tc.tc_2_2
-    ,tc.tc_2_2_how_often
-	,tp.tp_2_2_age_first
-	,tc.tc_2_2_worst
-    ,tc.tc_2_3
-    ,tc.tc_2_3_how_often
-	,tp.tp_2_3_age_first
-	,tc.tc_2_3_worst
-    ,tc.tc_2_4
-    ,tc.tc_2_4_how_often
-	,tp.tp_2_4_age_first
-	,tc.tc_2_4_worst
-    ,tc.tc_2_5
-    ,tc.tc_2_5_how_often
-	,tp.tp_2_5_age_first
-	,tc.tc_2_5_worst
-    ,tc.tc_3_1
-    ,tc.tc_3_1_how_often
-	,tp.tp_3_1_age_first
-	,tc.tc_3_1_worst
-    ,tc.tc_3_2
-    ,tc.tc_3_2_how_often
-	,tp.tp_3_2_age_first
-	,tc.tc_3_2_worst
-    ,tc.tc_3_3
-    ,tc.tc_3_3_how_often
-	,tp.tp_3_3_age_first
-	,tc.tc_3_3_worst
-    ,tc.tc_4_1
-    ,tc.tc_4_1_how_often
-	,tp.tp_4_1_age_first
-    ,tc.tc_4_1_worst
-    ,tc.tc_4_2
-    ,tc.tc_4_2_how_often
-	,tp.tp_4_2_age_first
-	,tc.tc_4_2_worst
-    ,tc.tc_4_3
-    ,tc.tc_4_3_how_often
-	,tp.tp_4_3_age_first
-	,tc.tc_4_3_worst
-    ,tc.tc_5
-    ,tc.tc_5_how_often
-	,tp.tp_5_1_age_first
-	,tp.tp_5_2_age_first
-	,tc.tc_5_worst
-    ,tc.tc_6_1
-	,tp.tp_6_1_age_first
-    ,tc.tc_6_2
-    ,tc.tc_6_2_how_often
-	,tp.tp_6_2_age_first
-    ,tc.tc_7
-    ,tc.tc_7_how_often
-	,tp.tp_7_1_age_first
-	,tc.tc_7_worst
-	,mini.mini_primary_dx		-- from mini.mini_primary_dx with event_name=baseline
-	,aud.audit_score
-from rcap_ctau_sample_info si
-left join rcap_ctau_scheduling_form sched -- to keep CTAU participants who only
-	on sched.source_subject_id = si.source_subject_id
-	and sched.event_name like 'baseline%'
-inner join subject_alias sa1
-    on sa1.source_subject_id = si.source_subject_id
-    and sa1.project_id = 2515
-    and sa1.id_type = 'redcap'
-left join rcap_ctau_dem dem
-    on dem.source_subject_id = si.source_subject_id
-left join rcap_pfh_child pfhc
-    on pfhc.source_subject_id = sched.sched_ctrn_id
-left join rcap_pfh_parent pfhp
-    on pfhp.source_subject_id = sched.sched_ctrn_id
-left join rcap_ctau_tlfb tlfb
-    on tlfb.source_subject_id = si.source_subject_id
-    and tlfb.event_name like 'baseline%'
-left join rcap_tesic tc
-    on tc.source_subject_id = sched.sched_ctrn_id
-left join rcap_tesip tp
-	on tp.source_subject_id = sched.sched_ctrn_id
-left join rcap_miniss_v2 mini
-	on mini.source_subject_id = sched.sched_ctrn_id
-    and mini.event_name like 'baseline%'
-left join rcap_ctau_audit aud
-    on aud.source_subject_id = si.source_subject_id
-    and aud.event_name like 'baseline%'
+select si_tube_id,
+       source_subject_id,
+       event_name,
+       sched_ctrn_id,
+       subject_id,
+       project_id,
+       id_type,
+       sched_base_complete_date,
+       dem_ch_dob,
+       sex,
+       hp_parent1_relationship,
+       hp_parent1_sex,
+       hp_parent1_educ,
+       hp_parent2_gender,
+       hp_parent2_educ,
+       tlfb_smoke_days,
+       tc_1_1,
+       tc_1_1_how_often,
+       tp_1_1_age_first,
+       tc_1_1_worst,
+       tc_1_2,
+       tc_1_2_how_often,
+       tp_1_2_age_first,
+       tc_1_2_worst,
+       tc_1_3,
+       tc_1_3_how_often,
+       tp_1_3_age_first,
+       tc_1_3_worst,
+       tc_1_4,
+       tc_1_4_how_often,
+       tp_1_4a_age_first,
+       tp_1_4b_age_first,
+       tc_1_4_worst,
+       tc_1_5,
+       tc_1_5_how_often,
+       tp_1_5_age_first,
+       tc_1_5_worst,
+       tc_1_6,
+       tc_1_6_how_often,
+       tp_1_6_age_first,
+       tc_1_6_worst,
+       tc_2_1,
+       tc_2_1_how_often,
+       tp_2_1_age_first,
+       tc_2_1_worst,
+       tc_2_2,
+       tc_2_2_how_often,
+       tp_2_2_age_first,
+       tc_2_2_worst,
+       tc_2_3,
+       tc_2_3_how_often,
+       tp_2_3_age_first,
+       tc_2_3_worst,
+       tc_2_4,
+       tc_2_4_how_often,
+       tp_2_4_age_first,
+       tc_2_4_worst,
+       tc_2_5,
+       tc_2_5_how_often,
+       tp_2_5_age_first,
+       tc_2_5_worst,
+       tc_3_1,
+       tc_3_1_how_often,
+       tp_3_1_age_first,
+       tc_3_1_worst,
+       tc_3_2,
+       tc_3_2_how_often,
+       tp_3_2_age_first,
+       tc_3_2_worst,
+       tc_3_3,
+       tc_3_3_how_often,
+       tp_3_3_age_first,
+       tc_3_3_worst,
+       tc_4_1,
+       tc_4_1_how_often,
+       tp_4_1_age_first,
+       tc_4_1_worst,
+       tc_4_2,
+       tc_4_2_how_often,
+       tp_4_2_age_first,
+       tc_4_2_worst,
+       tc_4_3,
+       tc_4_3_how_often,
+       tp_4_3_age_first,
+       tc_4_3_worst,
+       tc_5,
+       tc_5_how_often,
+       tp_5_1_age_first,
+       tp_5_2_age_first,
+       tc_5_worst,
+       tc_6_1,
+       tp_6_1_age_first,
+       tc_6_2,
+       tc_6_2_how_often,
+       tp_6_2_age_first,
+       tc_7,
+       tc_7_how_often,
+       tp_7_1_age_first,
+       tc_7_worst,
+       tc_8_1,
+       tc_8_3,
+       mini_primary_dx,
+       audit_score
+from rcap_ctau_sample_info_joined_view
 where si_tube_id ilike '%_1_1'
-group by si_tube_id, si.source_subject_id, sched.event_name, sched.sched_ctrn_id, sa1.subject_id, sched.sched_base_complete_date, dem.dem_ch_dob, case
-        when pfhc.hc_sex_birth_cert='1' then 'F'
-        when pfhc.hc_sex_birth_cert='2' then 'M'
-        else null
-    end, pfhp.hp_parent1_relationship, pfhp.hp_parent1_sex, pfhp.hp_parent1_educ, pfhp.hp_parent2_gender, pfhp.hp_parent2_educ, tlfb.tlfb_smoke_days, tc.tc_1_1, tc.tc_1_1_how_often, tp.tp_1_1_age_first, tc.tc_1_1_worst, tc.tc_1_2, tc.tc_1_2_how_often, tp.tp_1_2_age_first, tc.tc_1_2_worst, tc.tc_1_3, tc.tc_1_3_how_often, tp.tp_1_3_age_first, tc.tc_1_3_worst, tc.tc_1_4, tc.tc_1_4_how_often, tp.tp_1_4a_age_first, tp.tp_1_4b_age_first, tc.tc_1_4_worst, tc.tc_1_5, tc.tc_1_5_how_often, tp.tp_1_5_age_first, tc.tc_1_5_worst, tc.tc_1_6, tc.tc_1_6_how_often, tp.tp_1_6_age_first, tc.tc_1_6_worst, tc.tc_2_1, tc.tc_2_1_how_often, tp.tp_2_1_age_first, tc.tc_2_1_worst, tc.tc_2_2, tc.tc_2_2_how_often, tp.tp_2_2_age_first, tc.tc_2_2_worst, tc.tc_2_3, tc.tc_2_3_how_often, tp.tp_2_3_age_first, tc.tc_2_3_worst, tc.tc_2_4, tc.tc_2_4_how_often, tp.tp_2_4_age_first, tc.tc_2_4_worst, tc.tc_2_5, tc.tc_2_5_how_often, tp.tp_2_5_age_first, tc.tc_2_5_worst, tc.tc_3_1, tc.tc_3_1_how_often, tp.tp_3_1_age_first, tc.tc_3_1_worst, tc.tc_3_2, tc.tc_3_2_how_often, tp.tp_3_2_age_first, tc.tc_3_2_worst, tc.tc_3_3, tc.tc_3_3_how_often, tp.tp_3_3_age_first, tc.tc_3_3_worst, tc.tc_4_1, tc.tc_4_1_how_often, tp.tp_4_1_age_first, tc.tc_4_1_worst, tc.tc_4_2, tc.tc_4_2_how_often, tp.tp_4_2_age_first, tc.tc_4_2_worst, tc.tc_4_3, tc.tc_4_3_how_often, tp.tp_4_3_age_first, tc.tc_4_3_worst, tc.tc_5, tc.tc_5_how_often, tp.tp_5_1_age_first, tp.tp_5_2_age_first, tc.tc_5_worst, tc.tc_6_1, tp.tp_6_1_age_first, tc.tc_6_2, tc.tc_6_2_how_often, tp.tp_6_2_age_first, tc.tc_7, tc.tc_7_how_often, tp.tp_7_1_age_first, tc.tc_7_worst, tc.tc_8_1, tc.tc_8_3, mini.mini_primary_dx, aud.audit_score, sched.source_subject_id, si.source_subject_id, sa1.source_subject_id, dem.source_subject_id, pfhc.source_subject_id, tlfb.source_subject_id, tc.source_subject_id, tp.source_subject_id, mini.source_subject_id, aud.source_subject_id
-order by sa1.subject_id;
+  and project_id = 2515
+  and id_type = 'redcap';
