@@ -117,5 +117,6 @@ LEFT JOIN rcap_baseline_report AS base
 	on base.source_subject_id = scared_child.source_subject_id
 WHERE scared_child.scaredc_complete='2'
 	AND scared_child.event_name NOT LIKE '18_month%'
-ORDER BY sa1.subject_id;
+--ORDER BY sa1.subject_id
+;
 
