@@ -1,4 +1,4 @@
--- Creating usaudit01_nda_view
+-- Creating audit01_nda_view; NDA directed us to use audit01 template in place of usaudit01 
 
 select
     sa2.source_subject_id as subjectkey
@@ -29,17 +29,17 @@ select
         when audit.event_name like 'one_year%' then 'one_year'
         when audit.event_name like '24_month%' then '24_month'
     end as timepoint_label
-    ,audit_q1_sc
-	,audit_q2_sc
-	,audit_q3_sc
-	,audit_q4_sc
-	,audit_q5_sc
-	,audit_q6_sc
-	,audit_q7_sc
-	,audit_q8_sc
-	,audit_q9_sc
-	,audit_q10_sc
-	,audit_score as usaudit_total
+    ,audit_q1_sc as audit1
+	,audit_q2_sc as audq_2
+	,audit_q3_sc as q3_audit
+	,audit_q4_sc as audit5
+	,audit_q5_sc as audit6
+	,audit_q6_sc as audit9
+	,audit_q7_sc as audit10
+	,audit_q8_sc as audit4
+	,audit_q9_sc as audit7
+	,audit_q10_sc as audit8
+--	,audit_score as usaudit_total
 from rcap_ctau_audit audit
 inner join subject_alias sa1
     on sa1.source_subject_id = audit.source_subject_id
