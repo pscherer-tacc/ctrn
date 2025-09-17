@@ -59,11 +59,11 @@ select
 	,cyto."il-6" as cytokine_il_6
 	,cyto."il-7" as il7
 	,cyto."il-8" as cytokine_il_8
-	,cyto."il-9"
+	,cyto."il-9" as il_9
 	,cyto."ip-10" as ip10
 	,cyto."mcp-1" as mcp1
-	,cyto."mip-1a"
-	,cyto."mip-1b"
+	,cyto."mip-1a" as mip_1a
+	,cyto."mip-1b" as mip_1b
 	,cyto.pdgf as pdgfaa
 	,cyto.rantes
 	,cyto.tnf as cytokine_tnf_alpha
