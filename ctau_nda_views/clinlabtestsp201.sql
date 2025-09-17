@@ -5,7 +5,7 @@
 
 select
 	sa2.source_subject_id as subjectkey
-  ,sa2.subject_id as src_subject_id
+  	,sa2.subject_id as src_subject_id
 	,si.source_subject_id as ctau_source_subject_id -- only for validation; DELETE before submission
 	,case
 		when si.event_name like 'baseline%' then to_char(sched.sched_base_complete_date,'mm/dd/yyyy')
@@ -44,28 +44,28 @@ select
 	,cyto.si_tube_id as sample_id_original   -- samples sent to Dr. Beurel's Lab where si_tube_id = aud_ptsd_????_3_1
 	,cyto.basic_fgf
 	,cyto.eotaxin
-	,cyto.g-csf as gcsf
-	,cyto.gm-csf as gmcsf
+	,cyto."g-csf" as gcsf
+	,cyto."gm-csf" as gmcsf
 	,cyto.ifng as cytokine_ifn_gamma
-	,cyto.il-10 as cytokine_il_10
-	,cyto.il-12p70 as il12
-	,cyto.il-12p70 as il12
-	,cyto.il-13 as il13_pgml
-	,cyto.il-15 as il15_pgml
-	,cyto.il-17 as il17
-	,cyto.il-1b as il1b_pgml
-	,cyto.il-1ra as il1ra
-	,cyto.il-2 as il2_pgml
-	,cyto.il-4 as il_4
-	,cyto.il-5 as il5
-	,cyto.il-6 as cytokine_il_6
-	,cyto.il-7 as il7
-	,cyto.il-8 as cytokine_il_8
-	,cyto.il-9
-	,cyto.ip-10 as ip10
-	,cyto.mcp-1 as mcp1
-	,cyto.mip-1a
-	,cyto.mip-1b
+	,cyto."il-10" as cytokine_il_10
+	,cyto."il-12p70" as il12
+	--,cyto.il-12p70 as il12
+	,cyto."il-13" as il13_pgml
+	,cyto."il-15" as il15_pgml
+	,cyto."il-17" as il17
+	,cyto."il-1b" as il1b_pgml
+	,cyto."il-1ra" as il1ra
+	,cyto."il-2" as il2_pgml
+	,cyto."il-4" as il_4
+	,cyto."il-5" as il5
+	,cyto."il-6" as cytokine_il_6
+	,cyto."il-7" as il7
+	,cyto."il-8" as cytokine_il_8
+	,cyto."il-9"
+	,cyto."ip-10" as ip10
+	,cyto."mcp-1" as mcp1
+	,cyto."mip-1a"
+	,cyto."mip-1b"
 	,cyto.pdgf as pdgfaa
 	,cyto.rantes
 	,cyto.tnf as cytokine_tnf_alpha

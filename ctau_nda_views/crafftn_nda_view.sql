@@ -23,7 +23,7 @@ select
 	end as interview_age, 
 	case
 	    when crafftn.event_name like 'baseline%' then sched_main.sched_base_complete
-		when crafftn.event_name like 'one_month%' then sced_main.sched_1mo_complete
+		when crafftn.event_name like 'one_month%' then sched_main.sched_1mo_complete
 		when crafftn.event_name like 'six_month%' then sched_main.sched_6mo_complete
 		when crafftn.event_name like 'one_year%' then sched_main.sched_1yr_complete
 		--when crafftn.event_name like '18_month%' then sched.sched_18mo_complete
