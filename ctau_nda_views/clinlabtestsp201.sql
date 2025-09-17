@@ -1,7 +1,5 @@
 ---- Creating clinlabtestsp201_nda_view (Dr. Beural cytokines)
----- Pat's initial draft with many run errors
 ---- This should output just the results and associated records from the labs_ctau_cytokine table harmonized for submission to the NDA.
----- Tomislav wrote related queries in the lab_views folder, but I can't quite get my head around how to blend your two approaches
 
 select
 	sa2.source_subject_id as subjectkey
@@ -72,7 +70,6 @@ select
 	,cyto.vegf
 	,cyto.extrapolated	
 from lab_ctau_cytokines cyto  -- Query based on the analysis vs the sample info as the analysis determines records we should share. 
-
 left join rcap_ctau_sample_info si 
     on si.si_tube_id = cyto.si_tube_id	   -- Should be just Dr. Beurel's Cytokine samples without requiring the next line.
 	-- and si_tube_id ilike '%_3_1'  
