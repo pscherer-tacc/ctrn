@@ -60,9 +60,9 @@ select
 	mini.mini_a1__1_current as mini_a1_current,
     mini.mini_a1__2_past as mini_a1_past,		
 	mini.mini_a1__3_recurrent as mini_a1_recurrent,
-	mini.mini_a2__1_current as mini_a2_current,
-    mini.mini_a2__2_past as mini_a2_past,		
-	mini.mini_a2__3_recurrent as mini_a2_recurrent,	
+	-- mini.mini_a2__1_current as mini_a2_current,    	NDA wrongly associated this to the a1 set as an alias preventing ability to add as a separate data value
+    -- mini.mini_a2__2_past as mini_a2_past,			NDA wrongly associated this to the a1 set as an alias preventing ability to add as a separate data value
+	-- mini.mini_a2__3_recurrent as mini_a2_recurrent,	NDA wrongly associated this to the a1 set as an alias preventing ability to add as a separate data value
 	mini.mini_b1__1_current as mini_kidsum_suic___1,
     mini.mini_b1__2_lifetimeatt as mini_kidsum_suic___2,			
     case
@@ -117,8 +117,8 @@ select
 	nda_2_to_0_converter(mini_o2_m) as minikid_p2m,
 	nda_2_to_0_converter(mini_o2_n) as minikid_p2n,
 	nda_2_to_0_converter(mini_o2_o) as minikid_p2o,
-	mini_o3 as minikid_p3,
-	nda_2_to_0_converter(mini_o3_onset) as mini_o3_onset,
+	nda_2_to_0_converter(mini_o3) as minikid_p3,
+	mini_o3_onset,
 	mini_p1__1_past_6_mo as mini_p1_past_6_mo, 
 	mini_q1__1_current as mini_q1_current,
 	mini_q1__2_lifetime as mini_q1_lifetime, 
@@ -132,7 +132,12 @@ select
 	mini_u1__1_current as mini_u1_current,		
 	mini_v1__1_current as mini_v1_current,
 	mini_w1 as mini_kidsum_medrulout,
-	mini_x1__1_not_ruled_out as mini_x1_not_ruled_out,
+	case
+	    when mini_x1__1_not_ruled_out='1' then '1'
+		when mini_x1__1_not_ruled_out='0' then '2'
+		when mini_x1__1_not_ruled_out='99' then '3'
+		else null
+	end as mini_x1_not_ruled_out,
 	mini_primary_dx
 from rcap_miniss_v2 as mini -- attention! rcap_miniss_v2 is NOT a ctau table.
 inner join rcap_ctau_scheduling_form as sched -- to keep ctau participants only
@@ -147,4 +152,5 @@ left join rcap_demographics as dem
     on dem.source_subject_id = mini.source_subject_id
 left join rcap_pfh_child as pfhc 
     on pfhc.source_subject_id = mini.source_subject_id
+
 order by sa1.subject_id;
