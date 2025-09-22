@@ -42,10 +42,10 @@ select
 		-- when crafftn.event_name like '18_month%' then '18_month'
 		when crafftn.event_name like '24_month%' then '24_month'
 	end as visit,
-	crafftn.crafftn_1 as crafft_a_1,         
-	crafftn.crafftn_2 as crafft_a_2,
-	crafftn.crafftn_3 as crafft_a_3,
-	crafftn.crafftn_4 as crafft_a_4,
+	crafftn.crafftn_1 as crafft_a_1,    -- Update to convert answers >1 to "1" (yes) to correct NDA out-of-range errors         
+	crafftn.crafftn_2 as crafft_a_2,	-- Update to convert answers >1 to "1" (yes) to correct NDA out-of-range errors
+	crafftn.crafftn_3 as crafft_a_3,	
+	crafftn.crafftn_4 as crafft_a_4,	-- Update to convert answers >1 to "1" (yes) to correct NDA out-of-range errors
 	crafftn.crafftn_5 as crafft_b_1,
 	crafftn.crafftn_6 as crafft_b_2,
 	crafftn.crafftn_7 as crafft_b_3,
@@ -65,4 +65,5 @@ left join rcap_demographics as dem
     on dem.source_subject_id = crafftn.source_subject_id
 left join rcap_pfh_child as pfhc 
     on pfhc.source_subject_id = crafftn.source_subject_id
+
 order by sa1.subject_id; -- should run, but syntax error appeared on scared_child view -- if case then can comment out this line
