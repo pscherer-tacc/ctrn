@@ -1,3 +1,20 @@
+--- Construct a view to generate output from the DW for Dr. Champagne’s Lab as per the following rqmts:
+--- 	Pull baseline data for samples sent to Champagne's lab only (si.si_tube_id ilike '%_1_1'):
+---			DOB
+---			Date of blood collection
+---			Calculated age (in days) at date of blood collection
+---			tube_id
+---			Sex
+---			Smoking status
+---			Maternal education (cfhx_parent[1 or 2]_educ AND cfhx_parent[1 or 2]_sex=“female”
+---			# traumas → sum(each trauma category X how_often)
+---			Worst trauma exposure
+---			Age at first trauma exposure
+---			Primary diagnosis
+---			AUDIT score
+---
+--- 	Remove any duplicates, pii/phi, and fields not specifically required by the lab
+
 select si_tube_id,
        source_subject_id,
        event_name,
