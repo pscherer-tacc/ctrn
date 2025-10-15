@@ -122,5 +122,4 @@ select si_tube_id,
        audit_score
 from rcap_ctau_sample_info_joined_view
 where si_tube_id ilike '%_1_1'
-  and project_id = 2515
-  and id_type = 'redcap';
+and (tc_administrator is not null OR tc_interview_date is not null);

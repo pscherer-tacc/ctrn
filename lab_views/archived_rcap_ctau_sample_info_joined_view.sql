@@ -1,3 +1,11 @@
+/*
+
+!!!!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!!
+This is a script for the first version of the rcap_ctau_sample_info_joined_view developed by Tomislav U. 
+It is now deprecated and substituted by the rcap_ctau_sample_info_joined_view_new.sql script.
+
+*/
+
 create view public.rcap_ctau_sample_info_joined_view
             (si_tube_id, source_subject_id, event_name, sched_ctrn_id, subject_id, project_id, id_type,
              sched_base_complete_date, dem_ch_dob, sex, hp_parent1_relationship, hp_parent1_sex, hp_parent1_educ,
