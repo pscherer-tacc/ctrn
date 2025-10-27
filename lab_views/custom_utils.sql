@@ -6,3 +6,11 @@ BEGIN
     RETURN date2 - date1;
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE FUNCTION age_years_between(date1 DATE, date2 DATE)
+RETURNS INTEGER AS $$
+BEGIN
+    RETURN EXTRACT(YEAR FROM AGE(date1, date2))::int;
+END;
+$$ LANGUAGE plpgsql;

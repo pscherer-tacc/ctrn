@@ -117,12 +117,31 @@ select si_tube_id,
        tp_7_1_age_first,
        -- tc_7_worst,
        tc_8_1 AS worst,
-       tc_8_2 AS worst_date, -- Recalculate this into "worst_age_yrs" and remove dates before sharing publicly
+       age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
        tc_8_3 AS most_recent,
-       tc_8_3_less_than_1_mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
-       tc_8_4 AS most_recent_date, -- Recalculate this into "most_recent_trauma_age_yrs" and remove dates before sharing publicly
+       tc_8_3_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
+       age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs, -- Recalculate this into "most_recent_trauma_age_yrs" and remove dates before sharing publicly
        mini_primary_dx,
        audit_score
+from rcap_ctau_sample_info_joined_view
+where si_tube_id ilike '%_1_1'
+and (tc_administrator is not null OR tc_interview_date is not null);
+
+
+
+
+
+------ Additional queries
+
+-- A query for validtation of the "age_years_between" function
+select
+    source_subject_id,
+    age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
+    tc_8_2::date,
+    dem_ch_dob::date,
+    age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs,
+    tc_8_4::date,
+    dem_ch_dob::date
 from rcap_ctau_sample_info_joined_view
 where si_tube_id ilike '%_1_1'
 and (tc_administrator is not null OR tc_interview_date is not null);
