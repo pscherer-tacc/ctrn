@@ -116,6 +116,7 @@ SELECT si.si_tube_id,
 FROM rcap_ctau_sample_info si
 LEFT JOIN rcap_ctau_scheduling_form sched
     ON sched.source_subject_id = si.source_subject_id
+    AND si.event_name LIKE 'baseline%'
     AND sched.event_name LIKE 'baseline%'
 INNER JOIN subject_alias sa
     ON sa.source_subject_id = si.source_subject_id
