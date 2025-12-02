@@ -110,14 +110,74 @@ SELECT si.si_tube_id,
     tc.tc_8_3_less_than_1mo,
     tc.tc_8_4,
     mini.mini_primary_dx,
-    aud.audit_score,
     tc.tc_administrator,
-    tc.tc_interview_date
+    tc.tc_interview_date,
+    tlfb.tlfb_drink_mo,
+	tlfb.tlfb_drink_days,
+	tlfb.tlfb_drink_per_day,
+	tlfb.tlfb_hv_ep_dr_days,
+	tlfb.tlfb_24_max,
+	tlfb.tlfb_cig_mo,
+    tlfb.tlfb_smoke_days,
+	tlfb.tlfb_cig_per_day,
+	tlfb.tlfb_thc_days,
+    aud.audit_q1_sc,
+	aud.audit_q2_sc,
+	aud.audit_q3_sc,
+	aud.audit_q4_sc,
+	aud.audit_q5_sc,
+	aud.audit_q6_sc,
+	aud.audit_q7_sc,
+	aud.audit_q8_sc,
+	aud.audit_q9_sc,
+	aud.audit_q10_sc,
+    aud.audit_score,
+    sui.sui_1,
+	sui.sui_2,
+	sui.sui_3,
+	sui.sui_4, 
+	sui.sui_5,
+	sui.sui_6,
+	sui.sui_7,
+	sui.sui_8,
+    --- deq.deq_alc_use_dt,   ---should these be converted to deq_age_last_alc? (Not converted in the NDA)
+	deq.deq_alc_last_amt,
+	deq.deq_alc_dur,
+	deq.deq_alc_mem_diff,
+	deq.deq_alc_blackout,
+	deq.deq_alc_hungover,
+	deq.deq_alc_effects,
+	deq.deq_alc_effects_2,
+	deq.deq_alc_effects_3,
+	deq.deq_alc_effects_4,
+	--- deq.deq_drug_use_dt,   ---should these be converted to deq_age_last_drug? (Not converted in the NDA)
+	deq.deq_drug_mdma,
+	deq.deq_drug_heroin,
+	deq.deq_drug_cocaine, 
+	deq.deq_drug_crack,
+	deq.deq_drug_k,
+	deq.deq_drug_meth,
+	deq.deq_drug_pain,
+	deq.deq_drug_stim,
+	deq.deq_drug_k2,
+	deq.deq_drug_benzos, 
+	deq.deq_drug_none,
+	deq.deq_drugs_dur,
+	deq.deq_drugs_snort,
+	deq.deq_drugs_inject,
+	deq.deq_drugs_smoke,
+	deq.deq_drugs_oral,
+	deq.deq_drugs_other,
+	deq.deq_drugs_mem_diff,
+	deq.deq_drugs_blackout,
+	deq.deq_drugs_hungover,
+	deq.deq_drugs_effects,
+	deq.deq_drugs_effects_2,
+	deq.deq_drugs_effects_3
 FROM rcap_ctau_sample_info si
 LEFT JOIN rcap_ctau_scheduling_form sched
     ON sched.source_subject_id = si.source_subject_id
-    AND si.event_name LIKE 'baseline%'
-    AND sched.event_name LIKE 'baseline%'
+    AND sched.event_name = si.event_name
 INNER JOIN subject_alias sa
     ON sa.source_subject_id = si.source_subject_id
     AND sa.project_id = 2515 -- CTAU only
@@ -129,15 +189,53 @@ LEFT JOIN rcap_pfh_parent pfhp
     ON pfhp.source_subject_id = sched.sched_ctrn_id
 LEFT JOIN rcap_ctau_tlfb tlfb
     ON tlfb.source_subject_id = si.source_subject_id
-    AND tlfb.event_name LIKE 'baseline%'
+    AND tlfb.event_name = si.event_name
 LEFT JOIN rcap_tesic tc 
     ON tc.source_subject_id = sched.sched_ctrn_id
 LEFT JOIN rcap_tesip tp 
     ON tp.source_subject_id = sched.sched_ctrn_id
 LEFT JOIN rcap_miniss_v2 mini
     ON mini.source_subject_id = sched.sched_ctrn_id
-    AND mini.event_name LIKE 'baseline%'
+    AND mini.event_name = si.event_name
 LEFT JOIN rcap_ctau_audit aud
     ON aud.source_subject_id = si.source_subject_id
-    AND aud.event_name like 'baseline%'
+    AND aud.event_name = si.event_name
+LEFT JOIN rcap_ctau_deq deq
+    ON deq.source_subject_id = si.source_subject_id
+    AND deq.event_name = si.event_name
+LEFT JOIN rcap_ctau_sui sui
+    ON sui.source_subject_id = si.source_subject_id
+    AND sui.event_name = si.event_name
 ;
+
+
+
+------ BASELINE ONLY
+-- FROM rcap_ctau_sample_info si
+-- LEFT JOIN rcap_ctau_scheduling_form sched
+--     ON sched.source_subject_id = si.source_subject_id
+--     AND si.event_name LIKE 'baseline%'
+--     AND sched.event_name LIKE 'baseline%'
+-- INNER JOIN subject_alias sa
+--     ON sa.source_subject_id = si.source_subject_id
+--     AND sa.project_id = 2515 -- CTAU only
+-- LEFT JOIN rcap_ctau_dem dem 
+--     ON dem.source_subject_id = si.source_subject_id
+-- LEFT JOIN rcap_pfh_child pfhc 
+--     ON pfhc.source_subject_id = sched.sched_ctrn_id
+-- LEFT JOIN rcap_pfh_parent pfhp 
+--     ON pfhp.source_subject_id = sched.sched_ctrn_id
+-- LEFT JOIN rcap_ctau_tlfb tlfb
+--     ON tlfb.source_subject_id = si.source_subject_id
+--     AND tlfb.event_name LIKE 'baseline%'
+-- LEFT JOIN rcap_tesic tc 
+--     ON tc.source_subject_id = sched.sched_ctrn_id
+-- LEFT JOIN rcap_tesip tp 
+--     ON tp.source_subject_id = sched.sched_ctrn_id
+-- LEFT JOIN rcap_miniss_v2 mini
+--     ON mini.source_subject_id = sched.sched_ctrn_id
+--     AND mini.event_name LIKE 'baseline%'
+-- LEFT JOIN rcap_ctau_audit aud
+--     ON aud.source_subject_id = si.source_subject_id
+--     AND aud.event_name like 'baseline%'
+-- ;
