@@ -106,7 +106,7 @@ select si_tube_id,
        tc_4_2,
        tc_4_2_how_often,
        tp_4_2_age_first,
-       tc_4_2_worst,
+       --tc_4_2_worst,
        tc_4_3,
        tc_4_3_how_often,
        tp_4_3_age_first,
@@ -185,26 +185,13 @@ select si_tube_id,
 	   deq_drugs_effects_2,
 	   deq_drugs_effects_3
 from rcap_ctau_sample_info_joined_view
---- where si_tube_id ilike '%_1_1'  -- Samples sent to Dr. Champagne's Epigenomics Lab
-where si_tube_id ilike '%_2_1'	-- Samples sent to Dr. Ressler's Genetics Lab
---- where si_tube_id ilike '%_3_1'	-- Samples sent to Dr. Beurel's Cytokines Lab	 			
-and (tc_administrator is not null OR tc_interview_date is not null);
+where si_tube_id ilike '%_1_1'; -- Samples sent to Dr. Champagne's Epigenomics Lab
+---where si_tube_id ilike '%_2_1';	-- Samples sent to Dr. Ressler's Genetics Lab
+---where si_tube_id ilike '%_3_1';	-- Samples sent to Dr. Beurel's Cytokines Lab	 			
 
 
-
-
-
------- Additional queries
-
--- A query for validtation of the "age_years_between" function
-select
-    source_subject_id,
-    age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
-    tc_8_2::date,
-    dem_ch_dob::date,
-    age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs,
-    tc_8_4::date,
-    dem_ch_dob::date
+-- Vlad's checks
+select event_name, count(*)
 from rcap_ctau_sample_info_joined_view
 where si_tube_id ilike '%_1_1'
-and (tc_administrator is not null OR tc_interview_date is not null);
+group by event_name;
