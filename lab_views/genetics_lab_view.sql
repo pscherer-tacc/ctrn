@@ -150,7 +150,7 @@ select si_tube_id,
 	   sui_6,		--- Unstructured text must be curated or omited before sharing
 	   sui_7,
 	   sui_8,
-	   --- deq_alc_use_dt,   ---should these be converted to deq_age_last_alc? (Not converted in the NDA)
+	   --- deq_alc_use_dt,   ---convert date to deq_age_last_alc and deq_days_since_last_alc (Add as change request to NDA drug01)
 	   deq_alc_last_amt,
 	   deq_alc_dur,
 	   deq_alc_mem_diff,
@@ -160,7 +160,7 @@ select si_tube_id,
 	   deq_alc_effects_2,
 	   deq_alc_effects_3,
 	   deq_alc_effects_4,
-	   --- deq_drug_use_dt,   ---should these be converted to deq_age_last_drug? (Not converted in the NDA)
+	   --- deq_drug_use_dt,   ---convert date to deq_age_last_drug and deq_days_since_last_drug (Add as change request to NDA drug01)
 	   deq_drug_mdma,
 	   deq_drug_heroin,
 	   deq_drug_cocaine, 
@@ -196,3 +196,4 @@ from rcap_ctau_sample_info_joined_view
 where si_tube_id ilike '%_2_1'
 
 group by event_name;
+
