@@ -185,13 +185,14 @@ select si_tube_id,
 	   deq_drugs_effects_2,
 	   deq_drugs_effects_3
 from rcap_ctau_sample_info_joined_view
-where si_tube_id ilike '%_1_1'; -- Samples sent to Dr. Champagne's Epigenomics Lab
----where si_tube_id ilike '%_2_1';	-- Samples sent to Dr. Ressler's Genetics Lab
+---where si_tube_id ilike '%_1_1'; -- Samples sent to Dr. Champagne's Epigenomics Lab
+where si_tube_id ilike '%_2_1';	-- Samples sent to Dr. Ressler's Genetics Lab
 ---where si_tube_id ilike '%_3_1';	-- Samples sent to Dr. Beurel's Cytokines Lab	 			
 
 
 -- Vlad's checks
 select event_name, count(*)
 from rcap_ctau_sample_info_joined_view
-where si_tube_id ilike '%_1_1'
+where si_tube_id ilike '%_2_1'
+
 group by event_name;
