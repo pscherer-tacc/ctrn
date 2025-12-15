@@ -8,4 +8,5 @@ SELECT
     ,sched_base_complete_date
     ,sched_1yr_date
     ,sched_2yr_complete_date
-FROM rcap_ctau_scheduling_form;
+FROM rcap_ctau_scheduling_form
+WHERE event_name like 'baseline%';

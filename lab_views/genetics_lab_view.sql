@@ -23,7 +23,11 @@ select si_tube_id,
        subject_id,
        project_id,
        id_type,
-       sched_base_complete_date,
+       case
+        when event_name like 'baseline%' then sched_base_complete_date
+        when event_name like 'one_year%' then sched_1yr_date
+        when event_name like '24_month%' then sched_2yr_complete_date
+       end as sched_visit_complete_date,
        dem_ch_dob,
        case 
         when event_name like 'baseline%' then age_days_between(dem_ch_dob::date, sched_base_complete_date)

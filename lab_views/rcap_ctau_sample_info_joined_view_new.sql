@@ -2,7 +2,7 @@ CREATE VIEW rcap_ctau_sample_info_joined_view
 AS
 SELECT si.si_tube_id,
     si.source_subject_id,
-    sched.event_name,
+    si.event_name,
     sched.sched_ctrn_id,
     sa.subject_id,
     sa.project_id,
@@ -178,7 +178,6 @@ SELECT si.si_tube_id,
 FROM rcap_ctau_sample_info si
 LEFT JOIN ctau_scheduling_form_view sched -- Attention! The view (not the table) is utilized
     ON sched.source_subject_id = si.source_subject_id
-    AND sched.event_name = si.event_name
 INNER JOIN subject_alias sa
     ON sa.source_subject_id = si.source_subject_id
     AND sa.project_id = 2515 -- CTAU only
