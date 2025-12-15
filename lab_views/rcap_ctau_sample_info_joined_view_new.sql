@@ -9,6 +9,8 @@ SELECT si.si_tube_id,
     sa.id_type,
     sched.sched_base_complete, -- NEW FIELD
     sched.sched_base_complete_date,
+    sched.sched_1yr_date,
+    sched.sched_2yr_complete_date,
     dem.dem_ch_dob,
     CASE
         WHEN pfhc.hc_sex_birth_cert::text = '1'::text THEN 'F'::text
@@ -139,7 +141,7 @@ SELECT si.si_tube_id,
 	sui.sui_6,
 	sui.sui_7,
 	sui.sui_8,
-    --- deq.deq_alc_use_dt,   ---should these be converted to deq_age_last_alc? (Not converted in the NDA)
+    deq.deq_alc_use_dt,   ---should these be converted to deq_age_last_alc? (Not converted in the NDA)
 	deq.deq_alc_last_amt,
 	deq.deq_alc_dur,
 	deq.deq_alc_mem_diff,
@@ -149,7 +151,7 @@ SELECT si.si_tube_id,
 	deq.deq_alc_effects_2,
 	deq.deq_alc_effects_3,
 	deq.deq_alc_effects_4,
-	--- deq.deq_drug_use_dt,   ---should these be converted to deq_age_last_drug? (Not converted in the NDA)
+	deq.deq_drug_use_dt,   ---should these be converted to deq_age_last_drug? (Not converted in the NDA)
 	deq.deq_drug_mdma,
 	deq.deq_drug_heroin,
 	deq.deq_drug_cocaine, 

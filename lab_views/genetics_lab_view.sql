@@ -25,7 +25,11 @@ select si_tube_id,
        id_type,
        sched_base_complete_date,
        dem_ch_dob,
-       age_days_between(dem_ch_dob::date, sched_base_complete_date) as age_days,
+       case 
+        when event_name like 'baseline%' then age_days_between(dem_ch_dob::date, sched_base_complete_date)
+        when event_name like 'one_year%' then age_days_between(dem_ch_dob::date, sched_1yr_date)
+        when event_name like '24_month%' then age_days_between(dem_ch_dob::date, sched_2yr_complete_date)
+       end as age_days, -- NEW FIELD
        sex,
        hp_parent1_relationship,
        hp_parent1_sex,
@@ -150,7 +154,12 @@ select si_tube_id,
 	   sui_6,		         -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
 	   sui_7,
 	   sui_8,
-	   --- deq_alc_use_dt,   ---convert date to deq_age_last_alc and deq_days_since_last_alc (Add as change request to NDA drug01)
+       age_years_between(deq_alc_use_dt::date, dem_ch_dob::date) as deq_age_last_alc, -- NEW FIELD
+       case
+        when event_name like 'baseline%' then age_days_between(deq_alc_use_dt::date, sched_base_complete_date)
+        when event_name like 'one_year%' then age_days_between(deq_alc_use_dt::date, sched_1yr_date)
+        when event_name like '24_month%' then age_days_between(deq_alc_use_dt::date, sched_2yr_complete_date)
+       end as deq_days_since_last_alc, -- NEW FIELD   
 	   deq_alc_last_amt,
 	   deq_alc_dur,
 	   deq_alc_mem_diff,
@@ -160,8 +169,13 @@ select si_tube_id,
 	   deq_alc_effects_2,
 	   deq_alc_effects_3,
 	   deq_alc_effects_4,
-	   --- deq_drug_use_dt,   ---convert date to deq_age_last_drug and deq_days_since_last_drug (Add as change request to NDA drug01)
-	   deq_drug_mdma,
+	   age_years_between(deq_drug_use_dt::date, dem_ch_dob::date) as deq_age_last_drug, -- NEW FIELD
+       case
+        when event_name like 'baseline%' then age_days_between(deq_drug_use_dt::date, sched_base_complete_date)
+        when event_name like 'one_year%' then age_days_between(deq_drug_use_dt::date, sched_1yr_date)
+        when event_name like '24_month%' then age_days_between(deq_drug_use_dt::date, sched_2yr_complete_date)
+       end as deq_days_since_last_drug, -- NEW FIELD
+       deq_drug_mdma,
 	   deq_drug_heroin,
 	   deq_drug_cocaine, 
 	   deq_drug_crack,
