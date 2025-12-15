@@ -125,10 +125,10 @@ select si_tube_id,
        tc_7_how_often,
        tp_7_1_age_first,
        -- tc_7_worst,
-       tc_8_1 AS worst,
+       tc_8_1 AS worst,          -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
        age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
-       tc_8_3 AS most_recent,
-       tc_8_3_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
+       tc_8_3 AS most_recent,    -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
+       tc_8_3_less_than_1mo,     -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
        age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs, -- Recalculate this into "most_recent_trauma_age_yrs" and remove dates before sharing publicly
        mini_primary_dx,
 	   audit_q1_sc,
@@ -147,7 +147,7 @@ select si_tube_id,
 	   sui_3,
 	   sui_4, 
 	   sui_5,
-	   sui_6,		--- Unstructured text must be curated or omited before sharing
+	   sui_6,		         -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
 	   sui_7,
 	   sui_8,
 	   --- deq_alc_use_dt,   ---convert date to deq_age_last_alc and deq_days_since_last_alc (Add as change request to NDA drug01)
@@ -196,4 +196,5 @@ from rcap_ctau_sample_info_joined_view
 where si_tube_id ilike '%_2_1'
 
 group by event_name;
+
 
