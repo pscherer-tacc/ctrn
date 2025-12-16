@@ -51,85 +51,106 @@ select si_tube_id,
 	   tlfb_cig_per_day,
 	   tlfb_thc_days,
        tc_1_1,
+       tcfu_1_1,
        tc_1_1_how_often,
        tp_1_1_age_first,
        -- tc_1_1_worst, Worst selections aggregate into tc_8_1
        tc_1_2,
+       tcfu_1_2,
        tc_1_2_how_often,
        tp_1_2_age_first,
        -- tc_1_2_worst,
        tc_1_3,
+       tcfu_1_3,
        tc_1_3_how_often,
        tp_1_3_age_first,
        -- tc_1_3_worst,
        tc_1_4,
+       tcfu_1_4,
        tc_1_4_how_often,
        tp_1_4a_age_first,
        tp_1_4b_age_first,
        -- tc_1_4_worst,
        tc_1_5,
+       tcfu_1_5,
        tc_1_5_how_often,
        tp_1_5_age_first,
        -- tc_1_5_worst,
        tc_1_6,
+       tcfu_1_6,
        tc_1_6_how_often,
        tp_1_6_age_first,
        -- tc_1_6_worst,
        tc_2_1,
+       tcfu_2_1,
        tc_2_1_how_often,
        tp_2_1_age_first,
        -- tc_2_1_worst,
        tc_2_2,
+       tcfu_2_2,
        tc_2_2_how_often,
        tp_2_2_age_first,
        -- tc_2_2_worst,
        tc_2_3,
+       tcfu_2_3,
        tc_2_3_how_often,
        tp_2_3_age_first,
        -- tc_2_3_worst,
        tc_2_4,
+       tcfu_2_4,
        tc_2_4_how_often,
        tp_2_4_age_first,
        -- tc_2_4_worst,
        tc_2_5,
+       tcfu_2_5,
        tc_2_5_how_often,
        tp_2_5_age_first,
        -- tc_2_5_worst,
        tc_3_1,
+       tcfu_3_1,
        tc_3_1_how_often,
        tp_3_1_age_first,
        -- tc_3_1_worst,
        tc_3_2,
+       tcfu_3_2,
        tc_3_2_how_often,
        tp_3_2_age_first,
        -- tc_3_2_worst,
        tc_3_3,
+       tcfu_3_3,
        tc_3_3_how_often,
        tp_3_3_age_first,
        -- tc_3_3_worst,
        tc_4_1,
+       tcfu_4_1,
        tc_4_1_how_often,
        tp_4_1_age_first,
        -- tc_4_1_worst,
        tc_4_2,
+       tcfu_4_2,
        tc_4_2_how_often,
        tp_4_2_age_first,
        --tc_4_2_worst,
        tc_4_3,
+       tcfu_4_3,
        tc_4_3_how_often,
        tp_4_3_age_first,
        -- tc_4_3_worst,
        tc_5,
+       tcfu_5,
        tc_5_how_often,
        tp_5_1_age_first,
        tp_5_2_age_first,
        -- tc_5_worst,
        tc_6_1,
+       tcfu_6_1,
        tp_6_1_age_first,
        tc_6_2,
+       tcfu_6_2,
        tc_6_2_how_often,
        tp_6_2_age_first,
        tc_7,
+       tcfu_7,
        tc_7_how_often,
        tp_7_1_age_first,
        -- tc_7_worst,
@@ -203,16 +224,18 @@ select si_tube_id,
 	   deq_drugs_effects_2,
 	   deq_drugs_effects_3
 from rcap_ctau_sample_info_joined_view
----where si_tube_id ilike '%_1_1'; -- Samples sent to Dr. Champagne's Epigenomics Lab
-where si_tube_id ilike '%_2_1';	-- Samples sent to Dr. Ressler's Genetics Lab
----where si_tube_id ilike '%_3_1';	-- Samples sent to Dr. Beurel's Cytokines Lab	 			
+---where si_tube_id ilike '%_1_1' -- Samples sent to Dr. Champagne's Epigenomics Lab
+where si_tube_id ilike '%_2_1'	-- Samples sent to Dr. Ressler's Genetics Lab
+---where si_tube_id ilike '%_3_1'	-- Samples sent to Dr. Beurel's Cytokines Lab	 			
+order by
+        case 
+         when event_name like 'baseline%' then 1
+         when event_name like 'one_year%' then 2
+         when event_name like '24_month' then 3 
+        end
+        ,source_subject_id
+;
 
 
--- Vlad's checks
-select event_name, count(*)
-from rcap_ctau_sample_info_joined_view
-where si_tube_id ilike '%_2_1'
-
-group by event_name;
 
 
