@@ -231,7 +231,7 @@ order by
         case 
          when event_name like 'baseline%' then 1
          when event_name like 'one_year%' then 2
-         when event_name like '24_month' then 3 
+         when event_name like '24_month%' then 3 
         end
         ,source_subject_id
 ;
