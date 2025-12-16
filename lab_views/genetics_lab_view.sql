@@ -157,6 +157,7 @@ select si_tube_id,
        tc_8_1 AS worst,          -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
        age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
        tc_8_3 AS most_recent,    -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
+       tcfu_8_3, -- NEW FIELD
        tc_8_3_less_than_1mo,     -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
        age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs, -- Recalculate this into "most_recent_trauma_age_yrs" and remove dates before sharing publicly
        mini_primary_dx,

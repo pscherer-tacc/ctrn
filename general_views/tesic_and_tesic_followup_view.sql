@@ -262,6 +262,7 @@ select
     ,tc_8_1_less_than_1mo as tc_8_1_less_than_1mo
     ,tc_8_2 as tc_8_2
     ,tc_8_3 as tc_8_3
+    ,null as tcfu_8_3 
     ,tc_8_3_less_than_1mo as tc_8_3_less_than_1mo
     ,tc_8_4 as tc_8_4
 from rcap_tesic
@@ -528,7 +529,8 @@ select
     ,tcfu_8_1 as tc_8_1
     ,tcfu_8_1_less_1mo as tc_8_1_less_than_1mo
     ,tcfu_8_2 as tc_8_2
-    ,tcfu_8_3 as tc_8_3
+    ,null as tc_8_3
+    ,tcfu_8_3 as tcfu_8_3
     ,null as tc_8_3_less_than_1mo
     ,null as tc_8_4
 from rcap_tesic_followup;
