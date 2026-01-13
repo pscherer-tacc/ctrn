@@ -32,8 +32,8 @@ select si_tube_id,
         when event_name like '24_month%' then age_days_between(dem_ch_dob::date, sched_2yr_complete_date)
        end as age_days, -- NEW FIELD
        sex,
-	   mini_j1__1_current, 		--- PTSD
-	   mini_k1__1_past_12_mo, 	--- Alcohol/Drug 
+	   mini_j1__1_current AS 'PTSD',
+	   mini_k1__1_past_12_mo AS 'AUD',
        mini_primary_dx,
        audit_score 
 from rcap_ctau_sample_info_joined_view
