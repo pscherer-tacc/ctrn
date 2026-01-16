@@ -296,6 +296,7 @@ select
     ,tesic_u.tc_8_1
     ,tesic_u.tc_8_1_less_than_1mo
     ,tesic_u.tc_8_3
+	,tesic_u.tc_8_3_less_than_1mo
 from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
 inner join subject_alias sa1
     on sa1.source_subject_id = tesic_u.source_subject_id
