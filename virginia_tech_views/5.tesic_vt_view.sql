@@ -294,9 +294,9 @@ select
     ,tesic_u.tc_7_crit_a1
     ,tesic_u.tc_7_crit_a2
     ,tesic_u.tc_7_how_often
-    ,tesic_u.tc_8_1
+ ---   ,tesic_u.tc_8_1
     ,tesic_u.tc_8_1_less_than_1mo
-    ,tesic_u.tc_8_3
+ ---   ,tesic_u.tc_8_3
 	,tesic_u.tc_8_3_less_than_1mo
 from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
 inner join subject_alias sa1
