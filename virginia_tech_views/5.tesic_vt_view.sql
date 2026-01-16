@@ -1,6 +1,7 @@
 ---- TESIC VT View
 --- Name of the view: view_vt_tesic (Important: it depends on the view_tesic_union helper view)
 -- 12/11/2025 Vlad moved the script for the view_tesic_union to the "general_views/"" directory
+--- Currently requires manual curation; needs future enhancement to remove incomplete duplicate records. There should be one record per event per participant.
 
 -- Query the data from the view
 select * from view_vt_tesic
@@ -10,7 +11,7 @@ where interview_date is not null;
 create or replace view view_vt_tesic
 as
 select
-    dem.dem_guid
+---    dem.dem_guid
     ,sa1.subject_id
 	,case
 		when tesic_u.event_name like 'baseline%' then to_char(sched_main.sched_base_complete_date, 'mm/dd/yyyy')
@@ -19,7 +20,7 @@ select
 		when tesic_u.event_name like 'one_year%' then to_char(sched_main.sched_1yr_complete_date, 'mm/dd/yyyy')
 		--when tesic_u.event_name like '18_month%' then to_char(sched_main.sched_18mo_complete_date, 'mm/dd/yyyy')
 		when tesic_u.event_name like '24_month%' then to_char(sched_main.sched_2yr_complete_date, 'mm/dd/yyyy')
-	end as interview_date
+	end as interview_date		--- Used for calculations and curation; remove before sharing
 	,case 
 		when tesic_u.event_name like 'baseline%' then nda_months_between(sched_main.sched_base_complete_date, dem.dem_ch_dob)
 		when tesic_u.event_name like 'one_month%' then nda_months_between(sched_main.sched_1mo_complete_date, dem.dem_ch_dob)
