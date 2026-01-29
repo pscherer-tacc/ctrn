@@ -265,6 +265,8 @@ select
     ,null as tcfu_8_3 
     ,tc_8_3_less_than_1mo as tc_8_3_less_than_1mo
     ,tc_8_4 as tc_8_4
+    ,tc_complete as tc_complete
+
 from rcap_tesic
 
 union all 
@@ -533,4 +535,5 @@ select
     ,tcfu_8_3 as tcfu_8_3
     ,null as tc_8_3_less_than_1mo
     ,null as tc_8_4
+    ,tcfu_complete as tc_complete
 from rcap_tesic_followup;

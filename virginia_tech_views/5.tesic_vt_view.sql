@@ -12,7 +12,16 @@ create or replace view view_vt_tesic
 as
 select
 ---    dem.dem_guid
-    ,sa1.subject_id
+    sa1.subject_id
+
+    ,case -- Attention! Experimental field for flagging duplicate records.
+        when tesic_u_duplicates.duplicate is null then 'No'
+        else tesic_u_duplicates.duplicate
+    end as potential_duplicate
+
+    -- Attention! Experimental field: completness_score !
+    ,tesic_u.tc_complete + pfhc.hc_complete as completeness_score
+
 	,case
 		when tesic_u.event_name like 'baseline%' then to_char(sched_main.sched_base_complete_date, 'mm/dd/yyyy')
 		when tesic_u.event_name like 'one_month%' then to_char(sched_main.sched_1mo_complete_date, 'mm/dd/yyyy')
@@ -310,5 +319,128 @@ left join rcap_demographics dem
     on dem.source_subject_id = tesic_u.source_subject_id
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = tesic_u.source_subject_id
-order by sa1.subject_id;
+
+left join -- Attention! Experimental join for flagging duplicate records.
+    (
+        select source_subject_id, event_name, 'Yes' as duplicate
+        from view_tesic_union
+        group by source_subject_id, event_name
+        having count(*) > 1
+    ) tesic_u_duplicates
+    on tesic_u_duplicates.source_subject_id = tesic_u.source_subject_id
+    and tesic_u_duplicates.event_name = tesic_u.event_name
+
+order by 
+    case
+        when tesic_u_duplicates.duplicate is null then 0
+        else 1
+    end
+    ,sa1.subject_id
+    ,case 
+        when tesic_u.event_name like 'baseline%' then 1
+        when tesic_u.event_name like 'six_month%' then 2
+        when tesic_u.event_name like 'one_year%' then 3
+        when tesic_u.event_name like '18_month%' then 4
+        when tesic_u.event_name like '24_month%' then 5
+    end
+    ,(tesic_u.tc_complete + pfhc.hc_complete) desc
+;
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------
+select
+    sa1.subject_id,
+    tesic_u.source_subject_id,
+    tesic_u.event_name,
+    tesic_u.tc_complete + pfhc.hc_complete as completeness_score,
+    case 
+        when tesic_u_duplicates.duplicate is null then 'No'
+        else tesic_u_duplicates.duplicate
+    end as potential_duplicate
+from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
+inner join subject_alias sa1
+    on sa1.source_subject_id = tesic_u.source_subject_id
+    and sa1.project_id = 696
+    and sa1.id_type = 'redcap'
+	and tesic_u.event_name not like 'unscheduled%'
+left join rcap_scheduling_form sched_main 
+    on sched_main.source_subject_id = tesic_u.source_subject_id 
+left join rcap_demographics dem
+    on dem.source_subject_id = tesic_u.source_subject_id
+left join rcap_pfh_child pfhc 
+    on pfhc.source_subject_id = tesic_u.source_subject_id
+
+left join -- Attention! Experimental join for flagging duplicate records.
+    (
+        select source_subject_id, event_name, 'Yes' as duplicate
+        from view_tesic_union
+        group by source_subject_id, event_name
+        having count(*) > 1
+    ) tesic_u_duplicates
+    on tesic_u_duplicates.source_subject_id = tesic_u.source_subject_id
+    and tesic_u_duplicates.event_name = tesic_u.event_name
+
+order by 
+    case
+        when tesic_u_duplicates.duplicate is null then 0
+        else 1
+    end
+    ,sa1.subject_id
+    ,case 
+        when tesic_u.event_name like 'baseline%' then 1
+        when tesic_u.event_name like 'six_month%' then 2
+        when tesic_u.event_name like 'one_year%' then 3
+        when tesic_u.event_name like '18_month%' then 4
+        when tesic_u.event_name like '24_month%' then 5
+    end
+    ,(tesic_u.tc_complete + pfhc.hc_complete) desc
+;
+
+
+
+--------
+
+from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
+inner join subject_alias sa1
+    on sa1.source_subject_id = tesic_u.source_subject_id
+    and sa1.project_id = 696
+    and sa1.id_type = 'redcap'
+	and tesic_u.event_name not like 'unscheduled%'
+left join rcap_scheduling_form sched_main 
+    on sched_main.source_subject_id = tesic_u.source_subject_id 
+left join rcap_demographics dem
+    on dem.source_subject_id = tesic_u.source_subject_id
+left join rcap_pfh_child pfhc 
+    on pfhc.source_subject_id = tesic_u.source_subject_id
+
+left join 
+    (
+        select source_subject_id, event_name, 'Yes' as duplicate
+        from view_tesic_union
+        group by source_subject_id, event_name
+        having count(*) > 1
+    ) tesic_u_duplicates
+    on tesic_u_duplicates.source_subject_id = tesic_u.source_subject_id
+    and tesic_u_duplicates.event_name = tesic_u.event_name
+
+where sa1.subject_id = 23 --1343
+
+order by sa1.subject_id, (tesic_u.tc_complete + pfhc.hc_complete) desc,
+    case 
+        when tesic_u.event_name like 'baseline%' then 1
+        when tesic_u.event_name like 'six_month%' then 2
+        when tesic_u.event_name like 'one_year%' then 3
+        when tesic_u.event_name like '18_month%' then 4
+        when tesic_u.event_name like '24_month' then 5
+    end
+limit 100;
 
