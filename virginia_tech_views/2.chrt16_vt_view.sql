@@ -18,7 +18,7 @@ select
 		when chrt.event_name like 'one_month%' then to_char(sched_main.sched_1mo_complete_date, 'mm/dd/yyyy')
 		when chrt.event_name like 'six_month%' then to_char(sched_main.sched_6mo_complete_date, 'mm/dd/yyyy')
 		when chrt.event_name like 'one_year%' then to_char(sched_main.sched_1yr_complete_date, 'mm/dd/yyyy')
-		--when chrt.event_name like '18_month%' then to_char(sched_main.sched_18mo_complete_date, 'mm/dd/yyyy')
+		when chrt.event_name like '18_month%' then to_char(sched_main.sched_18mo_complete_date, 'mm/dd/yyyy')
 		when chrt.event_name like '24_month%' then to_char(sched_main.sched_2yr_complete_date, 'mm/dd/yyyy')
 	end as interview_date
 	,case 
@@ -26,7 +26,7 @@ select
 		when chrt.event_name like 'one_month%' then nda_months_between(sched_main.sched_1mo_complete_date, dem.dem_ch_dob)
 		when chrt.event_name like 'six_month%' then nda_months_between(sched_main.sched_6mo_complete_date, dem.dem_ch_dob)
 		when chrt.event_name like 'one_year%' then nda_months_between(sched_main.sched_1yr_complete_date, dem.dem_ch_dob)
-		--when chrt.event_name like '18_month%' then nda_months_between(sched_main.sched_18mo_complete_date, dem.dem_ch_dob)
+		when chrt.event_name like '18_month%' then nda_months_between(sched_main.sched_18mo_complete_date, dem.dem_ch_dob)
 		when chrt.event_name like '24_month%' then nda_months_between(sched_main.sched_2yr_complete_date, dem.dem_ch_dob)
 	end as interview_age
 	,case
@@ -34,7 +34,7 @@ select
 		when chrt.event_name like 'one_month%' then sched_main.sched_1mo_complete
 		when chrt.event_name like 'six_month%' then sched_main.sched_6mo_complete
 		when chrt.event_name like 'one_year%' then sched_main.sched_1yr_complete
-		--when chrt.event_name like '18_month%' then sched_main.sched_18mo_complete
+		when chrt.event_name like '18_month%' then sched_main.sched_18mo_complete
 		when chrt.event_name like '24_month%' then sched_main.sched_2yr_complete
 	end as complete -- only for validation; DELETE before submission
     ,case 
