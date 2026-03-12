@@ -256,37 +256,7 @@ left join rcap_demographics dem
     on dem.source_subject_id = tesip.source_subject_id
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = tesip.source_subject_id
+    and pfhc.event_name like 'baseline%'
 left join rcap_pfh_parent pfhp -- ??? Doublecheck the fields on which the tables are joined
     on pfhp.source_subject_id = tesip.source_subject_id 
 order by sa1.subject_id;
-
-
-
-
-
-
-
---------------------------------------- For Checks
-select
-    ( tp_1_4b_death_reason__0_natural::int 
-        + tp_1_4b_death_reason__1_illness::int 
-        + tp_1_4b_death_reason__2_accident::int 
-        + tp_1_4b_death_reason__3_violence::int 
-        + tp_1_4b_death_reason__4_unknown::int )
-    ,tp_1_4b_death_reason__0_natural
-    ,tp_1_4b_death_reason__1_illness
-    ,tp_1_4b_death_reason__2_accident
-    ,tp_1_4b_death_reason__3_violence
-    ,tp_1_4b_death_reason__4_unknown
-from rcap_tesip
-where 
-    ( tp_1_4b_death_reason__0_natural::int
-        + tp_1_4b_death_reason__1_illness::int 
-        + tp_1_4b_death_reason__2_accident::int 
-        + tp_1_4b_death_reason__3_violence::int 
-        + tp_1_4b_death_reason__4_unknown::int ) >= 2;
-
-
-update rcap_field_variable_map
-set dw_variable_name='tp_1_2_stem'
-where export_field_name in ('tesip_1_2_stem', 'tesip_1_2_stem_sp');

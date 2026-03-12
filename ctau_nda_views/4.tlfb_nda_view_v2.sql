@@ -67,5 +67,6 @@ left join subject_alias sa3
     and sa3.id_type = 'redcap'
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = sa3.source_subject_id
+	and pfhc.event_name like 'baseline%'
 order by sa2.subject_id;
 

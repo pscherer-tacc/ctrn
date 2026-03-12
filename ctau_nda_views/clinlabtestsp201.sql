@@ -88,4 +88,5 @@ left join rcap_ctau_dem ctau_dem
     on ctau_dem.source_subject_id = sched.source_subject_id
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = sched.sched_ctrn_id
+	and pfhc.event_name like 'baseline%'
 order by sa2.subject_id;

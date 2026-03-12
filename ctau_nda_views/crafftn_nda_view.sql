@@ -65,5 +65,6 @@ left join rcap_demographics as dem
     on dem.source_subject_id = crafftn.source_subject_id
 left join rcap_pfh_child as pfhc 
     on pfhc.source_subject_id = crafftn.source_subject_id
-
+	and pfhc.event_name like 'baseline%'
+	
 order by sa1.subject_id; -- should run, but syntax error appeared on scared_child view -- if case then can comment out this line

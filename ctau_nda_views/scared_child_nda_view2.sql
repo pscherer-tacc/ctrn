@@ -111,6 +111,7 @@ LEFT JOIN rcap_demographics AS dem
 	ON dem.source_subject_id = scared_child.source_subject_id
 LEFT JOIN rcap_pfh_child AS pfhc
 	ON pfhc.source_subject_id = scared_child.source_subject_id
+	AND pfhc.event_name like 'baseline%'
 LEFT JOIN rcap_pfh_parent AS pfhp
     on pfhp.source_subject_id = scared_child.source_subject_id
 LEFT JOIN rcap_baseline_report AS base
