@@ -70,7 +70,7 @@ select
 		when mini.mini_b18='2' then '1'
 		when mini.mini_b18='3' then '2'
 		else null
-	end	as minimodb_b18b,      	 
+	end as minimodb_b18b,      	 
     mini.mini_b1a as mini_kidsumsuic_curr_sev,	
 	case
 		when mini_b3__2_early_remission='1' then '2'
