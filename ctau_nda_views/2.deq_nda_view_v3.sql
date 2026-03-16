@@ -39,7 +39,7 @@ select
 		when deq.event_name like '18_month%' then '18_month'
 		when deq.event_name like '24_month%' then '24_month'
 	end as timepoint_label
-	,to_char(deq.deq_alc_use_dt,'mm/dd/yyyy') as deq_alc_use_dt
+---	,to_char(deq.deq_alc_use_dt,'mm/dd/yyyy') as deq_alc_use_dt -- Replace these dates with a calculation of "days prior to visit" 
 	,deq.deq_alc_last_amt
 	,deq.deq_alc_dur
 	,deq.deq_alc_mem_diff
@@ -49,7 +49,7 @@ select
 	,deq.deq_alc_effects_2
 	,deq.deq_alc_effects_3
 	,deq.deq_alc_effects_4
-	,to_char(deq.deq_drug_use_dt,'mm/dd/yyyy') as deq_drug_use_dt
+---	,to_char(deq.deq_drug_use_dt,'mm/dd/yyyy') as deq_drug_use_dt  -- Replace these dates with a calculation of "days prior to visit"
 	,deq.deq_drug_mdma
 	,deq.deq_drug_heroin
 	,deq.deq_drug_cocaine
