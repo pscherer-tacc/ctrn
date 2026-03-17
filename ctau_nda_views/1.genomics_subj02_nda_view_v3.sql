@@ -131,7 +131,7 @@ select
         when pfhc.hc_race='4' then 'Black or African American'
         when pfhc.hc_race='5' then 'White'
         when pfhc.hc_race='6' then 'More than one race'
-        when pfhc.hc_race in (null,'0') then 'Unknown or not reported'
+        when pfhc.hc_race in (null,'0') then 'Unknown or not reported' -- test NULL value; this string did not get inserted. 
     end as race
     ,case
         when pfhc.hc_hispanic = '0' then 'Not Hispanic'
