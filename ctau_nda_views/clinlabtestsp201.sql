@@ -38,7 +38,7 @@ select
 		when si.event_name like 'one_year%' then 'one_year'
 		when si.event_name like '24_month%' then '24_month'
 	end as visit
-	,cyto.analysis_ts as assay_date
+	-- ,cyto.analysis_ts as assay_date --not required for NDA
 	,cyto.si_tube_id as sample_id_original   -- samples sent to Dr. Beurel's Lab where si_tube_id = aud_ptsd_????_3_1
 	,cyto.basic_fgf
 	,cyto.eotaxin
