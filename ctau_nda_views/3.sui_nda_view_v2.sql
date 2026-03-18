@@ -39,11 +39,11 @@ select
 		when sui.event_name like '18_month%' then '18_month'
 		when sui.event_name like '24_month%' then '24_month'
 	end as timepoint_label
-	,sui.sui_1 as asip30_alc
+	,sui.sui_1 as asip30_alc			-- needs to be constrained to integer 0::30
 	,sui.sui_2 as drink5_singleday_30d
 	,sui.sui_3 as tlfb_alc3				-- floats need to be rounded up to integer
 	,sui.sui_4 as subu5b_drink_daily	-- floats need to be rounded up to integer
-	,sui.sui_5 as c_nsduh1
+	,sui.sui_5 as c_nsduh1				-- unstructured text must be converted to integer 0::30; 888(don't know), or 999 (refused) 
 ---	,sui.sui_6 as sub_use_most_30d      omit this unstructructured text until we have a good way to curate and group
 	,sui.sui_7 as max_dollar_sub_use_most_30d
 	,sui.sui_8 as avg_dollar_sub_use_most_30d
