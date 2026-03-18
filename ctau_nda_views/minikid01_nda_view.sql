@@ -133,9 +133,9 @@ select
 	mini_v1__1_current as mini_v1_current,
 	mini_w1 as mini_kidsum_medrulout,
 	case
-	    when mini_x1__1_not_ruled_out='1' then '1'
-		when mini_x1__1_not_ruled_out='0' then '0'
-		when mini_x1__1_not_ruled_out='99' then '0'
+	    when mini_x1__1_not_ruled_out='1' then '1'  -- yes
+		when mini_x1__1_not_ruled_out='0' then '2'	-- no
+		when mini_x1__1_not_ruled_out='99' then '3'	-- uncertain
 		else null
 	end as mini_x1_not_ruled_out,
 	mini_primary_dx
