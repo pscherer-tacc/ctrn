@@ -34,7 +34,7 @@ SELECT dem.dem_guid AS subjectkey,
 		ELSE NULL
 	end AS sex,
 	-- simplified since all records are already filtered to be '2'. Refer to WHERE clause
-	'scared child complete' AS scared_version,
+	'Child' AS scared_version,
 	CASE
         WHEN pfhp.hp_parent1_relationship='0' OR pfhp.hp_parent1_relationship IS NULL THEN -999
         WHEN pfhp.hp_parent1_relationship='1' THEN 89 -- Biological parent
