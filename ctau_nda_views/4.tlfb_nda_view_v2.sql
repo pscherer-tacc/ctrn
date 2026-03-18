@@ -38,15 +38,15 @@ select
 		when tlfb.event_name like 'one_year%' then 'one_year'
 		when tlfb.event_name like '24_month%' then '24_month'
 	end as visit
-	,tlfb.tlfb_drink_mo as number_alcholoic_drinks_a
-	,tlfb.tlfb_drink_days as last_month_frequency
-	,tlfb.tlfb_drink_per_day as subu5b_drink_daily
-	,tlfb.tlfb_hv_ep_dr_days as tlfb_hv_ep_dr_days 
-	,tlfb.tlfb_24_max as tlfb_alc3 
-	,tlfb.tlfb_cig_mo as cddr_3_v2
-	,tlfb.tlfb_smoke_days as cddr_3 
-	,tlfb.tlfb_cig_per_day as daily_cigarette_tlfb
-	,tlfb.tlfb_thc_days as dfaq7
+	,tlfb.tlfb_drink_mo as number_alcholoic_drinks_a    -- Add code to round value up to an integer
+	,tlfb.tlfb_drink_days as last_month_frequency		-- Add code to round value up to an integer between 0 and 31
+	,tlfb.tlfb_drink_per_day as subu5b_drink_daily		-- Add code to round value up to an integer
+	,tlfb.tlfb_hv_ep_dr_days as tlfb_hv_ep_dr_days 		-- Add code to round value up to an integer between 0 and 31
+	,tlfb.tlfb_24_max as tlfb_alc3 						-- Add code to round value up to an integer
+	,tlfb.tlfb_cig_mo as cddr_3_v2						-- Add code to round value up to an integer
+	,tlfb.tlfb_smoke_days as cddr_3 					-- Add code to round value up to an integer between 0 and 31
+	,tlfb.tlfb_cig_per_day as daily_cigarette_tlfb		-- Add code to round value up to an integer
+	,tlfb.tlfb_thc_days as dfaq7						-- Add code to round value up to an integer between 0 and 31
 from rcap_ctau_tlfb tlfb
 inner join subject_alias sa1
     on sa1.source_subject_id = tlfb.source_subject_id
