@@ -267,6 +267,21 @@ select
     ,tc_8_4 as tc_8_4
     ,tc_complete as tc_complete
 
+    -- below are "crit_a1" fields added on March 22nd, 2026
+    ,tc_2_3_crit_a1 as tc_2_3_crit_a1
+    ,tc_2_4_crit_a1 as tc_2_4_crit_a1
+    ,tc_2_5_crit_a1 as tc_2_5_crit_a1
+    
+    ,tc_3_1_crit_a1 as tc_3_1_crit_a1
+    ,tc_3_2_crit_a1 as tc_3_2_crit_a1
+    ,tc_3_3_crit_a1 as tc_3_3_crit_a1
+
+    ,tc_4_1_crit_a1 as tc_4_1_crit_a1
+    ,tc_4_2_crit_a1 as tc_4_2_crit_a1
+    ,tc_4_3_crit_a1 as tc_4_3_crit_a1
+
+    ,tc_5_crit_a1 as tc_5_crit_a1
+
 from rcap_tesic
 
 union all 
@@ -536,4 +551,19 @@ select
     ,null as tc_8_3_less_than_1mo
     ,null as tc_8_4
     ,tcfu_complete as tc_complete
+
+    -- below are "crit_a1" fields added on March 22nd, 2026
+    ,tcfu_2_3_crit_a1 as tc_2_3_crit_a1
+    ,tcfu_2_4_crit_a1 as tc_2_4_crit_a1
+    ,tcfu_2_5_crit_a1 as tc_2_5_crit_a1
+    
+    ,tcfu_3_1_crit_a1 as tc_3_1_crit_a1
+    ,tcfu_3_2_crit_a1 as tc_3_2_crit_a1
+    ,tcfu_3_3_crit_a1 as tc_3_3_crit_a1
+
+    ,tcfu_4_1_crit_a1 as tc_4_1_crit_a1
+    ,tcfu_4_2_crit_a1 as tc_4_2_crit_a1
+    ,tcfu_4_3_crit_a1 as tc_4_3_crit_a1
+
+    ,tcfu_5_crit_a1 as tc_5_crit_a1
 from rcap_tesic_followup;
