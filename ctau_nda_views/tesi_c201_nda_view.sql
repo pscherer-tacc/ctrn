@@ -303,6 +303,9 @@ select
  ---   ,tesic_u.tc_8_3
 	,tesic_u.tc_8_3_less_than_1mo
 from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
+inner join rcap_ctau_scheduling_form sched -- to keep CTAU participants only
+	on sched.sched_ctrn_id = tesic_u.source_subject_id
+	and sched.event_name like 'baseline%'
 inner join subject_alias sa1
     on sa1.source_subject_id = tesic_u.source_subject_id
     and sa1.project_id = 696  	-- Is this correct or do we need to use the CTAU project_id here to select CTAU participant records only?
