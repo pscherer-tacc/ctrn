@@ -23,6 +23,14 @@ select
 	--	when tesic_u.event_name like '18_month%' then nda_months_between(sched_main.sched_18mo_complete_date, dem.dem_ch_dob)
 		when tesic_u.event_name like '24_month%' then nda_months_between(sched_main.sched_2yr_complete_date, dem.dem_ch_dob)
 	end as interview_age
+	,case
+		when tesic_u.event_name like 'baseline%' then sched_main.sched_base_complete
+		when tesic_u.event_name like 'one_month%' then sched_main.sched_1mo_complete
+		when tesic_u.event_name like 'six_month%' then sched_main.sched_6mo_complete
+		when tesic_u.event_name like 'one_year%' then sched_main.sched_1yr_complete
+		--when tesic_u.event_name like '18_month%' then sched.sched_18mo_complete
+		when tesic_u.event_name like '24_month%' then sched_main.sched_2yr_complete
+	end as complete -- only for validation; DELETE before submission
     ,case 
         when pfhc.hc_sex_birth_cert='1' then 'F'
         when pfhc.hc_sex_birth_cert='2' then 'M'
@@ -242,7 +250,7 @@ select
 	,tesic_u.tc_4_3_crit_a1
     ,tesic_u.tc_4_3_crit_a2
     ,tesic_u.tc_4_3_how_often
-    ,tesic_u.tc_5
+    ,tesic_u.tc_5 as tc_5_exp
     ,tesic_u.tcfu_5
 	,tesic_u.tc_5_crit_a1
     ,tesic_u.tc_5_crit_a2
