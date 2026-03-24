@@ -1,0 +1,146 @@
+--- Construct a view to generate output from the DW for Dr. Champagne’s Lab as per the following rqmts:
+--- 	Pull baseline data for samples sent to Champagne's lab only (si.si_tube_id ilike '%_1_1'):
+---			DOB
+---			Date of blood collection
+---			Calculated age (in days) at date of blood collection
+---			tube_id
+---			Sex
+---			Smoking status
+---			Maternal education (cfhx_parent[1 or 2]_educ AND cfhx_parent[1 or 2]_sex=“female”
+---			# traumas → sum(each trauma category X how_often)
+---			Worst trauma exposure
+---			Age at first trauma exposure
+---			Primary diagnosis
+---			AUDIT score
+---
+--- 	Remove any duplicates, pii/phi, and fields not specifically required by the lab
+---
+--- March 2026 request to expand the above with:
+---		- Race and hispanic from pfhc
+--- 	- Time since worst and most recent trauma (tc_8_1_less_than_1mo; tc_8_3_less_than_1mo,…
+--- 	- Substance use in the family (pfhp_alc_abuse, pfhp_thc_abuse, pfhp_drug_abuse,  baseline) – from the pfh_parent
+---     - and (pfha_alc_abuse_18, pfha_thc_abuse_18, pfhp_drug_abuse_18,  baseline) – from the pfh_adult_child instruments
+--- 	- Follow-up treatment (Interval_tx, Interval_fam_tx, Interval_psych_hosp, and Interval_psych_meds) - from child_assistance_and_treatment
+
+select si_tube_id,
+       source_subject_id,
+       event_name,
+       sched_ctrn_id,
+       subject_id,
+       project_id,
+       id_type,
+       sched_base_complete_date,
+       dem_ch_dob,
+       age_days_between(dem_ch_dob::date, sched_base_complete_date) as age_days,
+       sex,
+	   race,			-- Add to rcap_ctau_sample_info_joined_view
+	   hispanic,		-- Add to rcap_ctau_sample_info_joined_view
+       hp_parent1_relationship,   -- Need to add the pfh_adult_child records to the existing pfhp records
+       hp_parent1_sex,            -- Need to add the pfh_adult_child records to the existing pfhp records
+       hp_parent1_educ,           -- Need to add the pfh_adult_child records to the existing pfhp records
+       --hp_parent2_relationship,
+       hp_parent2_gender,         -- Need to add the pfh_adult_child records to the existing pfhp records
+       hp_parent2_educ,           -- Need to add the pfh_adult_child records to the existing pfhp records
+	   pfhp_alc_abuse, 	          -- New; family alcohol abuse from a union of pfhp with pfh_adult_child
+	   pfhp_thc_abuse,	          -- New; family thc abuse from a union of pfhp with pfh_adult_child
+	   pfhp_drug_abuse,	          -- New; family drug abuse from a union of pfhp with pfh_adult_child
+       tlfb_smoke_days,
+       tc_1_1,
+       tc_1_1_how_often,
+       tp_1_1_age_first,
+       -- tc_1_1_worst, Worst selections aggregate into tc_8_1
+       tc_1_2,
+       tc_1_2_how_often,
+       tp_1_2_age_first,
+       -- tc_1_2_worst,
+       tc_1_3,
+       tc_1_3_how_often,
+       tp_1_3_age_first,
+       -- tc_1_3_worst,
+       tc_1_4,
+       tc_1_4_how_often,
+       tp_1_4a_age_first,
+       tp_1_4b_age_first,
+       -- tc_1_4_worst,
+       tc_1_5,
+       tc_1_5_how_often,
+       tp_1_5_age_first,
+       -- tc_1_5_worst,
+       tc_1_6,
+       tc_1_6_how_often,
+       tp_1_6_age_first,
+       -- tc_1_6_worst,
+       tc_2_1,
+       tc_2_1_how_often,
+       tp_2_1_age_first,
+       -- tc_2_1_worst,
+       tc_2_2,
+       tc_2_2_how_often,
+       tp_2_2_age_first,
+       -- tc_2_2_worst,
+       tc_2_3,
+       tc_2_3_how_often,
+       tp_2_3_age_first,
+       -- tc_2_3_worst,
+       tc_2_4,
+       tc_2_4_how_often,
+       tp_2_4_age_first,
+       -- tc_2_4_worst,
+       tc_2_5,
+       tc_2_5_how_often,
+       tp_2_5_age_first,
+       -- tc_2_5_worst,
+       tc_3_1,
+       tc_3_1_how_often,
+       tp_3_1_age_first,
+       -- tc_3_1_worst,
+       tc_3_2,
+       tc_3_2_how_often,
+       tp_3_2_age_first,
+       -- tc_3_2_worst,
+       tc_3_3,
+       tc_3_3_how_often,
+       tp_3_3_age_first,
+       -- tc_3_3_worst,
+       tc_4_1,
+       tc_4_1_how_often,
+       tp_4_1_age_first,
+       -- tc_4_1_worst,
+       tc_4_2,
+       tc_4_2_how_often,
+       tp_4_2_age_first,
+       tc_4_2_worst,
+       tc_4_3,
+       tc_4_3_how_often,
+       tp_4_3_age_first,
+       -- tc_4_3_worst,
+       tc_5,
+       tc_5_how_often,
+       tp_5_1_age_first,
+       tp_5_2_age_first,
+       -- tc_5_worst,
+       tc_6_1,
+       tp_6_1_age_first,
+       tc_6_2,
+       tc_6_2_how_often,
+       tp_6_2_age_first,
+       tc_7,
+       tc_7_how_often,
+       tp_7_1_age_first,
+       -- tc_7_worst,
+       tc_8_1 AS worst,
+       age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
+	   age_days_between(tc_8_2::date, tc_interview_date::date) AS worst_days_b4visit,
+       tc_8_3 AS most_recent,
+       tc_8_3_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
+       age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs, -- Remove dates before sharing publicly
+       age_days_between(tc_8_4::date, tc_interview_date::date) AS recent_days_b4visit,
+	   interval_tx,
+	   ctx_iftx,		-- New; need to add rcap_child_assistance to rcap_ctau_sample_info_joined_view
+	   ctx_ipsy_hosp,	-- New; from rcap_child_assistance
+	   ctx_ipsy_meds, 	-- New; from rcap_child_assistance
+	   mini_primary_dx,
+       audit_score
+from rcap_ctau_sample_info_joined_view
+where si_tube_id ilike '%_1_1'
+and (tc_administrator is not null OR tc_interview_date is not null);
