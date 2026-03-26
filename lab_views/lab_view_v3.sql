@@ -16,6 +16,7 @@
 --- 	Remove any duplicates, pii/phi, and fields not specifically required by the lab
 ---
 --- March 2026 request to expand the above with:
+
 --- DONE	       - Race and hispanic from pfhc
 --- DONE	       - Time since worst and most recent trauma (tc_8_1_less_than_1mo; tc_8_3_less_than_1mo,…
 --- DONE(partially)	- Substance use in the family (pfhp_alc_abuse, pfhp_thc_abuse, pfhp_drug_abuse,  baseline) – from the pfh_parent
@@ -40,6 +41,7 @@ select si_tube_id,
        parent1_sex,
        parent1_educ,
        --hp_parent2_relationship,
+
        parent2_gender,
        parent2_educ,
 
