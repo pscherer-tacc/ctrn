@@ -18,8 +18,8 @@
 --- March 2026 request to expand the above with:
 ---		- Race and hispanic from pfhc
 --- 	- Time since worst and most recent trauma (tc_8_1_less_than_1mo; tc_8_3_less_than_1mo,…
---- 	- Substance use in the family (pfhp_alc_abuse, pfhp_thc_abuse, pfhp_drug_abuse,  baseline) – from the pfh_parent
----     - and (pfha_alc_abuse_18, pfha_thc_abuse_18, pfhp_drug_abuse_18,  baseline) – from the pfh_adult_child instruments
+--- 	- Substance use in the family (hp_alc_abuse*, hp_thc_abuse*, hp_drug_abuse*) – from the rcap_pfh_parent
+---     - and (hc18_alc_abuse*, hc18_thc_abuse*, hc18_drug_abuse*) – from the rcap_pfh_adult_child instruments
 --- 	- Follow-up treatment (Interval_tx, Interval_fam_tx, Interval_psych_hosp, and Interval_psych_meds) - from child_assistance_and_treatment
 
 select si_tube_id,
@@ -41,9 +41,9 @@ select si_tube_id,
        --hp_parent2_relationship,
        hp_parent2_gender,         -- Need to add the pfh_adult_child records to the existing pfhp records
        hp_parent2_educ,           -- Need to add the pfh_adult_child records to the existing pfhp records
-	   pfhp_alc_abuse, 	          -- New; family alcohol abuse from a union of pfhp with pfh_adult_child
-	   pfhp_thc_abuse,	          -- New; family thc abuse from a union of pfhp with pfh_adult_child
-	   pfhp_drug_abuse,	          -- New; family drug abuse from a union of pfhp with pfh_adult_child
+	   -- hp_alc_abuse, 	      -- New; family alcohol abuse; aggregated from a union of rcap_pfh_parent with rcap_pfh_adult_child
+	   -- hp_thc_abuse,	          -- New; family thc abuse; aggregated from a union of rcap_pfh_parent with rcap_pfh_adult_child
+	   -- hp_drug_abuse,	      -- New; family drug abuse; aggregated from a union of rcap_pfh_parent with rcap_pfh_adult_child
        tlfb_smoke_days,
        tc_1_1,
        tc_1_1_how_often,
