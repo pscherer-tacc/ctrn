@@ -17,11 +17,37 @@ SELECT si.si_tube_id,
         WHEN pfhc.hc_sex_birth_cert::text = '2'::text THEN 'M'::text
         ELSE NULL::text
     END AS sex,
-    pfhp.hp_parent1_relationship,
-    pfhp.hp_parent1_sex,
-    pfhp.hp_parent1_educ,
-    pfhp.hp_parent2_gender,
-    pfhp.hp_parent2_educ,
+    
+    pfhc.hc_race,
+    pfhc.hc_hispanic,
+
+    pfh_u.instrument as pfh_instrument,
+
+    pfh_u.parent1_relationship,
+    pfh_u.parent1_sex,
+    pfh_u.parent1_educ,
+    pfh_u.parent2_gender,
+    pfh_u.parent2_educ,
+
+    pfh_u.alc_abuse__0_child,
+    pfh_u.alc_abuse__1_you,
+    pfh_u.alc_abuse__2_othpar,
+    pfh_u.alc_abuse__3_brother,
+    pfh_u.alc_abuse__4_sister,
+
+    pfh_u.thc_abuse__0_child,
+    pfh_u.thc_abuse__1_you,
+    pfh_u.thc_abuse__2_othpar,
+    pfh_u.thc_abuse__3_brother,
+    pfh_u.thc_abuse__4_sister,
+
+    pfh_u.drug_abuse__0_child,
+    pfh_u.drug_abuse__1_you,
+    pfh_u.drug_abuse__2_othpar,
+    pfh_u.drug_abuse__3_brother,
+    pfh_u.drug_abuse__4_sister,
+
+
     tc.tc_1_1,
     tc.tcfu_1_1,
     tc.tc_1_1_how_often,
@@ -127,6 +153,7 @@ SELECT si.si_tube_id,
     tp.tp_7_1_age_first,
     --tc.tc_7_worst,
     tc.tc_8_1,
+    tc.tc_8_1_less_than_1mo,
     tc.tc_8_2,
     tc.tc_8_3,
     tc.tcfu_8_3,
@@ -198,7 +225,12 @@ SELECT si.si_tube_id,
 	deq.deq_drugs_hungover,
 	deq.deq_drugs_effects,
 	deq.deq_drugs_effects_2,
-	deq.deq_drugs_effects_3
+	deq.deq_drugs_effects_3,
+
+    chas.ctx_itx,
+    chas.ctx_iftx,
+    chas.ctx_ipsy_hosp,
+    chas.ctx_ipsy_meds
 FROM rcap_ctau_sample_info si
 LEFT JOIN ctau_scheduling_form_view sched -- Attention! The view (not the table) is utilized
     ON sched.source_subject_id = si.source_subject_id
@@ -209,8 +241,11 @@ LEFT JOIN rcap_ctau_dem dem
     ON dem.source_subject_id = si.source_subject_id
 LEFT JOIN rcap_pfh_child pfhc 
     ON pfhc.source_subject_id = sched.sched_ctrn_id
-LEFT JOIN rcap_pfh_parent pfhp 
-    ON pfhp.source_subject_id = sched.sched_ctrn_id
+    AND pfhc.event_name like 'baseline%'
+-- LEFT JOIN rcap_pfh_parent pfhp 
+--     ON pfhp.source_subject_id = sched.sched_ctrn_id
+LEFT JOIN view_pfh_adult_child_parent_union pfh_u -- Attention! The view (not the table) is utilized
+    ON pfh_u.source_subject_id = sched.sched_ctrn_id
 LEFT JOIN rcap_ctau_tlfb tlfb
     ON tlfb.source_subject_id = si.source_subject_id
     AND tlfb.event_name = si.event_name
@@ -231,8 +266,10 @@ LEFT JOIN rcap_ctau_deq deq
 LEFT JOIN rcap_ctau_sui sui
     ON sui.source_subject_id = si.source_subject_id
     AND sui.event_name = si.event_name
+LEFT JOIN rcap_child_assistance chas
+    ON chas.source_subject_id = sched.sched_ctrn_id
+    AND chas.event_name = si.event_name
 ;
-
 
 
 ------ BASELINE ONLY

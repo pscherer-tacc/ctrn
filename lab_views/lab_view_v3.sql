@@ -16,11 +16,11 @@
 --- 	Remove any duplicates, pii/phi, and fields not specifically required by the lab
 ---
 --- March 2026 request to expand the above with:
----		- Race and hispanic from pfhc
---- 	- Time since worst and most recent trauma (tc_8_1_less_than_1mo; tc_8_3_less_than_1mo,…
---- 	- Substance use in the family (pfhp_alc_abuse, pfhp_thc_abuse, pfhp_drug_abuse,  baseline) – from the pfh_parent
----     - and (pfha_alc_abuse_18, pfha_thc_abuse_18, pfhp_drug_abuse_18,  baseline) – from the pfh_adult_child instruments
---- 	- Follow-up treatment (Interval_tx, Interval_fam_tx, Interval_psych_hosp, and Interval_psych_meds) - from child_assistance_and_treatment
+--- DONE	       - Race and hispanic from pfhc
+--- DONE	       - Time since worst and most recent trauma (tc_8_1_less_than_1mo; tc_8_3_less_than_1mo,…
+--- DONE(partially)	- Substance use in the family (pfhp_alc_abuse, pfhp_thc_abuse, pfhp_drug_abuse,  baseline) – from the pfh_parent
+--- DONE(partially)  - and (pfha_alc_abuse_18, pfha_thc_abuse_18, pfhp_drug_abuse_18,  baseline) – from the pfh_adult_child instruments
+--- DONE 	       - Follow-up treatment (Interval_tx, Interval_fam_tx, Interval_psych_hosp, and Interval_psych_meds) - from child_assistance_and_treatment
 
 select si_tube_id,
        source_subject_id,
@@ -33,17 +33,37 @@ select si_tube_id,
        dem_ch_dob,
        age_days_between(dem_ch_dob::date, sched_base_complete_date) as age_days,
        sex,
-	   race,			-- Add to rcap_ctau_sample_info_joined_view
-	   hispanic,		-- Add to rcap_ctau_sample_info_joined_view
-       hp_parent1_relationship,   -- Need to add the pfh_adult_child records to the existing pfhp records
-       hp_parent1_sex,            -- Need to add the pfh_adult_child records to the existing pfhp records
-       hp_parent1_educ,           -- Need to add the pfh_adult_child records to the existing pfhp records
+	hc_race as race,
+	hc_hispanic as hispanic,
+       pfh_instrument,
+       parent1_relationship,
+       parent1_sex,
+       parent1_educ,
        --hp_parent2_relationship,
-       hp_parent2_gender,         -- Need to add the pfh_adult_child records to the existing pfhp records
-       hp_parent2_educ,           -- Need to add the pfh_adult_child records to the existing pfhp records
-	   pfhp_alc_abuse, 	          -- New; family alcohol abuse from a union of pfhp with pfh_adult_child
-	   pfhp_thc_abuse,	          -- New; family thc abuse from a union of pfhp with pfh_adult_child
-	   pfhp_drug_abuse,	          -- New; family drug abuse from a union of pfhp with pfh_adult_child
+       parent2_gender,
+       parent2_educ,
+
+       -- alc_abuse fields; experiment with an aggregate form.
+       alc_abuse__0_child,
+       alc_abuse__1_you,
+       alc_abuse__2_othpar,
+       alc_abuse__3_brother,
+       alc_abuse__4_sister,
+
+       -- thc_abuse fields; experiment with an aggregate form.
+       thc_abuse__0_child,
+       thc_abuse__1_you,
+       thc_abuse__2_othpar,
+       thc_abuse__3_brother,
+       thc_abuse__4_sister,
+
+       -- drug_abuse fields; experiment with an aggregate form.
+       drug_abuse__0_child,
+       drug_abuse__1_you,
+       drug_abuse__2_othpar,
+       drug_abuse__3_brother,
+       drug_abuse__4_sister,
+       
        tlfb_smoke_days,
        tc_1_1,
        tc_1_1_how_often,
@@ -109,7 +129,7 @@ select si_tube_id,
        tc_4_2,
        tc_4_2_how_often,
        tp_4_2_age_first,
-       tc_4_2_worst,
+       -- tc_4_2_worst,
        tc_4_3,
        tc_4_3_how_often,
        tp_4_3_age_first,
@@ -129,17 +149,18 @@ select si_tube_id,
        tp_7_1_age_first,
        -- tc_7_worst,
        tc_8_1 AS worst,
+       tc_8_1_less_than_1mo,
        age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
 	   age_days_between(tc_8_2::date, tc_interview_date::date) AS worst_days_b4visit,
        tc_8_3 AS most_recent,
        tc_8_3_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
        age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs, -- Remove dates before sharing publicly
        age_days_between(tc_8_4::date, tc_interview_date::date) AS recent_days_b4visit,
-	   interval_tx,
-	   ctx_iftx,		-- New; need to add rcap_child_assistance to rcap_ctau_sample_info_joined_view
-	   ctx_ipsy_hosp,	-- New; from rcap_child_assistance
-	   ctx_ipsy_meds, 	-- New; from rcap_child_assistance
-	   mini_primary_dx,
+	ctx_itx,
+	ctx_iftx,
+	ctx_ipsy_hosp,
+	ctx_ipsy_meds,
+	mini_primary_dx,
        audit_score
 from rcap_ctau_sample_info_joined_view
 where si_tube_id ilike '%_1_1'
