@@ -32,7 +32,16 @@ select si_tube_id,
        id_type,
        sched_base_complete_date,
        dem_ch_dob,
-       age_days_between(dem_ch_dob::date, sched_base_complete_date) as age_days,
+       case 
+              when event_name like 'baseline%' then age_days_between(dem_ch_dob::date, sched_base_complete_date)
+              when event_name like 'one_year%' then age_days_between(dem_ch_dob::date, sched_1yr_date)
+              when event_name like '24_month%' then age_days_between(dem_ch_dob::date, sched_2yr_complete_date)
+       end as age_days,
+       case
+             when event_name like 'baseline%' then sched_base_complete
+             when event_name like 'one_year%' then sched_1yr_complete
+             when event_name like '24_month%' then sched_2yr_complete
+       end as complete,
        sex,
 	hc_race as race,
 	hc_hispanic as hispanic,

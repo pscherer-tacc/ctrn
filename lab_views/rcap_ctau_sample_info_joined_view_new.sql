@@ -8,6 +8,8 @@ SELECT si.si_tube_id,
     sa.project_id,
     sa.id_type,
     sched.sched_base_complete, -- NEW FIELD
+    sched.sched_1yr_complete,
+    sched.sched_2yr_complete,
     sched.sched_base_complete_date,
     sched.sched_1yr_date,
     sched.sched_2yr_complete_date,
