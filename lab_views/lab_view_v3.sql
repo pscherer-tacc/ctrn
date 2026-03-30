@@ -12,8 +12,12 @@
 ---			Age at first trauma exposure
 ---			Primary diagnosis
 ---			AUDIT score
+---			Request on 11/25/25 to add information from TLFB, SUI, DEQ and AUDIT 
 ---
 --- 	Remove any duplicates, pii/phi, and fields not specifically required by the lab
+---     Specimens sent to Drs Champagne (Epigenomics tube_ids ending in 1_1), Ressler (Genetics tube_ids ending in 2_1),
+---     and Beurel (Cytokines tube_ids ending in 3_1). Genetics lab only requires baseline data; epigenomics and cytokine labs
+---     require data from all (follow-up) sample collections.
 ---
 --- March 2026 request to expand the above with:
 
@@ -43,39 +47,42 @@ select si_tube_id,
              when event_name like '24_month%' then sched_2yr_complete
        end as complete,
        sex,
-	hc_race as race,
-	hc_hispanic as hispanic,
+	   hc_race as race,
+	   hc_hispanic as hispanic,
        pfh_instrument,
        parent1_relationship,
        parent1_sex,
        parent1_educ,
        --hp_parent2_relationship,
-
        parent2_gender,
        parent2_educ,
-
+	   tlfb_drink_mo,
+	   tlfb_drink_days,
+	   tlfb_drink_per_day,
+	   tlfb_hv_ep_dr_days,
+	   tlfb_24_max,
+	   tlfb_cig_mo,
+       tlfb_smoke_days,
+	   tlfb_cig_per_day,
+	   tlfb_thc_days,
        -- alc_abuse fields; experiment with an aggregate form.
        alc_abuse__0_child,
        alc_abuse__1_you,
        alc_abuse__2_othpar,
        alc_abuse__3_brother,
        alc_abuse__4_sister,
-
        -- thc_abuse fields; experiment with an aggregate form.
        thc_abuse__0_child,
        thc_abuse__1_you,
        thc_abuse__2_othpar,
        thc_abuse__3_brother,
        thc_abuse__4_sister,
-
        -- drug_abuse fields; experiment with an aggregate form.
        drug_abuse__0_child,
        drug_abuse__1_you,
        drug_abuse__2_othpar,
        drug_abuse__3_brother,
        drug_abuse__4_sister,
-       
-       tlfb_smoke_days,
        tc_1_1,
        tc_1_1_how_often,
        tp_1_1_age_first,
@@ -167,12 +174,74 @@ select si_tube_id,
        tc_8_3_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
        age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs, -- Remove dates before sharing publicly
        age_days_between(tc_8_4::date, tc_interview_date::date) AS recent_days_b4visit,
-	ctx_itx,
-	ctx_iftx,
-	ctx_ipsy_hosp,
-	ctx_ipsy_meds,
-	mini_primary_dx,
-       audit_score
+	   ctx_itx,
+	   ctx_iftx,
+       ctx_ipsy_hosp,
+	   ctx_ipsy_meds,
+	   mini_primary_dx,
+       audit_q1_sc,
+	   audit_q2_sc,
+	   audit_q3_sc,
+	   audit_q4_sc,
+	   audit_q5_sc,
+	   audit_q6_sc,
+	   audit_q7_sc,
+	   audit_q8_sc,
+	   audit_q9_sc,
+	   audit_q10_sc,
+       audit_score, 
+	   sui_1,
+	   sui_2,
+	   sui_3,
+	   sui_4, 
+	   sui_5,
+	   sui_6,		         -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
+	   sui_7,
+	   sui_8,
+       age_years_between(deq_alc_use_dt::date, dem_ch_dob::date) as deq_age_last_alc, -- NEW FIELD
+       case
+        when event_name like 'baseline%' then age_days_between(deq_alc_use_dt::date, sched_base_complete_date)
+        when event_name like 'one_year%' then age_days_between(deq_alc_use_dt::date, sched_1yr_date)
+        when event_name like '24_month%' then age_days_between(deq_alc_use_dt::date, sched_2yr_complete_date)
+       end as deq_days_since_last_alc, -- NEW FIELD   
+	   deq_alc_last_amt,
+	   deq_alc_dur,
+	   deq_alc_mem_diff,
+	   deq_alc_blackout,
+	   deq_alc_hungover,
+	   deq_alc_effects,
+	   deq_alc_effects_2,
+	   deq_alc_effects_3,
+	   deq_alc_effects_4,
+	   age_years_between(deq_drug_use_dt::date, dem_ch_dob::date) as deq_age_last_drug, -- NEW FIELD
+       case
+        when event_name like 'baseline%' then age_days_between(deq_drug_use_dt::date, sched_base_complete_date)
+        when event_name like 'one_year%' then age_days_between(deq_drug_use_dt::date, sched_1yr_date)
+        when event_name like '24_month%' then age_days_between(deq_drug_use_dt::date, sched_2yr_complete_date)
+       end as deq_days_since_last_drug, -- NEW FIELD
+       deq_drug_mdma,
+	   deq_drug_heroin,
+	   deq_drug_cocaine, 
+	   deq_drug_crack,
+	   deq_drug_k,
+	   deq_drug_meth,
+	   deq_drug_pain,
+	   deq_drug_stim,
+	   deq_drug_k2,
+	   deq_drug_benzos, 
+	   deq_drug_none,
+	   deq_drugs_dur,
+	   deq_drugs_snort,
+	   deq_drugs_inject,
+	   deq_drugs_smoke,
+	   deq_drugs_oral,
+	   deq_drugs_other,
+	   deq_drugs_mem_diff,
+	   deq_drugs_blackout,
+	   deq_drugs_hungover,
+	   deq_drugs_effects,
+	   deq_drugs_effects_2,
+	   deq_drugs_effects_3
 from rcap_ctau_sample_info_joined_view
 where si_tube_id ilike '%_1_1'
 and (tc_administrator is not null OR tc_interview_date is not null);
