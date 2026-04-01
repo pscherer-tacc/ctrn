@@ -155,8 +155,10 @@ SELECT si.si_tube_id,
     tp.tp_7_1_age_first,
     --tc.tc_7_worst,
     tc.tc_8_1,
+    tc.tcfu_8_1,
     tc.tc_8_1_less_than_1mo,
     tc.tc_8_2,
+    tc.tcfu_8_2,
     tc.tc_8_3,
     tc.tcfu_8_3,
     tc.tc_8_3_less_than_1mo,
@@ -232,7 +234,57 @@ SELECT si.si_tube_id,
     chas.ctx_itx,
     chas.ctx_iftx,
     chas.ctx_ipsy_hosp,
-    chas.ctx_ipsy_meds
+    chas.ctx_ipsy_meds,
+
+    -- crit_a1 variables
+    tc.tc_1_1_crit_a1,
+    tc.tc_1_2_crit_a1,
+    tc.tc_1_3_crit_a1,
+    tc.tc_1_4_crit_a1,
+    tc.tc_1_5_crit_a1,
+    tc.tc_1_6_crit_a1,
+    tc.tc_2_1_crit_a1,
+    tc.tc_2_2_crit_a1,
+    tc.tc_2_3_crit_a1,
+    tc.tc_2_4_crit_a1,
+    tc.tc_2_5_crit_a1,
+    tc.tc_3_1_crit_a1,
+    tc.tc_3_2_crit_a1,
+    tc.tc_3_3_crit_a1,
+    tc.tc_4_1_crit_a1,
+    tc.tc_4_2_crit_a1,
+    tc.tc_4_3_crit_a1,
+    tc.tc_5_crit_a1,
+    tc_7_crit_a1,
+
+    -- Cumulative Trauma Load variables
+    (
+        coalesce(tc.tc_1_1_crit_a1::int, 0) + coalesce(tc.tc_1_2_crit_a1::int, 0)
+        + coalesce(tc.tc_1_3_crit_a1::int, 0) + coalesce(tc.tc_1_4_crit_a1::int, 0)
+        + coalesce(tc.tc_1_5_crit_a1::int, 0) + coalesce(tc.tc_1_6_crit_a1::int, 0)
+        + coalesce(tc.tc_2_5_crit_a1::int, 0)
+    ) as tesic_cumload_life_unintentional,
+
+    (
+        coalesce(tc.tc_2_1_crit_a1::int, 0) + coalesce(tc.tc_2_2_crit_a1::int, 0)
+        + coalesce(tc.tc_2_3_crit_a1::int, 0) + coalesce(tc.tc_2_4_crit_a1::int, 0)
+        + coalesce(tc.tc_2_5_crit_a1::int, 0) + coalesce(tc.tc_5_crit_a1::int, 0)
+    ) as tesic_cumload_life_interpers_direct,
+
+    (
+        coalesce(tc.tc_3_1_crit_a1::int, 0) + coalesce(tc.tc_3_2_crit_a1::int, 0)
+        + coalesce(tc.tc_3_3_crit_a1::int, 0)
+    ) as tesic_cumload_life_interpers_witn_home,
+
+    (
+        coalesce(tc.tc_4_1_crit_a1::int, 0) + coalesce(tc.tc_4_2_crit_a1::int, 0)
+        + coalesce(tc.tc_4_3_crit_a1::int, 0)
+    ) as tesic_cumload_life_interpers_witn_comm,
+
+    (
+        coalesce(tc.tc_6_1::int, tc.tcfu_6_1::int, 0)
+        + coalesce(tc.tc_6_2::int, tc.tcfu_6_2::int, 0)
+    ) as tesic_cumload_life_bullying
 FROM rcap_ctau_sample_info si
 LEFT JOIN ctau_scheduling_form_view sched -- Attention! The view (not the table) is utilized
     ON sched.source_subject_id = si.source_subject_id
