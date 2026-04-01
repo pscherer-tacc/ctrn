@@ -259,15 +259,18 @@ select
     ,tc_7_crit_a2 as tc_7_crit_a2
     ,tc_7_how_often as tc_7_how_often
     ,tc_8_1 as tc_8_1
+    ,null as tcfu_8_1 -- added 04/01/2026
     ,tc_8_1_less_than_1mo as tc_8_1_less_than_1mo
     ,tc_8_2 as tc_8_2
+    ,null as tcfu_8_2 -- added 04/01/2026
     ,tc_8_3 as tc_8_3
-    ,null as tcfu_8_3 
+    ,null as tcfu_8_3
     ,tc_8_3_less_than_1mo as tc_8_3_less_than_1mo
     ,tc_8_4 as tc_8_4
     ,tc_complete as tc_complete
 
     -- below are "crit_a1" fields added on March 22nd, 2026
+    ,tc_2_2_crit_a1 as tc_2_2_crit_a1
     ,tc_2_3_crit_a1 as tc_2_3_crit_a1
     ,tc_2_4_crit_a1 as tc_2_4_crit_a1
     ,tc_2_5_crit_a1 as tc_2_5_crit_a1
@@ -543,9 +546,11 @@ select
     ,tcfu_7_crit_a1 as tc_7_crit_a1
     ,tcfu_7_crit_a2 as tc_7_crit_a2
     ,tcfu_7_how_often as tc_7_how_often
-    ,tcfu_8_1 as tc_8_1
+    ,null as tc_8_1 -- added 04/01/2026
+    ,tcfu_8_1 as tcfu_8_1
     ,tcfu_8_1_less_1mo as tc_8_1_less_than_1mo
-    ,tcfu_8_2 as tc_8_2
+    ,null as tc_8_2 -- added 04/01/2026
+    ,tcfu_8_2 as tcfu_8_2
     ,null as tc_8_3
     ,tcfu_8_3 as tcfu_8_3
     ,null as tc_8_3_less_than_1mo
@@ -553,6 +558,7 @@ select
     ,tcfu_complete as tc_complete
 
     -- below are "crit_a1" fields added on March 22nd, 2026
+    ,tcfu_2_2_crit_a1 as tc_2_2_crit_a1
     ,tcfu_2_3_crit_a1 as tc_2_3_crit_a1
     ,tcfu_2_4_crit_a1 as tc_2_4_crit_a1
     ,tcfu_2_5_crit_a1 as tc_2_5_crit_a1
