@@ -285,6 +285,26 @@ select
 
     ,tc_5_crit_a1 as tc_5_crit_a1
 
+    -- "worst"
+    ,tc_1_1_worst as tc_1_1_worst
+    ,tc_1_2_worst as tc_1_2_worst
+    ,tc_1_3_worst as tc_1_3_worst
+    ,tc_1_4_worst as tc_1_4_worst
+    ,tc_1_5_worst as tc_1_5_worst
+    ,tc_1_6_worst as tc_1_6_worst
+    ,tc_2_1_worst as tc_2_1_worst
+    ,tc_2_2_worst as tc_2_2_worst
+    ,tc_2_3_worst as tc_2_3_worst
+    ,tc_2_4_worst as tc_2_4_worst
+    ,tc_2_5_worst as tc_2_5_worst
+    ,tc_3_1_worst as tc_3_1_worst
+    ,tc_3_2_worst as tc_3_2_worst
+    ,tc_3_3_worst as tc_3_3_worst
+    ,tc_4_1_worst as tc_4_1_worst
+    ,tc_4_2_worst as tc_4_2_worst
+    ,tc_4_3_worst as tc_4_3_worst
+    ,tc_5_worst as tc_5_worst
+    ,tc_7_worst as tc_7_worst
 from rcap_tesic
 
 union all 
@@ -572,4 +592,25 @@ select
     ,tcfu_4_3_crit_a1 as tc_4_3_crit_a1
 
     ,tcfu_5_crit_a1 as tc_5_crit_a1
+
+        -- "worst"
+    ,tcfu_1_1_worst as tc_1_1_worst
+    ,tcfu_1_2_worst as tc_1_2_worst
+    ,tcfu_1_3_worst as tc_1_3_worst
+    ,tcfu_1_4_worst as tc_1_4_worst
+    ,tcfu_1_5_worst as tc_1_5_worst
+    ,tcfu_1_6_worst as tc_1_6_worst
+    ,tcfu_2_1_worst as tc_2_1_worst
+    ,tcfu_2_2_worst as tc_2_2_worst
+    ,tcfu_2_3_worst as tc_2_3_worst
+    ,tcfu_2_4_worst as tc_2_4_worst
+    ,tcfu_2_5_worst as tc_2_5_worst
+    ,tcfu_3_1_worst as tc_3_1_worst
+    ,tcfu_3_2_worst as tc_3_2_worst
+    ,tcfu_3_3_worst as tc_3_3_worst
+    ,tcfu_4_1_worst as tc_4_1_worst
+    ,tcfu_4_2_worst as tc_4_2_worst
+    ,tcfu_4_3_worst as tc_4_3_worst
+    ,tcfu_5_worst as tc_5_worst
+    ,tcfu_7_worst as tc_7_worst
 from rcap_tesic_followup;
