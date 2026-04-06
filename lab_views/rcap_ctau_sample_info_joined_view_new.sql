@@ -268,7 +268,7 @@ SELECT si.si_tube_id,
     (
         coalesce(tc.tc_2_1_crit_a1::int, 0) + coalesce(tc.tc_2_2_crit_a1::int, 0)
         + coalesce(tc.tc_2_3_crit_a1::int, 0) + coalesce(tc.tc_2_4_crit_a1::int, 0)
-        + coalesce(tc.tc_2_5_crit_a1::int, 0) + coalesce(tc.tc_5_crit_a1::int, 0)
+        + coalesce(tc.tc_5_crit_a1::int, 0)
     ) as tc_cumload_life_interpers_direct,
 
     (
