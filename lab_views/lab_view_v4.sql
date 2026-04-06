@@ -207,8 +207,11 @@ select si_tube_id,
  	   tc_cumload_life_interpers_witn_comm,  -- tc_4_1 thru tc_4_3 criteria a1
 	   tc_cumload_life_bullying,           -- tc_6_1 and tc_6_2
 	   (
-	     coalesce(tc_7_crit_a1::int,0
-         tc_cumload_life_unintentional + tc_cumload_life_interpers_direct + tc_cumload_life_interpers_witn_home + tc_cumload_life_interpers_witn_comm + tc_7_crit_a1::int
+            tc_cumload_life_unintentional
+            + tc_cumload_life_interpers_direct 
+            + tc_cumload_life_interpers_witn_home 
+            + tc_cumload_life_interpers_witn_comm 
+            + coalesce(tc_7_crit_a1::int,0)
 	   ) as tc_cumload_life_overall,
 	   ctx_itx,
 	   ctx_iftx,
