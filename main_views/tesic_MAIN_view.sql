@@ -7,8 +7,8 @@ select
     -- ctrn_sched_comp_date -- not clear which variable it is
     
     tesic_u.tc_interview_date,
-    dem.dem_ch_dob, -- double check whether that field should be for dob
-    
+    dem.dem_ch_dob,
+
     case
         when tesic_u.event_name like 'baseline%' then nda_months_between(sched_main.sched_base_complete_date, dem.dem_ch_dob)
 		when tesic_u.event_name like 'six_month%' then nda_months_between(sched_main.sched_6mo_complete_date, dem.dem_ch_dob)
@@ -374,7 +374,7 @@ select
     tesic_u.tc_8_4,
     tesic_u.tc_8_3_less_than_1mo,
     tesic_u.tc_complete,
-    --tesic_u.tc_start_timestamp,
+    -- tesic_u.tc_start_timestamp,
     -- tesic_u.tc_cumload_life_unintentional,
     -- tesic_u.tc_cumload_life_interpers_direct,
     -- tesic_u.tc_cumload_life_interpers_witn_home,
@@ -400,10 +400,34 @@ select
     tesic_u.tc_4_3_worst,
     tesic_u.tc_5_worst,
     tesic_u.tc_7_worst,
+
+    case
+        when tc_1_1_worst = '1' then '1_1'
+        when tc_1_2_worst = '1' then '1_2'
+        when tc_1_3_worst = '1' then '1_3'
+        when tc_1_4_worst = '1' then '1_4'
+        when tc_1_5_worst = '1' then '1_5'
+        when tc_1_6_worst = '1' then '1_6'
+        when tc_2_1_worst = '1' then '2_1'
+        when tc_2_2_worst = '1' then '2_2'
+        when tc_2_3_worst = '1' then '2_3'
+        when tc_2_4_worst = '1' then '2_4'
+        when tc_2_5_worst = '1' then '2_5'
+        when tc_3_1_worst = '1' then '3_1'
+        when tc_3_2_worst = '1' then '3_2'
+        when tc_3_3_worst = '1' then '3_3'
+        when tc_4_1_worst = '1' then '4_1'
+        when tc_4_2_worst = '1' then '4_2'
+        when tc_4_3_worst = '1' then '4_3'
+        when tc_5_worst = '1' then '5'
+        when tc_7_worst = '1' then '7'
+        else null 
+    end as tc_8_1_worst,
+
+    age_years_between(tesic_u.tc_8_2::date, dem.dem_ch_dob::date) as worst_age_yrs,
+    age_days_between(tesic_u.tc_8_2::date, tesic_u.tc_interview_date::date) AS worst_days_b4visit,
+
     tesic_u.tcfu_8_3,
-    --tesic_u.tc_8_1_worst,
-    --tesic_u.worst_age_yrs,
-    --tesic_u.worst_days_b4visit,
     --tesic_u.tc_8_worst_ever,
     tesic_u.tc_1_1_most_recent,
     tesic_u.tc_1_2_most_recent,
@@ -423,9 +447,32 @@ select
     tesic_u.tc_4_2_most_recent,
     tesic_u.tc_4_3_most_recent,
     tesic_u.tc_5_most_recent,
-    tesic_u.tc_7_most_recent
-    -- tesic_u.most_recent_age_yrs,
-    -- tesic_u.recent_days_b4visit,
+    tesic_u.tc_7_most_recent,
+
+    case
+        when tc_1_1_most_recent = '1' then '1_1'
+        when tc_1_2_most_recent = '1' then '1_2'
+        when tc_1_3_most_recent = '1' then '1_3'
+        when tc_1_4_most_recent = '1' then '1_4'
+        when tc_1_5_most_recent = '1' then '1_5'
+        when tc_1_6_most_recent = '1' then '1_6'
+        when tc_2_1_most_recent = '1' then '2_1'
+        when tc_2_2_most_recent = '1' then '2_2'
+        when tc_2_3_most_recent = '1' then '2_3'
+        when tc_2_4_most_recent = '1' then '2_4'
+        when tc_2_5_most_recent = '1' then '2_5'
+        when tc_3_1_most_recent = '1' then '3_1'
+        when tc_3_2_most_recent = '1' then '3_2'
+        when tc_3_3_most_recent = '1' then '3_3'
+        when tc_4_1_most_recent = '1' then '4_1'
+        when tc_4_2_most_recent = '1' then '4_2'
+        when tc_4_3_most_recent = '1' then '4_3'
+        when tc_5_most_recent = '1' then '5'
+        when tc_7_most_recent = '1' then '7'
+    end as tc_8_3_most_recent,
+
+    age_years_between(tesic_u.tc_8_4::date, dem.dem_ch_dob::date) as recent_age_yrs,
+    age_days_between(tesic_u.tc_8_4::date, tesic_u.tc_interview_date::date) as recent_days_b4visit
 from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
 inner join subject_alias sa1
     on sa1.source_subject_id = tesic_u.source_subject_id
@@ -437,4 +484,5 @@ left join rcap_scheduling_form sched_main
 left join rcap_demographics dem
     on dem.source_subject_id = tesic_u.source_subject_id
 left join rcap_pfh_child pfhc 
-    on pfhc.source_subject_id = tesic_u.source_subject_id;
+    on pfhc.source_subject_id = tesic_u.source_subject_id
+    and pfhc.event_name like 'baseline%';

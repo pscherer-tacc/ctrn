@@ -262,7 +262,6 @@ select
     ,tc_8_1 as tc_8_1
     ,tc_8_1_less_than_1mo as tc_8_1_less_than_1mo
     ,tc_8_2 as tc_8_2
-    ,null as tcfu_8_2 -- added 04/01/2026
     ,tc_8_3 as tc_8_3
     ,null as tcfu_8_3
     ,tc_8_3_less_than_1mo as tc_8_3_less_than_1mo
@@ -676,8 +675,7 @@ select
     ,tcfu_7_how_often as tc_7_how_often
     ,tcfu_8_1 as tc_8_1
     ,tcfu_8_1_less_1mo as tc_8_1_less_than_1mo
-    ,null as tc_8_2 -- added 04/01/2026
-    ,tcfu_8_2 as tcfu_8_2
+    ,tcfu_8_2 as tc_8_2
     ,null as tc_8_3
     ,tcfu_8_3 as tcfu_8_3
     ,null as tc_8_3_less_than_1mo
