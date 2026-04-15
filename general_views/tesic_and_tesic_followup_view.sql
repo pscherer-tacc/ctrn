@@ -5,6 +5,7 @@ select
     source_subject_id
     ,event_name
     ,tc_administrator as tc_administrator
+    ,tc_administrator_other as tc_administrator_other
     ,tc_interview_date as tc_interview_date
     ,tc_1_1 as tc_1_1
     ,null as tcfu_1_1
@@ -259,7 +260,6 @@ select
     ,tc_7_crit_a2 as tc_7_crit_a2
     ,tc_7_how_often as tc_7_how_often
     ,tc_8_1 as tc_8_1
-    ,null as tcfu_8_1 -- added 04/01/2026
     ,tc_8_1_less_than_1mo as tc_8_1_less_than_1mo
     ,tc_8_2 as tc_8_2
     ,null as tcfu_8_2 -- added 04/01/2026
@@ -326,6 +326,92 @@ select
     ,tc_4_3_most_recent as tc_4_3_most_recent
     ,tc_5_most_recent as tc_5_most_recent
     ,tc_7_most_recent as tc_7_most_recent
+
+    --new variables 04/14/2026
+    ,tc_1_1_brief as tc_1_1_brief
+    ,tc_1_1_explain as tc_1_1_explain
+    ,tc_1_2_brief as tc_1_2_brief
+    ,tc_1_2_explain as tc_1_2_explain
+    ,tc_1_3_brief as tc_1_3_brief
+    ,tc_1_3_explain as tc_1_3_explain
+    ,tc_1_4_brief as tc_1_4_brief
+    ,tc_1_4_explain as tc_1_4_explain
+    ,tc_1_4_other as tc_1_4_other
+    ,tc_1_4_who__no_answer as tc_1_4_who__no_answer
+    ,tc_1_5_brief as tc_1_5_brief
+    ,tc_1_5_explain as tc_1_5_explain
+    ,tc_1_6_brief as tc_1_6_brief
+    ,tc_1_6_explain as tc_1_6_explain
+    ,tc_2_1_brief as tc_2_1_brief
+    ,tc_2_1_explain as tc_2_1_explain
+    ,tc_2_1_how__no_answer as tc_2_1_how__no_answer
+    ,tc_2_1_how_other as tc_2_1_how_other
+    ,tc_2_1_who__no_answer as tc_2_1_who__no_answer
+    ,tc_2_1_who_other as tc_2_1_who_other
+    ,tc_2_2_brief as tc_2_2_brief
+    ,tc_2_2_explain as tc_2_2_explain
+    ,tc_2_2_how__no_answer as tc_2_2_how__no_answer
+    ,tc_2_2_how_other as tc_2_2_how_other
+    ,tc_2_2_who__no_answer as tc_2_2_who__no_answer
+    ,tc_2_2_who_other as tc_2_2_who_other
+    ,tc_2_3_brief as tc_2_3_brief
+    ,tc_2_3_explain as tc_2_3_explain
+    ,tc_2_3_how_other as tc_2_3_how_other
+    ,tc_2_4_brief as tc_2_4_brief
+    ,tc_2_4_explain as tc_2_4_explain
+    ,tc_2_4_how__no_answer as tc_2_4_how__no_answer
+    ,tc_2_4_how_other as tc_2_4_how_other
+    ,tc_2_4_who__no_answer as tc_2_4_who__no_answer
+    ,tc_2_4_who_other as tc_2_4_who_other
+    ,tc_2_5_brief as tc_2_5_brief
+    ,tc_2_5_explain as tc_2_5_explain
+    ,tc_3_1_brief as tc_3_1_brief
+    ,tc_3_1_explain as tc_3_1_explain
+    ,tc_3_1_how__no_answer as tc_3_1_how__no_answer
+    ,tc_3_1_how_other as tc_3_1_how_other
+    ,tc_3_1_who__no_answer as tc_3_1_who__no_answer
+    ,tc_3_1_who_other as tc_3_1_who_other
+    ,tc_3_2_brief as tc_3_2_brief
+    ,tc_3_2_explain as tc_3_2_explain
+    ,tc_3_2_how__no_answer as tc_3_2_how__no_answer
+    ,tc_3_2_how_other as tc_3_2_how_other
+    ,tc_3_2_who__no_answer as tc_3_2_who__no_answer
+    ,tc_3_2_who_other as tc_3_2_who_other
+    ,tc_3_3_brief as tc_3_3_brief
+    ,tc_3_3_explain as tc_3_3_explain
+    ,tc_3_3_who__no_answer as tc_3_3_who__no_answer
+    ,tc_4_1_brief as tc_4_1_brief
+    ,tc_4_1_explain as tc_4_1_explain
+    ,tc_4_1_how__no_answer as tc_4_1_how__no_answer
+    ,tc_4_1_how_other as tc_4_1_how_other
+    ,tc_4_1_who__no_answer as tc_4_1_who__no_answer
+    ,tc_4_1_who_other as tc_4_1_who_other
+    ,tc_4_2_brief as tc_4_2_brief
+    ,tc_4_2_explain as tc_4_2_explain
+    ,tc_4_2_how__no_answer as tc_4_2_how__no_answer
+    ,tc_4_2_how_other as tc_4_2_how_other
+    ,tc_4_2_who__no_answer as tc_4_2_who__no_answer
+    ,tc_4_2_who_other as tc_4_2_who_other
+    ,tc_4_3_brief as tc_4_3_brief
+    ,tc_4_3_explain as tc_4_3_explain
+    ,tc_5_brief as tc_5_brief
+    ,tc_5_explain as tc_5_explain
+    ,tc_5_how__no_answer as tc_5_how__no_answer
+    ,tc_5_how_other as tc_5_how_other
+    ,tc_5_who__no_answer as tc_5_who__no_answer
+    ,tc_5_who_other as tc_5_who_other
+    ,tc_6_1_brief as tc_6_1_brief
+    ,tc_6_1_explain as tc_6_1_explain
+    ,tc_6_1_how_often as tc_6_1_how_often
+    ,tc_6_1_who__no_answer as tc_6_1_who__no_answer
+    ,tc_6_1_who_other as tc_6_1_who_other
+    ,tc_6_2_brief as tc_6_2_brief
+    ,tc_6_2_crit_a2::varchar as tc_6_2_crit_a2
+    ,tc_6_2_explain as tc_6_2_explain
+    ,tc_6_2_who__no_answer as tc_6_2_who__no_answer
+    ,tc_6_2_who_other as tc_6_2_who_other
+    ,tc_7_brief as tc_7_brief
+    ,tc_7_explain as tc_7_explain
 from rcap_tesic
 
 union all 
@@ -334,6 +420,7 @@ select
     source_subject_id
     ,event_name
     ,tcfu_administrator as tc_administrator
+    ,tcfu_administrator_other as tc_administrator_other
     ,tcfu_interview_date as tc_interview_date
     ,null as tc_1_1
     ,tcfu_1_1 as tcfu_1_1
@@ -587,8 +674,7 @@ select
     ,tcfu_7_crit_a1 as tc_7_crit_a1
     ,tcfu_7_crit_a2 as tc_7_crit_a2
     ,tcfu_7_how_often as tc_7_how_often
-    ,null as tc_8_1 -- added 04/01/2026
-    ,tcfu_8_1 as tcfu_8_1
+    ,tcfu_8_1 as tc_8_1
     ,tcfu_8_1_less_1mo as tc_8_1_less_than_1mo
     ,null as tc_8_2 -- added 04/01/2026
     ,tcfu_8_2 as tcfu_8_2
@@ -655,4 +741,90 @@ select
     ,null as tc_4_3_most_recent
     ,null as tc_5_most_recent
     ,null as tc_7_most_recent
+
+    --new variables 04/14/2026
+    ,tcfu_1_1_brief as tc_1_1_brief
+    ,tcfu_1_1_explain as tc_1_1_explain
+    ,tcfu_1_2_brief as tc_1_2_brief
+    ,tcfu_1_2_explain as tc_1_2_explain
+    ,tcfu_1_3_brief as tc_1_3_brief
+    ,tcfu_1_3_explain as tc_1_3_explain
+    ,tcfu_1_4_brief as tc_1_4_brief
+    ,tcfu_1_4_explain as tc_1_4_explain
+    ,tcfu_1_4_other as tc_1_4_other
+    ,tcfu_1_4_who__no_answer as tc_1_4_who__no_answer
+    ,tcfu_1_5_brief as tc_1_5_brief
+    ,tcfu_1_5_explain as tc_1_5_explain
+    ,tcfu_1_6_brief as tc_1_6_brief
+    ,tcfu_1_6_explain as tc_1_6_explain
+    ,tcfu_2_1_brief as tc_2_1_brief
+    ,tcfu_2_1_explain as tc_2_1_explain
+    ,tcfu_2_1_how__no_answer as tc_2_1_how__no_answer
+    ,tcfu_2_1_how_other as tc_2_1_how_other
+    ,tcfu_2_1_who__no_answer as tc_2_1_who__no_answer
+    ,tcfu_2_1_who_other as tc_2_1_who_other
+    ,tcfu_2_2_brief as tc_2_2_brief
+    ,tcfu_2_2_explain as tc_2_2_explain
+    ,tcfu_2_2_how__no_answer as tc_2_2_how__no_answer
+    ,tcfu_2_2_how_other as tc_2_2_how_other
+    ,tcfu_2_2_who__no_answer as tc_2_2_who__no_answer
+    ,tcfu_2_2_who_other as tc_2_2_who_other
+    ,tcfu_2_3_brief as tc_2_3_brief
+    ,tcfu_2_3_explain as tc_2_3_explain
+    ,tcfu_2_3_how_other as tc_2_3_how_other
+    ,tcfu_2_4_brief as tc_2_4_brief
+    ,tcfu_2_4_explain as tc_2_4_explain
+    ,tcfu_2_4_how__no_answer as tc_2_4_how__no_answer
+    ,tcfu_2_4_how_other as tc_2_4_how_other
+    ,tcfu_2_4_who__no_answer as tc_2_4_who__no_answer
+    ,tcfu_2_4_who_other as tc_2_4_who_other
+    ,tcfu_2_5_brief as tc_2_5_brief
+    ,tcfu_2_5_explain as tc_2_5_explain
+    ,tcfu_3_1_brief as tc_3_1_brief
+    ,tcfu_3_1_explain as tc_3_1_explain
+    ,tcfu_3_1_how__no_answer as tc_3_1_how__no_answer
+    ,tcfu_3_1_how_other as tc_3_1_how_other
+    ,tcfu_3_1_who__no_answer as tc_3_1_who__no_answer
+    ,tcfu_3_1_who_other as tc_3_1_who_other
+    ,tcfu_3_2_brief as tc_3_2_brief
+    ,tcfu_3_2_explain as tc_3_2_explain
+    ,tcfu_3_2_how__no_answer as tc_3_2_how__no_answer
+    ,tcfu_3_2_how_other as tc_3_2_how_other
+    ,tcfu_3_2_who__no_answer as tc_3_2_who__no_answer
+    ,tcfu_3_2_who_other as tc_3_2_who_other
+    ,tcfu_3_3_brief as tc_3_3_brief
+    ,tcfu_3_3_explain as tc_3_3_explain
+    ,tcfu_3_3_who__no_answer as tc_3_3_who__no_answer
+    ,tcfu_4_1_brief as tc_4_1_brief
+    ,tcfu_4_1_explain as tc_4_1_explain
+    ,tcfu_4_1_how__no_answer as tc_4_1_how__no_answer
+    ,tcfu_4_1_how_other as tc_4_1_how_other
+    ,tcfu_4_1_who__no_answer as tc_4_1_who__no_answer
+    ,tcfu_4_1_who_other as tc_4_1_who_other
+    ,tcfu_4_2_brief as tc_4_2_brief
+    ,tcfu_4_2_explain as tc_4_2_explain
+    ,tcfu_4_2_how__no_answer as tc_4_2_how__no_answer
+    ,tcfu_4_2_how_other as tc_4_2_how_other
+    ,tcfu_4_2_who__no_answer as tc_4_2_who__no_answer
+    ,tcfu_4_2_who_other as tc_4_2_who_other
+    ,tcfu_4_3_brief as tc_4_3_brief
+    ,tcfu_4_3_explain as tc_4_3_explain
+    ,tcfu_5_brief as tc_5_brief
+    ,tcfu_5_explain as tc_5_explain
+    ,tcfu_5_how__no_answer as tc_5_how__no_answer
+    ,tcfu_5_how_other as tc_5_how_other
+    ,tcfu_5_who__no_answer as tc_5_who__no_answer
+    ,tcfu_5_who_other as tc_5_who_other
+    ,tcfu_6_1_brief as tc_6_1_brief
+    ,tcfu_6_1_explain as tc_6_1_explain
+    ,tcfu_6_1_how_often as tc_6_1_how_often
+    ,tcfu_6_1_who__no_answer as tc_6_1_who__no_answer
+    ,tcfu_6_1_who_other as tc_6_1_who_other
+    ,tcfu_6_2_brief as tc_6_2_brief
+    ,tcfu_6_2_crit_a2 as tc_6_2_crit_a2
+    ,tcfu_6_2_explain as tc_6_2_explain
+    ,tcfu_6_2_who__no_answer as tc_6_2_who__no_answer
+    ,tcfu_6_2_who_other as tc_6_2_who_other
+    ,tcfu_7_brief as tc_7_brief
+    ,tcfu_7_explain as tc_7_explain
 from rcap_tesic_followup;
