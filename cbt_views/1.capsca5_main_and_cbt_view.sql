@@ -81,6 +81,7 @@ left join rcap_demographics dem_ctrn
     on dem_ctrn.source_subject_id = sa2.source_subject_id -- Attention! Join on sa2.source_subject_id as all those ids are from CTRN-MAIN.
 left join rcap_pfh_child pfh
 	on pfh.source_subject_id = sa2.source_subject_id -- Attention! Join on sa2.source_subject_id as all those ids are from CTRN-MAIN.
+    and pfh.event_name like 'baseline%'
 left join subject_alias sa3 -- to later filter only the records for CBT participants
     on sa3.subject_id = sa1.subject_id
     and sa3.project_id = 2865

@@ -324,4 +324,5 @@ left join rcap_scheduling_form sched_main
 left join rcap_demographics dem
     on dem.source_subject_id = tesic_u.source_subject_id
 left join rcap_pfh_child pfhc 
-    on pfhc.source_subject_id = tesic_u.source_subject_id;
+    on pfhc.source_subject_id = tesic_u.source_subject_id
+    and pfhc.event_name like 'baseline%';

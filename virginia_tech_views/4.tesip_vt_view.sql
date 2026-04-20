@@ -241,6 +241,7 @@ left join rcap_demographics dem
     on dem.source_subject_id = tesip.source_subject_id
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = tesip.source_subject_id
+    and pfhc.event_name like 'baseline%'
 left join rcap_pfh_parent pfhp -- ??? Doublecheck the fields on which the tables are joined
     on pfhp.source_subject_id = tesip.source_subject_id 
 order by sa1.subject_id;

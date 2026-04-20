@@ -69,6 +69,7 @@ left join rcap_scheduling_form sched_main
     on sched_main.source_subject_id = risc.source_subject_id 
 left join rcap_demographics dem
     on dem.source_subject_id = risc.source_subject_id
-left join rcap_pfh_child pfhc 
+left join rcap_pfh_child pfhc
     on pfhc.source_subject_id = risc.source_subject_id
+	and pfhc.event_name like 'baseline%'
 order by sa1.subject_id;
