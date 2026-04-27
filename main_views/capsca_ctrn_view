@@ -1,0 +1,112 @@
+---- CAPSCA CTRN View
+--- Name of the view: capsca_ctrn_view
+---
+--- Query the data from the view
+--- select * from capsca_ctrn_view
+--- where interview_date is not null;
+---
+--- The body of the view
+--- create or replace capsca_ctrn_view
+--- as
+select
+    dem.dem_guid
+    ,sa1.subject_id
+	,caps.source_subject_id -- only for validation; DELETE before submission
+	,case
+		when caps.event_name like 'baseline%' then to_char(sched_main.sched_base_complete_date, 'mm/dd/yyyy')
+		when caps.event_name like 'one_month%' then to_char(sched_main.sched_1mo_complete_date, 'mm/dd/yyyy')
+		when caps.event_name like 'six_month%' then to_char(sched_main.sched_6mo_complete_date, 'mm/dd/yyyy')
+		when caps.event_name like 'one_year%' then to_char(sched_main.sched_1yr_complete_date, 'mm/dd/yyyy')
+		when caps.event_name like '18_month%' then to_char(sched_main.sched_18mo_complete_date, 'mm/dd/yyyy')
+		when caps.event_name like '24_month%' then to_char(sched_main.sched_2yr_complete_date, 'mm/dd/yyyy')
+	end as interview_date
+	,case 
+		when caps.event_name like 'baseline%' then nda_months_between(sched_main.sched_base_complete_date, dem.dem_ch_dob)
+		when caps.event_name like 'one_month%' then nda_months_between(sched_main.sched_1mo_complete_date, dem.dem_ch_dob)
+		when caps.event_name like 'six_month%' then nda_months_between(sched_main.sched_6mo_complete_date, dem.dem_ch_dob)
+		when caps.event_name like 'one_year%' then nda_months_between(sched_main.sched_1yr_complete_date, dem.dem_ch_dob)
+		when caps.event_name like '18_month%' then nda_months_between(sched_main.sched_18mo_complete_date, dem.dem_ch_dob)
+		when caps.event_name like '24_month%' then nda_months_between(sched_main.sched_2yr_complete_date, dem.dem_ch_dob)
+	end as interview_age
+	,case
+		when caps.event_name like 'baseline%' then sched_main.sched_base_complete
+		when caps.event_name like 'one_month%' then sched_main.sched_1mo_complete
+		when caps.event_name like 'six_month%' then sched_main.sched_6mo_complete
+		when caps.event_name like 'one_year%' then sched_main.sched_1yr_complete
+		when caps.event_name like '18_month%' then sched_main.sched_18mo_complete
+		when caps.event_name like '24_month%' then sched_main.sched_2yr_complete
+	end as complete -- only for validation; DELETE before submission
+  ,case 
+    when pfhc.hc_sex_birth_cert='1' then 'F'
+    when pfhc.hc_sex_birth_cert='2' then 'M'
+    else null
+  end as sex
+	,case 
+    when pfhc.hc_race='1' then 'American Indian or Alaska Native'
+    when pfhc.hc_race='2' then 'Asian'
+  	when pfhc.hc_race='3' then 'Native Hawaian or Pacific Islander'
+	 	when pfhc.hc_race='4' then 'Black or African American'
+  	when pfhc.hc_race='5' then 'White'
+  	when pfhc.hc_race='6' then 'Multi-racial'
+    else null
+  end as race
+	,pfhc.hc_hispanic
+	,case
+		when caps.event_name like 'baseline%' then 'baseline'
+		when caps.event_name like 'one_month%' then 'one_month'
+		when caps.event_name like 'six_month%' then 'six_month'
+		when caps.event_name like 'one_year%' then 'one_year'
+		when caps.event_name like '18_month%' then '18_month'
+		when caps.event_name like '24_month%' then '24_month'
+	end as visit
+	,caps_tc_a1
+    ,caps_tc_worst			        -- replace unstructured text with worst trauma category or remove 
+    ,caps_tc_worst_event 	
+	,caps.caps_summary_a            -- Criterian A met? 1=yes  
+	-- Unless otherwise noted, scales are 0-4 where 0="absent", 1="mild/subthreshold, 2="moderate", 3="severe", 4="extreme/incapacitating"
+	,caps.caps_summary_b1_sev_q1    -- Intrusive memories
+	,caps.caps_summary_b2_sev_q2    -- Distressing dreams
+	,caps.caps_summary_b3_sev_q3    -- Dissociative reactions
+	,caps.caps_summary_b4_sev_q4    -- Cued psychological distress
+	,caps.caps_summary_b5_sev_q5    -- Cued psychological reactions
+	,caps.caps_summary_c1_sev_q6    -- Avoidance of memories, thoughts, feelings
+	,caps.caps_summary_c2_sev_q7    -- Avoidance of external reminders
+	,caps.caps_summary_d1_sev_q8    -- Inability to recall important aspect of event
+	,caps.caps_summary_d2_sev_q9    -- Exaggerated negative beliefs or expectations
+	,caps.caps_summary_d3_sev_q10   -- Distorted cognitions leading to blame
+	,caps.caps_summary_d4_sev_q11   -- Persistent negative emotional state
+	,caps.caps_summary_d5_sev_q12   -- Diminished interest or participation in activities
+	,caps.caps_summary_d6_sev_q13   -- Detachment or estrangement from others
+	,caps.caps_summary_d7_sev_q14   -- Persistent inability to experience positive emotions
+	,caps.caps_summary_e1_sev_q15   -- Irritable behavior and angry outbursts 	
+	,caps.caps_summary_e2_sev_q16   -- Reckless or self-destructive behavior
+	,caps.caps_summary_e3_sev_q17   -- Hypervigilance
+	,caps.caps_summary_e4_sev_q18   -- Exaggerated startle response		
+	,caps.caps_summary_e5_sev_q19   -- Problems with concentration	
+	,caps.caps_summary_e6_sev_q20   -- Sleep disturbance	
+	,caps.caps_summary_f1_q22       -- Duration of disturbance >= 1 month
+	,caps.caps_summary_g1_sev_q23   -- Subjective distress
+	,caps.caps_summary_g2_sev_q24   -- Impairment in social functioning
+	,caps.caps_summary_g3_sev_q25	-- Impairment in development
+  ,caps.caps_summary_validity_q26	-- Global validity; scales are 0-4 where (0) Excellent, no reason to suspect invalid responses, (1) Good, factors present that may adversely affect validity,(2) Fair, factors present that definitely reduce validity, (3) Poor, substantially reduced validity, (4) Invalid responses   
+	,caps.caps_summary_severity_q27 -- Global severity
+	,caps.caps_summary_improve_q28  -- Global improvement;Scales are 0-5 where (0) Asymptomatic,(1) Considerable improvement,(2) Moderate improvement,(3) Slight improvement,(4) No improvement,(5) Insufficient information 
+	,caps.caps_sum_depers_sev_q29   -- Depersonalization
+	,caps.caps_sum_dereal_sev_q30   -- Derealization		
+	,caps.caps_sum_ptsd_present		
+	,caps.caps_summary_dissoc	
+	,caps.caps_sum_delayed	
+from rcap_capsca5 caps
+inner join subject_alias sa1
+    on sa1.source_subject_id = caps.source_subject_id
+    and sa1.project_id = 696
+    and sa1.id_type = 'redcap'
+	and caps.event_name not like 'unscheduled%'
+left join rcap_scheduling_form sched_main 
+    on sched_main.source_subject_id = caps.source_subject_id 
+left join rcap_demographics dem
+    on dem.source_subject_id = caps.source_subject_id
+left join rcap_pfh_child pfhc 
+    on pfhc.source_subject_id = caps.source_subject_id
+	and pfhc.event_name like 'baseline%'
+order by sa1.subject_id;
