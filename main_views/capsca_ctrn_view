@@ -1,5 +1,11 @@
 ---- CAPSCA CTRN View
 --- Name of the view: capsca_ctrn_view
+--- This view includes date calculations and fields for cross-checking and curation. Curation fields and associated data must be removed 
+--- prior to sharing outside of the CTRN's IRB-approved community. The export from this query includes incomplete records which are curated as follows:
+--- 	1) Records with NULL interview dates are removed
+---		2) Records with NULL sex are removed
+---		3) Remove duplicate incomplete records where sched_[event_name]_complete not equal "1"(complete) or "8"(sufficiently complete)
+---     4) Report any remaining records for correction if sched_[event_name]_complete not equal "1"(complete) or "8"(sufficiently complete), but they contain data 
 ---
 --- Query the data from the view
 --- select * from capsca_ctrn_view
@@ -9,9 +15,9 @@
 --- create or replace capsca_ctrn_view
 --- as
 select
-    dem.dem_guid
+    dem.dem_guid			-- only used for NIH projects; may be omitted for CTRN Main studies
     ,sa1.subject_id
-	,caps.source_subject_id -- only for validation; DELETE before submission
+	,caps.source_subject_id -- only for validation; DELETE before sharing
 	,case
 		when caps.event_name like 'baseline%' then to_char(sched_main.sched_base_complete_date, 'mm/dd/yyyy')
 		when caps.event_name like 'one_month%' then to_char(sched_main.sched_1mo_complete_date, 'mm/dd/yyyy')
@@ -19,7 +25,7 @@ select
 		when caps.event_name like 'one_year%' then to_char(sched_main.sched_1yr_complete_date, 'mm/dd/yyyy')
 		when caps.event_name like '18_month%' then to_char(sched_main.sched_18mo_complete_date, 'mm/dd/yyyy')
 		when caps.event_name like '24_month%' then to_char(sched_main.sched_2yr_complete_date, 'mm/dd/yyyy')
-	end as interview_date
+	end as interview_date  -- only for validation; DELETE before sharing
 	,case 
 		when caps.event_name like 'baseline%' then nda_months_between(sched_main.sched_base_complete_date, dem.dem_ch_dob)
 		when caps.event_name like 'one_month%' then nda_months_between(sched_main.sched_1mo_complete_date, dem.dem_ch_dob)
@@ -35,7 +41,7 @@ select
 		when caps.event_name like 'one_year%' then sched_main.sched_1yr_complete
 		when caps.event_name like '18_month%' then sched_main.sched_18mo_complete
 		when caps.event_name like '24_month%' then sched_main.sched_2yr_complete
-	end as complete -- only for validation; DELETE before submission
+	end as complete -- only for validation; DELETE before sharing
   ,case 
     when pfhc.hc_sex_birth_cert='1' then 'F'
     when pfhc.hc_sex_birth_cert='2' then 'M'
@@ -60,7 +66,7 @@ select
 		when caps.event_name like '24_month%' then '24_month'
 	end as visit
 	,caps_tc_a1
-    ,caps_tc_worst			        -- replace unstructured text with worst trauma category or remove 
+    ,caps_tc_worst			        -- replace unstructured text with worst trauma category or remove before sharing 
     ,caps_tc_worst_event 	
 	,caps.caps_summary_a            -- Criterian A met? 1=yes  
 	-- Unless otherwise noted, scales are 0-4 where 0="absent", 1="mild/subthreshold, 2="moderate", 3="severe", 4="extreme/incapacitating"
