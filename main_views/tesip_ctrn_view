@@ -56,7 +56,15 @@ select
         else null
     end as race
 	,pfhc.hc_hispanic
-    ,tesip.event_name   -- tesip is administered for baseline only; unstructured data and pii noted below was omitted from the query
+    ,case															-- Renaming events as visits to facilitate sequencing as per 4/30/2026 request by Jeff
+		when tesip.event_name like 'baseline%' then '00_baseline'      
+		when tesip.event_name like 'one_month%' then '01_one_month'
+		when tesip.event_name like 'six_month%' then '06_six_month'
+		when tesip.event_name like 'one_year%' then '12_month'
+		when tesip.event_name like '18_month%' then '18_month'
+		when tesip.event_name like '24_month%' then '24_month'
+	end as visit
+--- Curation notes: tesip is administered for baseline only; unstructured data and pii noted below was purposefully omitted from the query
     ,tp_1_1_stem
     --,tp_1_1_accident_type -- omitted 
     --,tp_1_1_victim -- omitted
