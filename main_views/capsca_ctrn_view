@@ -60,10 +60,10 @@ select
 	,case															-- Renaming events as visits to facilitate sequencing as per 4/30/2026 request by Jeff
 		when caps.event_name like 'baseline%' then '00_baseline'      
 		when caps.event_name like 'one_month%' then '01_one_month'
-		when caps.event_name like 'six_month%' then '06_six_months'
-		when caps.event_name like 'one_year%' then '12_months'
-		when caps.event_name like '18_month%' then '18_months'
-		when caps.event_name like '24_month%' then '24_months'
+		when caps.event_name like 'six_month%' then '06_six_month'
+		when caps.event_name like 'one_year%' then '12_month'
+		when caps.event_name like '18_month%' then '18_month'
+		when caps.event_name like '24_month%' then '24_month'
 	end as visit
 	,caps_tc_a1
     ,caps_tc_worst			        -- replace unstructured text with worst trauma category or remove before sharing 
