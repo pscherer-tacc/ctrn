@@ -33,6 +33,9 @@
 ---
 --- April 22 2026 Learned that dates for a CTAU and CTRN Main have separate visits for the same patient so we must use separate
 --- dates to calculate age at the time of visit for CTAU sample collection and forms vs CTRN visits/surveys. 
+---
+--- May 5 2026 Meeting with Ressler Lab: Requested the following additional data: capsca, phq-a, summary variables and totals for scared-child, chrt16, and casss.
+
 select si_tube_id,
 	   subject_id,
 	   source_subject_id,   -- PII CTAU record_id; Remove after curation
@@ -40,15 +43,16 @@ select si_tube_id,
        sched_ctrn_id,		-- PII CTRN Main record_id; Remove after curation
 ---    project_id,			-- REDCap PID; remove after curation
 ---    id_type,             -- Identifies REDCap or other source; remove after curation
-       si_freeze_dt_tm,     -- Best date to use for sample collection; remove before sharing 
----   sched_ctau_complete_date,  -- Curation reference: the CTAU schedule baseline complete date _dt; remove after curation
----   sched_ctrn_complete_date,  -- Curation reference: the MAIN schedule baseline complete date _dt; remove after curation
+       si_freeze_dt_tm,     -- PII. Best date to use for sample collection; remove before sharing 
+       sched_ctau_complete_date,  -- PII. Curation reference: the CTAU schedule visit complete date _dt; remove after curation
+       sched_ctrn_complete_date,  -- PII. Curation reference: the MAIN schedule visit complete date _dt; remove after curation
+	   tc_interview_date,   -- PII. Best date for calculating tesic completion? Remove after curation  
        dem_ch_dob,  -- PII; Remove after curation
----       case 
----              when event_name like 'baseline%' then age_days_between(dem_ch_dob::date, sched_base_complete_date)
----              when event_name like 'one_year%' then age_days_between(dem_ch_dob::date, sched_1yr_date)
----              when event_name like '24_month%' then age_days_between(dem_ch_dob::date, sched_2yr_complete_date)
----       end as age_days,
+---    case 
+---          when event_name like 'baseline%' then age_days_between(dem_ch_dob::date, sched_base_complete_date)
+---          when event_name like 'one_year%' then age_days_between(dem_ch_dob::date, sched_1yr_date)
+---          when event_name like '24_month%' then age_days_between(dem_ch_dob::date, sched_2yr_complete_date)
+---    end as age_days,
        age_days_between(dem_ch_dob::date, si_freeze_dt_tm) as age_days_sample_collection,
        case
              when event_name like 'baseline%' then sched_base_complete
@@ -56,7 +60,7 @@ select si_tube_id,
              when event_name like '24_month%' then sched_2yr_complete
        end as complete,
        sex,
-	     hc_race as race,
+	   hc_race as race,
   	   hc_hispanic as hispanic,
        pfh_instrument,
        parent1_relationship,
@@ -65,7 +69,7 @@ select si_tube_id,
        --hp_parent2_relationship,
        parent2_gender,
        parent2_educ,
-	     tlfb_drink_mo,
+	   tlfb_drink_mo,
   	   tlfb_drink_days,
   	   tlfb_drink_per_day,
   	   tlfb_hv_ep_dr_days,
@@ -73,25 +77,23 @@ select si_tube_id,
        tlfb_cig_mo,
        tlfb_smoke_days,
   	   tlfb_cig_per_day,
-	     tlfb_thc_days,
-       -- alc_abuse fields; experiment with an aggregate form.
+	   tlfb_thc_days,
        alc_abuse__0_child,
        alc_abuse__1_you,
        alc_abuse__2_othpar,
        alc_abuse__3_brother,
        alc_abuse__4_sister,
-       -- thc_abuse fields; experiment with an aggregate form.
        thc_abuse__0_child,
        thc_abuse__1_you,
        thc_abuse__2_othpar,
        thc_abuse__3_brother,
        thc_abuse__4_sister,
-       -- drug_abuse fields; experiment with an aggregate form.
        drug_abuse__0_child,
        drug_abuse__1_you,
        drug_abuse__2_othpar,
        drug_abuse__3_brother,
        drug_abuse__4_sister,
+--- tesic, tcfu, tesip and associated calculations	
        coalesce (tc_1_1, tcfu_1_1) as tc_1_1,
        tc_1_1_crit_a1,
 	   tc_1_1_how_often,
@@ -194,103 +196,102 @@ select si_tube_id,
        tc_7_how_often,
        tp_7_1_age_first,
        tc_7_worst,
-       tc_8_1 AS tc_worst,    -- Classification of the worst trauma within the time period before the visit
-       tc_8_1_less_than_1mo,
-	   tc_8_2,         -- PII, date for calculating worst age and duration; remove after curation 
+       tc_8_1 AS tc_worst,    -- Classification of the worst trauma within the period prior to the visit
+       tc_8_1_less_than_1mo as tc_worst_less_than_1mo,
+	   tc_8_2,                -- PII, date for calculating worst age and duration; remove after curation 
        age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
        age_days_between(tc_8_2::date, tc_interview_date::date) AS worst_days_b4visit,
   	   age_days_between(tc_8_2::date, si_freeze_dt_tmdate) AS worst_days_b4sample,
+	   tcfu_8_3 as tc_8_worst_ever,
 	   tc_8_4,         -- PII, date of the most recent trauma reported at baseline; used to calculate age and recency; remove after curation
        tc_8_3 AS most_recent,   -- Classification of the most recent trauma
-       tc_8_3_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
+       tc_8_3_less_than_1mo as tc_most_recent_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
        age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs, -- Remove dates before sharing publicly
        age_days_between(tc_8_4::date, tc_interview_date::date) AS recent_days_b4visit,
 	   age_days_between(tc_8_4::date, si_freeze_dt_tmdate) AS recent_days_b4sample,
-	   tcfu_8_1 as tc_8_worst_last_6mo,          -- Are separate fields necessary? If not, combine with tc.
-       tcfu_8_2 as tc_8_worst_last_6mo_date,     -- PII;  -- Are separate dates necessary? If not, combine with tc.
-  	   tcfu_8_3 as tc_8_worst_ever,
-	   --- cumulative trauma variety index and cumulative trauma load calculations TBD
+	   --- tcfu_8_1 as tc_8_worst_last_6mo,          -- Are separate fields necessary? If not, combine with tc.
+       --- tcfu_8_2 as tc_8_worst_last_6mo_date,     -- PII;  -- Are separate dates necessary? If not, combine with tc.
+	   --- Criteria A1 trauma count subtotals and cumulative trauma variety index (unique trauma counts) TBD
 	   tc_unintentional_a1_cnt,	     -- tc_1_1 thru tc_1_6 and tc_2_5 criteria a1   
 	   tc_interpers_direct_a1_cnt,     -- tc_2_1 thru tc_2_4 and tc_5 criteria a1
  	   tc_interpers_witn_home_a1_cnt,  -- tc_3_1 thru tc_3_3 criteria a1
  	   tc_interpers_witn_comm_a1_cnt,  -- tc_4_1 thru tc_4_3 criteria a1
 	   tc_bullying_cnt,                -- tc_6_1 and tc_6_2
+       --- TBD: Nazan's cumulative trauma variety index (unique trauma counts) TBD
+	   --- tc_cumvaridx_unintentional,	      -- unique cumulative count of tc_1_1 thru tc_1_6 and tc_2_5 criteria a1   
+	   --- tc_cumvaridx_interpers_direct,     -- unique cumulative count of tc_2_1 thru tc_2_4 and tc_5 criteria a1
+ 	   --- tc_cumvaridx_interpers_witn_home,  -- unique cumulative count of tc_3_1 thru tc_3_3 criteria a1
+ 	   --- tc_cumvaridx_interpers_witn_comm,  -- unique cumulative count of tc_4_1 thru tc_4_3 criteria a1
+	   --- tc_cumvaridx_bullying,             -- unique cumulative count of tc_6_1 and tc_6_2
 ---	   (
----            tc_cumload_life_unintentional
----            + tc_cumload_life_interpers_direct 
----            + tc_cumload_life_interpers_witn_home 
----            + tc_cumload_life_interpers_witn_comm 
+---            tc_cumvaridx_unintentional
+---            + tc_cumvaridx_interpers_direct 
+---            + tc_cumvaridx_interpers_witn_home 
+---            + tc_cumvaridx_interpers_witn_comm 
 ---            + coalesce(tc_7_crit_a1::int,0)
----	   ) as tc_cumload_life_overall,
-	   ctx_itx,
-	   ctx_iftx,
-     ctx_ipsy_hosp,
-	   ctx_ipsy_meds,
-     mini_primary_dx,
-     audit_q1_sc,
+---	   ) as tc_cumvaridx_life_overall,
+	   ctx_itx,         -- Child individual therapy treatment
+	   ctx_iftx,        -- Family therapy treatment
+       ctx_ipsy_hosp,   -- Child admitted to psych hospital
+	   ctx_ipsy_meds,   -- Child prescribed psych meds
+       mini_primary_dx,
+       audit_q1_sc,
 	   audit_q2_sc,
 	   audit_q3_sc,
 	   audit_q4_sc,
-     audit_q5_sc,
-     audit_q6_sc,
-     audit_q7_sc,
-     audit_q8_sc,
+       audit_q5_sc,
+       audit_q6_sc,
+       audit_q7_sc,
+       audit_q8_sc,
  	   audit_q9_sc,
 	   audit_q10_sc,
-     audit_score, 
+       audit_score, 
  	   sui_1,
 	   sui_2,
 	   sui_3,
 	   sui_4, 
 	   sui_5,
- 	   sui_6,		         -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
+ ---   sui_6,		         -- This contains unstructured text which needs to be deidentified or removed prior to public sharing
  	   sui_7,
 	   sui_8,
-     age_years_between(deq_alc_use_dt::date, dem_ch_dob::date) as deq_age_last_alc, -- NEW FIELD
- ---      case
- ---       when event_name like 'baseline%' then age_days_between(deq_alc_use_dt::date, sched_base_complete_date)
- ---       when event_name like 'one_year%' then age_days_between(deq_alc_use_dt::date, sched_1yr_date)
- ---       when event_name like '24_month%' then age_days_between(deq_alc_use_dt::date, sched_2yr_complete_date)
- ---      end as deq_days_since_last_alc, -- NEW FIELD 
-	   age_days_between(deq_alc_use_dt::date, si_freeze_dt_tmdate) AS deq_last_alc_days_b4sample,	   
+       age_years_between(deq_alc_use_dt::date, dem_ch_dob::date) as deq_age_last_alc, -- NEW FIELD
+       age_days_between(deq_alc_use_dt::date, si_freeze_dt_tmdate) AS deq_last_alc_days_b4sample,	   
 	   deq_alc_last_amt,
 	   deq_alc_dur,
 	   deq_alc_mem_diff,
-     deq_alc_blackout,
+       deq_alc_blackout,
 	   deq_alc_hungover,
-     deq_alc_effects,
+       deq_alc_effects,
 	   deq_alc_effects_2,
 	   deq_alc_effects_3,
-     deq_alc_effects_4,
-     age_years_between(deq_drug_use_dt::date, dem_ch_dob::date) as deq_age_last_drug, -- NEW FIELD
-     case
-        when event_name like 'baseline%' then age_days_between(deq_drug_use_dt::date, sched_base_complete_date)
-        when event_name like 'one_year%' then age_days_between(deq_drug_use_dt::date, sched_1yr_date)
-        when event_name like '24_month%' then age_days_between(deq_drug_use_dt::date, sched_2yr_complete_date)
-     end as deq_days_since_last_drug, -- NEW FIELD
-     deq_drug_mdma,
-     deq_drug_heroin,
-  	 deq_drug_cocaine, 
+       deq_alc_effects_4,
+       age_years_between(deq_drug_use_dt::date, dem_ch_dob::date) as deq_age_last_drug,
+	   age_days_between(deq_drug_use_dt::date, si_freeze_dt_tmdate) AS deq_last_drug_days_b4sample,
+       deq_drug_mdma,
+       deq_drug_heroin,
+       deq_drug_cocaine, 
 	   deq_drug_crack,
-     deq_drug_k,
+       deq_drug_k,
 	   deq_drug_meth,
 	   deq_drug_pain,
-  	 deq_drug_stim,
-     deq_drug_k2,
+       deq_drug_stim,
+       deq_drug_k2,
  	   deq_drug_benzos, 
-     deq_drug_none,
-     deq_drugs_dur,
-     deq_drugs_snort,
+       deq_drug_none,
+       deq_drugs_dur,
+       deq_drugs_snort,
  	   deq_drugs_inject,
 	   deq_drugs_smoke,
 	   deq_drugs_oral,
 	   deq_drugs_other,
 	   deq_drugs_mem_diff,
-     deq_drugs_blackout,
+       deq_drugs_blackout,
 	   deq_drugs_hungover,
  	   deq_drugs_effects,
 	   deq_drugs_effects_2,
 	   deq_drugs_effects_3
+--- Additional data: capsca, phq-a, summary variables and totals for scared-child, chrt16, and casss
+---	
 from rcap_ctau_sample_info_joined_view si
 where si_tube_id ilike '%_1_1'
 and (tc_administrator is not null OR tc_interview_date is not null);
