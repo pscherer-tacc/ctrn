@@ -34,16 +34,16 @@
 --- April 22 2026 Learned that dates for a CTAU and CTRN Main have separate visits for the same patient so we must use separate
 --- dates to calculate age at the time of visit for CTAU sample collection and forms vs CTRN visits/surveys. 
 select si_tube_id,
-	     si_freeze_dt_tm,     -- Best date to use for sample collection; remove before sharing 
-       source_subject_id,
+	   subject_id,
+	   source_subject_id,   -- PII CTAU record_id; Remove after curation
        event_name,
-       sched_ctrn_id,
-       subject_id,
-       project_id,
-       id_type,
- ---   sched_ctau_base_complete_date,  -- Curation reference: the CTAU schedule baseline complete date _dt; remove after curation
- ---   sched_base_complete_date,  -- Curation reference: the MAIN schedule baseline complete date _dt; remove after curation
-       dem_ch_dob,  -- Remove after curation
+       sched_ctrn_id,		-- PII CTRN Main record_id; Remove after curation
+---    project_id,			-- REDCap PID; remove after curation
+---    id_type,             -- Identifies REDCap or other source; remove after curation
+       si_freeze_dt_tm,     -- Best date to use for sample collection; remove before sharing 
+---   sched_ctau_complete_date,  -- Curation reference: the CTAU schedule baseline complete date _dt; remove after curation
+---   sched_ctrn_complete_date,  -- Curation reference: the MAIN schedule baseline complete date _dt; remove after curation
+       dem_ch_dob,  -- PII; Remove after curation
 ---       case 
 ---              when event_name like 'baseline%' then age_days_between(dem_ch_dob::date, sched_base_complete_date)
 ---              when event_name like 'one_year%' then age_days_between(dem_ch_dob::date, sched_1yr_date)
@@ -94,7 +94,7 @@ select si_tube_id,
        drug_abuse__4_sister,
        coalesce (tc_1_1, tcfu_1_1) as tc_1_1,
        tc_1_1_crit_a1,
-	     tc_1_1_how_often,
+	   tc_1_1_how_often,
        tp_1_1_age_first,
        tc_1_1_worst, -- Worst checkboxes from baseline and tcfu; the coalesced variable name should be entered as tc_8_1.
        coalesce (tc_1_2, tcfu_1_2) as tc_1_2,
@@ -129,12 +129,12 @@ select si_tube_id,
        tp_2_1_age_first,
        tc_2_1_worst,
        coalesce (tc_2_2, tcfu_2_2) as tc_2_2,
-	     tc_2_2_crit_a1,
+	   tc_2_2_crit_a1,
        tc_2_2_how_often,
        tp_2_2_age_first,
        tc_2_2_worst,
        coalesce (tc_2_3, tcfu_2_3) as tc_2_3,
-	     tc_2_3_crit_a1,
+	   tc_2_3_crit_a1,
        tc_2_3_how_often,
        tp_2_3_age_first,
        tc_2_3_worst,
@@ -149,7 +149,7 @@ select si_tube_id,
        tp_2_5_age_first,
        tc_2_5_worst,
        coalesce (tc_3_1, tcfu_3_1) as tc_3_1,
-	     tc_3_1_crit_a1,
+	   tc_3_1_crit_a1,
        tc_3_1_how_often,
        tp_3_1_age_first,
        tc_3_1_worst,
@@ -194,25 +194,27 @@ select si_tube_id,
        tc_7_how_often,
        tp_7_1_age_first,
        tc_7_worst,
-       tc_8_1 AS worst,
+       tc_8_1 AS tc_worst,    -- Classification of the worst trauma within the time period before the visit
        tc_8_1_less_than_1mo,
+	   tc_8_2,         -- PII, date for calculating worst age and duration; remove after curation 
        age_years_between(tc_8_2::date, dem_ch_dob::date) AS worst_age_yrs,
        age_days_between(tc_8_2::date, tc_interview_date::date) AS worst_days_b4visit,
   	   age_days_between(tc_8_2::date, si_freeze_dt_tmdate) AS worst_days_b4sample,
-       tc_8_3 AS most_recent,
+	   tc_8_4,         -- PII, date of the most recent trauma reported at baseline; used to calculate age and recency; remove after curation
+       tc_8_3 AS most_recent,   -- Classification of the most recent trauma
        tc_8_3_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
        age_years_between(tc_8_4::date, dem_ch_dob::date) AS most_recent_trauma_age_yrs, -- Remove dates before sharing publicly
        age_days_between(tc_8_4::date, tc_interview_date::date) AS recent_days_b4visit,
-	     age_days_between(tc_8_4::date, si_freeze_dt_tmdate) AS recent_days_b4sample,
-	     tcfu_8_1 as tc_8_worst_last_6mo,
-       tcfu_8_2 as tc_8_worst_last_6mo_date,
+	   age_days_between(tc_8_4::date, si_freeze_dt_tmdate) AS recent_days_b4sample,
+	   tcfu_8_1 as tc_8_worst_last_6mo,          -- Are separate fields necessary? If not, combine with tc.
+       tcfu_8_2 as tc_8_worst_last_6mo_date,     -- PII;  -- Are separate dates necessary? If not, combine with tc.
   	   tcfu_8_3 as tc_8_worst_ever,
-	   --- cumulative trauma load TBD
-	   --- tc_cumload_life_unintentional,	     -- tc_1_1 thru tc_1_6 and tc_2_5 criteria a1   
-	   --- tc_cumload_life_interpers_direct,     -- tc_2_1 thru tc_2_4 and tc_5 criteria a1
- 	   --- tc_cumload_life_interpers_witn_home,  -- tc_3_1 thru tc_3_3 criteria a1
- 	   --- tc_cumload_life_interpers_witn_comm,  -- tc_4_1 thru tc_4_3 criteria a1
-	   --- tc_cumload_life_bullying,           -- tc_6_1 and tc_6_2
+	   --- cumulative trauma variety index and cumulative trauma load calculations TBD
+	   tc_unintentional_a1_cnt,	     -- tc_1_1 thru tc_1_6 and tc_2_5 criteria a1   
+	   tc_interpers_direct_a1_cnt,     -- tc_2_1 thru tc_2_4 and tc_5 criteria a1
+ 	   tc_interpers_witn_home_a1_cnt,  -- tc_3_1 thru tc_3_3 criteria a1
+ 	   tc_interpers_witn_comm_a1_cnt,  -- tc_4_1 thru tc_4_3 criteria a1
+	   tc_bullying_cnt,                -- tc_6_1 and tc_6_2
 ---	   (
 ---            tc_cumload_life_unintentional
 ---            + tc_cumload_life_interpers_direct 
