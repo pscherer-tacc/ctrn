@@ -335,6 +335,10 @@ select si_tube_id,
 	   ,phqa.phq_7_val	
 	   ,phqa.phq_8_val
 	   ,phqa.phq_9_val
+	   ,phqa_10
+	   ,phqa_11
+	   ,phqa_12
+	   ,phqa_13
 	--- Additional data: TBD summary variables and totals for scared-child, chrt16, and casss
 ---	
 from rcap_ctau_sample_info_joined_view si
