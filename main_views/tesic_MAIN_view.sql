@@ -19,6 +19,10 @@ select
     tesic_u.source_subject_id,
     tesic_u.tc_administrator,
     tesic_u.tc_administrator_other,
+
+    tesic_u.language, -- for curation/validation only
+    dim_dem_lang.dem_ch_lang_language, -- for curation/validation only
+
 --- TBD: Add the sched_main.sched_[visit]_complete status (the "complete" status used for curating incomplete records)
     tesic_u.tc_interview_date,
     dem.dem_ch_dob,
@@ -485,6 +489,53 @@ select
     end as tc_8_3_most_recent,
     age_years_between(tesic_u.tc_8_4::date, dem.dem_ch_dob::date) as recent_age_yrs,
     age_days_between(tesic_u.tc_8_4::date, tesic_u.tc_interview_date::date) as recent_days_b4visit
+from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
+inner join subject_alias sa1
+    on sa1.source_subject_id = tesic_u.source_subject_id
+    and sa1.project_id = 696
+    and sa1.id_type = 'redcap'
+	and tesic_u.event_name not like 'unscheduled%'
+left join rcap_demographics dem
+    on dem.source_subject_id = tesic_u.source_subject_id
+left join dim_dem_ch_lang dim_dem_lang -- Joining the dimension table
+    on dim_dem_lang.dem_ch_lang_value = dem.dem_ch_lang
+    and dim_dem_lang.dem_ch_lang_language = tesic_u.language
+left join rcap_scheduling_form sched_main 
+    on sched_main.source_subject_id = tesic_u.source_subject_id 
+left join rcap_pfh_child pfhc
+    on pfhc.source_subject_id = tesic_u.source_subject_id
+    and pfhc.language = dim_dem_lang.dem_ch_lang_language -- the dimension table
+    and pfhc.event_name like 'baseline%';
+
+
+
+
+-- Query for checks
+select 
+    dim_dem_lang.dem_ch_lang_language,
+    count(*)
+from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
+inner join subject_alias sa1
+    on sa1.source_subject_id = tesic_u.source_subject_id
+    and sa1.project_id = 696
+    and sa1.id_type = 'redcap'
+	and tesic_u.event_name not like 'unscheduled%'
+left join rcap_demographics dem
+    on dem.source_subject_id = tesic_u.source_subject_id
+left join dim_dem_ch_lang dim_dem_lang -- Joining the dimension table
+    on dim_dem_lang.dem_ch_lang_value = dem.dem_ch_lang
+    and dim_dem_lang.dem_ch_lang_language = tesic_u.language
+left join rcap_scheduling_form sched_main 
+    on sched_main.source_subject_id = tesic_u.source_subject_id 
+left join rcap_pfh_child pfhc
+    on pfhc.source_subject_id = tesic_u.source_subject_id
+    and pfhc.language = dim_dem_lang.dem_ch_lang_language -- the dimension table
+    and pfhc.event_name like 'baseline%'
+group by dim_dem_lang.dem_ch_lang_language
+;
+
+
+--- OLD
 from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
 inner join subject_alias sa1
     on sa1.source_subject_id = tesic_u.source_subject_id

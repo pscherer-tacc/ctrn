@@ -4,6 +4,7 @@ as
 select
     source_subject_id
     ,event_name
+    ,language
     ,tc_administrator as tc_administrator
     ,tc_administrator_other as tc_administrator_other
     ,tc_interview_date as tc_interview_date
@@ -418,6 +419,7 @@ union all
 select
     source_subject_id
     ,event_name
+    ,language
     ,tcfu_administrator as tc_administrator
     ,tcfu_administrator_other as tc_administrator_other
     ,tcfu_interview_date as tc_interview_date
