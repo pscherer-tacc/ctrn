@@ -39,6 +39,7 @@
 select si_tube_id,
 	   subject_id,
 	   source_subject_id,   -- PII CTAU record_id; Remove after curation
+---    Rename events to following "visit" names: 00_baseline, 01_one_month, 06_six_month, 12_month, 24_month	
        event_name,
        sched_ctrn_id,		-- PII CTRN Main record_id; Remove after curation
 ---    project_id,			-- REDCap PID; remove after curation
@@ -290,7 +291,55 @@ select si_tube_id,
  	   deq_drugs_effects,
 	   deq_drugs_effects_2,
 	   deq_drugs_effects_3
---- Additional data: capsca, phq-a, summary variables and totals for scared-child, chrt16, and casss
+--- Additional data: capsca (main)
+       ,caps.caps_summary_a1
+	   ,caps.caps_summary_b1_sev_q1
+       ,caps.caps_summary_b2_sev_q2
+       ,caps.caps_summary_b3_sev_q3
+	   ,caps.caps_summary_b4_sev_q4
+	   ,caps.caps_summary_b5_sev_q5
+	   ,caps.caps_summary_c1_sev_q6
+	   ,caps.caps_summary_c2_sev_q7
+	   ,caps.caps_summary_d1_sev_q8
+	   ,caps.caps_summary_d2_sev_q9
+	   ,caps.caps_summary_d3_sev_q10
+	   ,caps.caps_summary_d4_sev_q11
+	   ,caps.caps_summary_d5_sev_q12
+	   ,caps.caps_summary_d6_sev_q13
+	   ,caps.caps_summary_d7_sev_q14
+	   ,caps.caps_summary_e1_sev_q15	
+	   ,caps.caps_summary_e2_sev_q16
+	   ,caps.caps_summary_e3_sev_q17
+	   ,caps.caps_summary_e4_sev_q18		
+	   ,caps.caps_summary_e5_sev_q19	
+	   ,caps.caps_summary_e6_sev_q20	
+	   ,caps.caps_summary_f1_q22
+	   ,caps.caps_summary_g1_sev_q23
+	   ,caps.caps_summary_g2_sev_q24
+	   ,caps.caps_summary_g3_sev_q25
+	   ,caps.caps_summary_validity_q26
+	   ,caps.caps_summary_severity_q27
+	   ,caps.caps_summary_improve_q28
+	   ,caps.caps_sum_depers_sev_q29
+	   ,caps.caps_sum_dereal_sev_q30		
+	   ,caps.caps_sum_ptsd_present		
+	   ,caps.caps_summary_dissoc	
+	   ,caps.caps_sum_delayed
+	--- Additional data: phq-a
+	   ,phqa.phq_1_val 
+       ,phqa.phq_2_val
+	   ,phqa.phq_3_val
+	   ,phqa.phq_4_val
+	   ,phqa.phq_5_val
+	   ,phqa.phq_6_val
+	   ,phqa.phq_7_val	
+	   ,phqa.phq_8_val
+	   ,phqa.phq_9_val
+	   ,phqa_10
+	   ,phqa_11
+	   ,phqa_12
+	   ,phqa_13
+	--- Additional data: TBD summary variables and totals for scared-child, chrt16, and casss
 ---	
 from rcap_ctau_sample_info_joined_view si
 where si_tube_id ilike '%_1_1'
