@@ -42,135 +42,138 @@
 ---         Epigenomics and cytokine labs require data from all (follow-up) sample collections.
 ---
 ---  
-select 
-  sa1.subject_id
-	,si.source_subject_id as ctau_source_subject_id -- PII CTAU record_id; Remove after curation
-  ,sched.sched_ctrn_id		-- PII CTRN Main record_id; Remove after curation
-  ,si.si_tube_id
-	,si.event_name
+select
+  subject_id
+	,source_subject_id as ctau_source_subject_id -- PII CTAU record_id; Remove after curation
+  ,sched_ctrn_id		-- PII CTRN Main record_id; Remove after curation
+  ,si_tube_id
+	,event_name
 	,case
-	  when si.event_name like 'baseline%' then to_char(sched.sched_base_complete_date,'mm/dd/yyyy')
-	  when si.event_name like 'six_month%' then to_char(sched.sched_6mo_complete_date,'mm/dd/yyyy')
-	  when si.event_name like 'one_year%' then to_char(sched.sched_1yr_date,'mm/dd/yyyy')
-	  when si.event_name like '24_month%' then to_char(sched.sched_2yr_complete_date,'mm/dd/yyyy')
+	  when event_name like 'baseline%' then to_char(sched_base_complete_date,'mm/dd/yyyy')
+	  when event_name like 'six_month%' then to_char(sched_6mo_complete_date,'mm/dd/yyyy')
+	  when event_name like 'one_year%' then to_char(sched_1yr_date,'mm/dd/yyyy')
+	  when event_name like '24_month%' then to_char(sched_2yr_complete_date,'mm/dd/yyyy')
 	end as sched_ctau_complete_date -- PII. Remove after curation.                             -- PII. CTAU visit completion date; remove after curation
-  ,si.si_freeze_dt_tm,     -- PII. Best date to use for sample collection; remove before sharing 
-  ,dem.dem_ch_dob  -- PII; Remove after curation
+  ,si_freeze_dt_tm     -- PII. Best date to use for sample collection; remove before sharing 
+  ,dem_ch_dob  -- PII; Remove after curation
   ,case 
-    when si.event_name like 'baseline%' then age_days_between(dem.dem_ch_dob::date, sched.sched_base_complete_date)
-    when si.event_name like 'six_month%' then age_days_between(dem.dem_ch_dob::date, sched.sched_6mo_complete_date)
-    when si.event_name like 'one_year%' then age_days_between(dem.dem_ch_dob::date, sched.sched_1yr_date)
-    when si.event_name like '24_month%' then age_days_between(dem.dem_ch_dob::date, sched.sched_2yr_complete_date)
+    when event_name like 'baseline%' then age_days_between(dem_ch_dob::date, sched_base_complete_date)
+    when event_name like 'six_month%' then age_days_between(dem_ch_dob::date, sched_6mo_complete_date)
+    when event_name like 'one_year%' then age_days_between(dem_ch_dob::date, sched_1yr_date)
+    when event_name like '24_month%' then age_days_between(dem_ch_dob::date, sched_2yr_complete_date)
   end as age_days_interview
-  ,age_days_between(dem.dem_ch_dob::date, si.si_freeze_dt_tm) as age_days_sample_collection,
+  ,age_days_between(dem_ch_dob::date, si_freeze_dt_tm::date) as age_days_sample_collection
   ,case
-    when si.event_name like 'baseline%' then sched.sched_base_complete
-    when si.event_name like 'six_month%' then sched.sched_6mo_complete
-    when si.event_name like 'one_year%' then sched.sched_1yr_complete
-    when si.event_name like '24_month%' then sched.sched_2yr_complete
+    when event_name like 'baseline%' then sched_base_complete
+    when event_name like 'six_month%' then sched_6mo_complete
+    when event_name like 'one_year%' then sched_1yr_complete
+    when event_name like '24_month%' then sched_2yr_complete
   end as complete
   ,case
-    when si.event_name like 'baseline%' then '00_baseline'
-    when si.event_name like 'six_month%' then '06_six_month'
-    when si.event_name like 'one_year%' then '12_month'
-    when si.event_name like '24_month%' then '24_month'
+    when event_name like 'baseline%' then '00_baseline'
+    when event_name like 'six_month%' then '06_six_month'
+    when event_name like 'one_year%' then '12_month'
+    when event_name like '24_month%' then '24_month'
     end as visit
-  ,case 
-    when pfhc.hc_sex_birth_cert='1' then 'F'
-    when pfhc.hc_sex_birth_cert='2' then 'M'
-    else null
-  end as sex
-  ,pfhc.hc_race as race
-  ,pfhc.hc_hispanic as hispanic
-  ,tlfb.tlfb_drink_mo
-  ,tlfb.tlfb_drink_days
-  ,tlfb.tlfb_drink_per_day
-  ,tlfb.tlfb_hv_ep_dr_days
-  ,tlfb.tlfb_24_max
-  ,tlfb.tlfb_cig_mo
-  ,tlfb.tlfb_smoke_days
-  ,tlfb.tlfb_cig_per_day
-  ,tlfb.tlfb_thc_days
-  ,aud.audit_q1_sc
-	,aud.audit_q2_sc
-	,aud.audit_q3_sc
-	,aud.audit_q4_sc
-  ,aud.audit_q5_sc
-  ,aud.audit_q6_sc
-  ,aud.audit_q7_sc
-  ,aud.audit_q8_sc
-  ,aud.audit_q9_sc
-	,aud.audit_q10_sc
-  ,aud.audit_score 
-  ,sui.sui_1
-  ,sui.sui_2
-	,sui.sui_3
-	,sui.sui_4 
-	,sui.sui_5
---- ,sui.sui_6		         Unstructured text needs to be deidentified or removed prior to public sharing
- 	,sui.sui_7
-	,sui.sui_8
-  ,age_years_between(deq.deq_alc_use_dt::date, dem.dem_ch_dob::date) as deq_age_last_alc -- NEW FIELD
-  ,age_days_between(deq.deq_alc_use_dt::date, si.si_freeze_dt_tmdate) AS deq_last_alc_days_b4sample	   
-	,deq.deq_alc_last_amt
-	,deq.deq_alc_dur
-  ,deq.deq_alc_mem_diff
-  ,deq.deq_alc_blackout
-	,deq.deq_alc_hungover
-  ,deq.deq_alc_effects
-	,deq.deq_alc_effects_2
-	,deq.deq_alc_effects_3
-  ,deq.deq_alc_effects_4
+  ,sex
+  ,hc_race as race
+  ,hc_hispanic as hispanic
+  ,tlfb_drink_mo
+  ,tlfb_drink_days
+  ,tlfb_drink_per_day
+  ,tlfb_hv_ep_dr_days
+  ,tlfb_24_max
+  ,tlfb_cig_mo
+  ,tlfb_smoke_days
+  ,tlfb_cig_per_day
+  ,tlfb_thc_days
+  ,audit_q1_sc
+	,audit_q2_sc
+	,audit_q3_sc
+	,audit_q4_sc
+  ,audit_q5_sc
+  ,audit_q6_sc
+  ,audit_q7_sc
+  ,audit_q8_sc
+  ,audit_q9_sc
+	,audit_q10_sc
+  ,audit_score 
+  ,sui_1
+  ,sui_2
+	,sui_3
+	,sui_4 
+	,sui_5
+--- ,sui_6		         Unstructured text needs to be deidentified or removed prior to public sharing
+ 	,sui_7
+	,sui_8
+  ,age_years_between(deq_alc_use_dt::date, dem_ch_dob::date) as deq_age_last_alc -- NEW FIELD
+  ,age_days_between(deq_alc_use_dt::date, si_freeze_dt_tm::date) AS deq_last_alc_days_b4sample	   
+	,deq_alc_last_amt
+	,deq_alc_dur
+  ,deq_alc_mem_diff
+  ,deq_alc_blackout
+	,deq_alc_hungover
+  ,deq_alc_effects
+	,deq_alc_effects_2
+	,deq_alc_effects_3
+  ,deq_alc_effects_4
   ,age_years_between(deq_drug_use_dt::date, dem_ch_dob::date) as deq_age_last_drug
-	,age_days_between(deq_drug_use_dt::date, si_freeze_dt_tmdate) AS deq_last_drug_days_b4sample
-  ,deq.deq_drug_mdma
-  ,deq.deq_drug_heroin
-  ,deq.deq_drug_cocaine 
-	,deq.deq_drug_crack
-  ,deq.deq_drug_k
-	,deq.deq_drug_meth
-	,deq.deq_drug_pain
-  ,deq.deq_drug_stim
-  ,deq.deq_drug_k2
- 	,deq.deq_drug_benzos 
-  ,deq.deq_drug_none
-  ,deq.deq_drugs_dur
-  ,deq.deq_drugs_snort
- 	,deq.deq_drugs_inject
-	,deq.deq_drugs_smoke
-	,deq.deq_drugs_oral
-	,deq.deq_drugs_other
-	,deq.deq_drugs_mem_diff
-  ,deq.deq_drugs_blackout
-	,deq.deq_drugs_hungover
-  ,deq.deq_drugs_effects
-	,deq.deq_drugs_effects_2
-	,deq.deq_drugs_effects_3
----	
+	,age_days_between(deq_drug_use_dt::date, si_freeze_dt_tm::date) AS deq_last_drug_days_b4sample
+  ,deq_drug_mdma
+  ,deq_drug_heroin
+  ,deq_drug_cocaine 
+	,deq_drug_crack
+  ,deq_drug_k
+	,deq_drug_meth
+	,deq_drug_pain
+  ,deq_drug_stim
+  ,deq_drug_k2
+ 	,deq_drug_benzos 
+  ,deq_drug_none
+  ,deq_drugs_dur
+  ,deq_drugs_snort
+ 	,deq_drugs_inject
+	,deq_drugs_smoke
+	,deq_drugs_oral
+	,deq_drugs_other
+	,deq_drugs_mem_diff
+  ,deq_drugs_blackout
+	,deq_drugs_hungover
+  ,deq_drugs_effects
+	,deq_drugs_effects_2
+	,deq_drugs_effects_3	
 from rcap_ctau_sample_info_joined_view si
-where si_tube_id ilike '%_1_1'
-inner join subject_alias sa1
-    on sa1.source_subject_id = si.source_subject_id
-    and sa1.project_id = 2515 -- only ctau ids
-    and sa1.id_type = 'redcap'
-left join rcap_ctau_scheduling_form sched
-    on sched.source_subject_id = si.source_subject_id 
-    and sched.event_name like 'baseline%'             -- Is this right? Need all events in which samples were collected.
-left join rcap_ctau_dem ctau_dem
-    on ctau_dem.source_subject_id = sa1.source_subject_id
-left join rcap_ctau_tlfb tlfb
-    on tlfb.source_subject_id = sa1.source_subject_id
-left join rcap_ctau_audit aud
-    on aud.source_subject_id = sa1.source_subject_id
-left join rcap_ctau_sui sui
-    on sui.source_subject_id = sa1.source_subject_id
-left join rcap_ctau_deq deq
-    on deq.source_subject_id = sa1.source_subject_id
-left join subject_alias sa3
-    on sa3.subject_id = sa1.subject_id
-    and sa3.project_id = 696
-    and sa3.id_type = 'redcap'
-left join rcap_pfh_child pfhc 
-    on pfhc.source_subject_id = sa3.source_subject_id
-	and pfhc.event_name like 'baseline%'               -- Is this right? Need all events in which samples were collected.
-order by sa1.subject_id; 
+where si_tube_id ilike '%_1_1';
+
+
+
+
+
+
+------- 05/13/26 Vlad commented out Pat's part of the script 
+
+-- inner join subject_alias sa1
+--     on sa1.source_subject_id = si.source_subject_id
+--     and sa1.project_id = 2515 -- only ctau ids
+--     and sa1.id_type = 'redcap'
+-- left join rcap_ctau_scheduling_form sched
+--     on sched.source_subject_id = si.source_subject_id 
+--     and sched.event_name like 'baseline%'             -- Is this right? Need all events in which samples were collected.
+-- left join rcap_ctau_dem ctau_dem
+--     on ctau_dem.source_subject_id = sa1.source_subject_id
+-- left join rcap_ctau_tlfb tlfb
+--     on tlfb.source_subject_id = sa1.source_subject_id
+-- left join rcap_ctau_audit aud
+--     on aud.source_subject_id = sa1.source_subject_id
+-- left join rcap_ctau_sui sui
+--     on sui.source_subject_id = sa1.source_subject_id
+-- left join rcap_ctau_deq deq
+--     on deq.source_subject_id = sa1.source_subject_id
+-- left join subject_alias sa3
+--     on sa3.subject_id = sa1.subject_id
+--     and sa3.project_id = 696
+--     and sa3.id_type = 'redcap'
+-- left join rcap_pfh_child pfhc 
+--     on pfhc.source_subject_id = sa3.source_subject_id
+-- 	and pfhc.event_name like 'baseline%'               -- Is this right? Need all events in which samples were collected.
+-- order by sa1.subject_id; 
