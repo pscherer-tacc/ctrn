@@ -16,7 +16,7 @@
 --- as
 select
     dem.dem_guid as subjectkey          -- only used for NIH projects; may be omitted for CTRN Main studies
-    ,sa1.subject_id as subject_id   
+    ,sa1.subject_id
 	,case
 		when tesip.event_name like 'baseline%' then to_char(sched_main.sched_base_complete_date, 'mm/dd/yyyy')
 		when tesip.event_name like 'one_month%' then to_char(sched_main.sched_1mo_complete_date, 'mm/dd/yyyy')
@@ -55,7 +55,7 @@ select
     	when pfhc.hc_race='6' then 'Multi-racial'
         else null
     end as race
-	,pfhc.hc_hispanic as hispanic
+	,pfhc.hc_hispanic
     ,case															-- Renaming events as visits to facilitate sequencing as per 4/30/2026 request by Jeff
 		when tesip.event_name like 'baseline%' then '00_baseline'      
 		when tesip.event_name like 'one_month%' then '01_one_month'
