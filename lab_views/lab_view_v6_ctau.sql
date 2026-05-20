@@ -57,7 +57,7 @@ select
         when ctau_union.event_name like 'six_month%' then '06_six_month_ctau'
         when ctau_union.event_name like 'one_year%' then '12_month_ctau'
         when ctau_union.event_name like '18_month%' then '18_month_ctau'
-        when ctau_union.event_name like '24_month' then '24_month_ctau'
+        when ctau_union.event_name like '24_month%' then '24_month_ctau'
     end as visit,
     case
         when pfhc.hc_sex_birth_cert = '1' then 'F'
