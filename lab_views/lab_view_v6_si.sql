@@ -4,12 +4,12 @@ select
     si.si_tube_id,
     si.source_subject_id, -- only for validation
     case 
-        when si.event_name like 'baseline%' then '00_baseline'
-        when si.event_name like 'one_month%' then '01_month'
-        when si.event_name like 'six_month%' then '06_month'
-        when si.event_name like 'one_year%' then '12_month'
-        when si.event_name like '18_month%' then '18_month'
-        when si.event_name like '24_month' then '24_month'
+        when si.event_name like 'baseline%' then '00_baseline_ctau'
+        when si.event_name like 'one_month%' then '01_one_month_ctau'
+        when si.event_name like 'six_month%' then '06_six_month_ctau'
+        when si.event_name like 'one_year%' then '12_month_ctau'
+        when si.event_name like '18_month%' then '18_month_ctau'
+        when si.event_name like '24_month' then '24_month_ctau'
     end as visit,
     ctrn_main_dem.dem_ch_dob, -- only for validation
     si.si_freeze_dt_tm, -- only for validation
@@ -37,7 +37,7 @@ left join rcap_demographics ctrn_main_dem
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = sa2.source_subject_id
     and pfhc.event_name like 'baseline%'
-
-where si.si_tube_id ilike '%_1_1';
+---
+where si.si_tube_id ilike '%\_1\_1';
 ;
 
