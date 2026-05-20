@@ -9,7 +9,7 @@ select
         when si.event_name like 'six_month%' then '06_six_month_ctau'
         when si.event_name like 'one_year%' then '12_month_ctau'
         when si.event_name like '18_month%' then '18_month_ctau'
-        when si.event_name like '24_month' then '24_month_ctau'
+        when si.event_name like '24_month%' then '24_month_ctau'
     end as visit,
     ctrn_main_dem.dem_ch_dob, -- only for validation
     si.si_freeze_dt_tm, -- only for validation
