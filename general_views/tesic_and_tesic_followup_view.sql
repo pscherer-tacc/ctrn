@@ -9,22 +9,22 @@ select
     ,tc_administrator_other as tc_administrator_other
     ,tc_interview_date as tc_interview_date
     ,tc_1_1 as tc_1_1
-    ,null as tcfu_1_1
+    --,null as tcfu_1_1
     ,tc_1_1_crit_a1 as tc_1_1_crit_a1
     ,tc_1_1_crit_a2 as tc_1_1_crit_a2
     ,tc_1_1_how_often as tc_1_1_how_often
     ,tc_1_2 as tc_1_2
-    ,null as tcfu_1_2
+    --,null as tcfu_1_2
     ,tc_1_2_crit_a1 as tc_1_2_crit_a1
     ,tc_1_2_crit_a2 as tc_1_2_crit_a2
     ,tc_1_2_how_often as tc_1_2_how_often
     ,tc_1_3 as tc_1_3
-    ,null as tcfu_1_3
+    --,null as tcfu_1_3
     ,tc_1_3_crit_a1 as tc_1_3_crit_a1
     ,tc_1_3_crit_a2 as tc_1_3_crit_a2
     ,tc_1_3_how_often as tc_1_3_how_often
     ,tc_1_4 as tc_1_4
-    ,null as tcfu_1_4
+    --,null as tcfu_1_4
     ,tc_1_4_crit_a1 as tc_1_4_crit_a1
     ,tc_1_4_crit_a2 as tc_1_4_crit_a2
     ,tc_1_4_who__1_mother as tc_1_4_who__1_mother
@@ -37,17 +37,17 @@ select
     ,tc_1_4_who__8_else as tc_1_4_who__8_else
     ,tc_1_4_how_often as tc_1_4_how_often
     ,tc_1_5 as tc_1_5
-    ,null as tcfu_1_5
+    --,null as tcfu_1_5
     ,tc_1_5_crit_a1 as tc_1_5_crit_a1
     ,tc_1_5_crit_a2 as tc_1_5_crit_a2
     ,tc_1_5_how_often as tc_1_5_how_often
     ,tc_1_6 as tc_1_6
-    ,null as tcfu_1_6
+    --,null as tcfu_1_6
     ,tc_1_6_crit_a1 as tc_1_6_crit_a1
     ,tc_1_6_crit_a2 as tc_1_6_crit_a2
     ,tc_1_6_how_often as tc_1_6_how_often
     ,tc_2_1 as tc_2_1
-    ,null as tcfu_2_1
+    --,null as tcfu_2_1
     ,tc_2_1_crit_a1 as tc_2_1_crit_a1
     ,tc_2_1_crit_a2 as tc_2_1_crit_a2
     ,tc_2_1_who__1_mother as tc_2_1_who__1_mother
@@ -68,7 +68,7 @@ select
     ,tc_2_1_how__6_other as tc_2_1_how__6_other
     ,tc_2_1_how_often as tc_2_1_how_often
     ,tc_2_2 as tc_2_2
-    ,null as tcfu_2_2
+    --,null as tcfu_2_2
     ,tc_2_2_crit_a2 as tc_2_2_crit_a2
     ,tc_2_2_who__1_mother as tc_2_2_who__1_mother
     ,tc_2_2_who__2_father as tc_2_2_who__2_father
@@ -88,12 +88,12 @@ select
     ,tc_2_2_how__6_other as tc_2_2_how__6_other
     ,tc_2_2_how_often as tc_2_2_how_often
     ,tc_2_3 as tc_2_3
-    ,null as tcfu_2_3
+    --,null as tcfu_2_3
     ,tc_2_3_crit_a2 as tc_2_3_crit_a2
     ,tc_2_3_how as tc_2_3_how
     ,tc_2_3_how_often as tc_2_3_how_often
     ,tc_2_4 as tc_2_4
-    ,null as tcfu_2_4
+    --,null as tcfu_2_4
     ,tc_2_4_crit_a2 as tc_2_4_crit_a2
     ,tc_2_4_who__1_mother as tc_2_4_who__1_mother
     ,tc_2_4_who__2_father as tc_2_4_who__2_father
@@ -109,11 +109,11 @@ select
     ,tc_2_4_how__4_other as tc_2_4_how__4_other
     ,tc_2_4_how_often as tc_2_4_how_often
     ,tc_2_5 as tc_2_5
-    ,null as tcfu_2_5
+    --,null as tcfu_2_5
     ,tc_2_5_crit_a2 as tc_2_5_crit_a2
     ,tc_2_5_how_often as tc_2_5_how_often
     ,tc_3_1 as tc_3_1
-    ,null as tcfu_3_1
+    --,null as tcfu_3_1
     ,tc_3_1_crit_a2 as tc_3_1_crit_a2
     ,tc_3_1_who__1_mother as tc_3_1_who__1_mother
     ,tc_3_1_who__2_father as tc_3_1_who__2_father
@@ -133,7 +133,7 @@ select
     ,tc_3_1_how__6_other as tc_3_1_how__6_other
     ,tc_3_1_how_often as tc_3_1_how_often
     ,tc_3_2 as tc_3_2
-    ,null as tcfu_3_2
+    --,null as tcfu_3_2
     ,tc_3_2_crit_a2 as tc_3_2_crit_a2
     ,tc_3_2_who__1_mother as tc_3_2_who__1_mother
     ,tc_3_2_who__2_father as tc_3_2_who__2_father
@@ -153,7 +153,7 @@ select
     ,tc_3_2_how__6_other as tc_3_2_how__6_other
     ,tc_3_2_how_often as tc_3_2_how_often
     ,tc_3_3 as tc_3_3
-    ,null as tcfu_3_3
+    --,null as tcfu_3_3
     ,tc_3_3_crit_a2 as tc_3_3_crit_a2
     ,tc_3_3_who__1_mother as tc_3_3_who__1_mother
     ,tc_3_3_who__2_father as tc_3_3_who__2_father
@@ -162,7 +162,7 @@ select
     ,tc_3_3_who__5_otherrelative as tc_3_3_who__5_otherrelative
     ,tc_3_3_how_often as tc_3_3_how_often
     ,tc_4_1 as tc_4_1
-    ,null as tcfu_4_1
+    --,null as tcfu_4_1
     ,tc_4_1_crit_a2 as tc_4_1_crit_a2
     ,tc_4_1_who__1_mother as tc_4_1_who__1_mother
     ,tc_4_1_who__2_father as tc_4_1_who__2_father
@@ -182,7 +182,7 @@ select
     ,tc_4_1_how__6_other as tc_4_1_how__6_other
     ,tc_4_1_how_often as tc_4_1_how_often
     ,tc_4_2 as tc_4_2
-    ,null as tcfu_4_2
+    --,null as tcfu_4_2
     ,tc_4_2_crit_a2 as tc_4_2_crit_a2
     ,tc_4_2_who__1_mother as tc_4_2_who__1_mother
     ,tc_4_2_who__2_father as tc_4_2_who__2_father
@@ -202,11 +202,11 @@ select
     ,tc_4_2_how__6_other as tc_4_2_how__6_other
     ,tc_4_2_how_often as tc_4_2_how_often
     ,tc_4_3 as tc_4_3
-    ,null as tcfu_4_3
+    --,null as tcfu_4_3
     ,tc_4_3_crit_a2 as tc_4_3_crit_a2
     ,tc_4_3_how_often as tc_4_3_how_often
     ,tc_5 as tc_5
-    ,null as tcfu_5
+    --,null as tcfu_5
     ,tc_5_crit_a2 as tc_5_crit_a2
     ,tc_5_who__1_mother as tc_5_who__1_mother
     ,tc_5_who__2_father as tc_5_who__2_father
@@ -228,7 +228,7 @@ select
     ,tc_5_how__8_other as tc_5_how__8_other
     ,tc_5_how_often as tc_5_how_often
     ,tc_6_1 as tc_6_1
-    ,null as tcfu_6_1
+    --,null as tcfu_6_1
     ,tc_6_1_crit_a2 as tc_6_1_crit_a2
     ,tc_6_1_who__1_older_boy as tc_6_1_who__1_older_boy
     ,tc_6_1_who__2_younger_boy as tc_6_1_who__2_younger_boy
@@ -242,7 +242,7 @@ select
     ,tc_6_1_who__10_unkadult as tc_6_1_who__10_unkadult
     ,tc_6_1_who__99_else as tc_6_1_who__99_else
     ,tc_6_2 as tc_6_2
-    ,null as tcfu_6_2
+    --,null as tcfu_6_2
     ,tc_6_2_who__1_older_boy as tc_6_2_who__1_older_boy
     ,tc_6_2_who__2_younger_boy as tc_6_2_who__2_younger_boy
     ,tc_6_2_who__3_boy_same_grade as tc_6_2_who__3_boy_same_grade
@@ -256,7 +256,7 @@ select
     ,tc_6_2_who__99_else as tc_6_2_who__99_else
     ,tc_6_2_how_often as tc_6_2_how_often
     ,tc_7 as tc_7
-    ,null as tcfu_7
+    --,null as tcfu_7
     ,tc_7_crit_a1 as tc_7_crit_a1
     ,tc_7_crit_a2 as tc_7_crit_a2
     ,tc_7_how_often as tc_7_how_often
@@ -423,23 +423,23 @@ select
     ,tcfu_administrator as tc_administrator
     ,tcfu_administrator_other as tc_administrator_other
     ,tcfu_interview_date as tc_interview_date
-    ,null as tc_1_1
-    ,tcfu_1_1 as tcfu_1_1
+    --,null as tc_1_1
+    ,tcfu_1_1 as tc_1_1
     ,tcfu_1_1_crit_a1 as tc_1_1_crit_a1
     ,tcfu_1_1_crit_a2 as tc_1_1_crit_a2
     ,tcfu_1_1_how_often as tc_1_1_how_often
-    ,null as tc_1_2
-    ,tcfu_1_2 as tcfu_1_2
+    --,null as tc_1_2
+    ,tcfu_1_2 as tc_1_2
     ,tcfu_1_2_crit_a1 as tc_1_2_crit_a1
     ,tcfu_1_2_crit_a2 as tc_1_2_crit_a2
     ,tcfu_1_2_how_often as tc_1_2_how_often
-    ,null as tc_1_3
-    ,tcfu_1_3 as tcfu_1_3
+    --,null as tc_1_3
+    ,tcfu_1_3 as tc_1_3
     ,tcfu_1_3_crit_a1 as tc_1_3_crit_a1
     ,tcfu_1_3_crit_a2 as tc_1_3_crit_a2
     ,tcfu_1_3_how_often as tc_1_3_how_often
-    ,null as tc_1_4
-    ,tcfu_1_4 as tcfu_1_4
+    --,null as tc_1_4
+    ,tcfu_1_4 as tc_1_4
     ,tcfu_1_4_crit_a1 as tc_1_4_crit_a1
     ,tcfu_1_4_crit_a2 as tc_1_4_crit_a2
     ,tcfu_1_4_who__1_mother as tc_1_4_who__1_mother
@@ -451,18 +451,18 @@ select
     ,tcfu_1_4_who__7_kkid as tc_1_4_who__7_kkid
     ,tcfu_1_4_who__8_else as tc_1_4_who__8_else
     ,tcfu_1_4_how_often as tc_1_4_how_often
-    ,null as tc_1_5
-    ,tcfu_1_5 as tcfu_1_5
+    --,null as tc_1_5
+    ,tcfu_1_5 as tc_1_5
     ,tcfu_1_5_crit_a1 as tc_1_5_crit_a1
     ,tcfu_1_5_crit_a2 as tc_1_5_crit_a2
     ,tcfu_1_5_how_often as tc_1_5_how_often
-    ,null as tc_1_6
-    ,tcfu_1_6 as tcfu_1_6
+    --,null as tc_1_6
+    ,tcfu_1_6 as tc_1_6
     ,tcfu_1_6_crit_a1 as tc_1_6_crit_a1
     ,tcfu_1_6_crit_a2 as tc_1_6_crit_a2
     ,tcfu_1_6_how_often as tc_1_6_how_often
-    ,null as tc_2_1
-    ,tcfu_2_1 as tcfu_2_1
+    --,null as tc_2_1
+    ,tcfu_2_1 as tc_2_1
     ,tcfu_2_1_crit_a1 as tc_2_1_crit_a1
     ,tcfu_2_1_crit_a2 as tc_2_1_crit_a2
     ,tcfu_2_1_who__1_mother as tc_2_1_who__1_mother
@@ -482,8 +482,8 @@ select
     ,tcfu_2_1_how__5_bat_club as tc_2_1_how__5_bat_club
     ,tcfu_2_1_how__6_other as tc_2_1_how__6_other
     ,tcfu_2_1_how_often as tc_2_1_how_often
-    ,null as tc_2_2
-    ,tcfu_2_2 as tcfu_2_2
+    --,null as tc_2_2
+    ,tcfu_2_2 as tc_2_2
     ,tcfu_2_2_crit_a2 as tc_2_2_crit_a2
     ,tcfu_2_2_who__1_mother as tc_2_2_who__1_mother
     ,tcfu_2_2_who__2_father as tc_2_2_who__2_father
@@ -502,13 +502,13 @@ select
     ,tcfu_2_2_how__5_bat_club as tc_2_2_how__5_bat_club
     ,tcfu_2_2_how__6_other as tc_2_2_how__6_other
     ,tcfu_2_2_how_often as tc_2_2_how_often
-    ,null as tc_2_3
-    ,tcfu_2_3 as tcfu_2_3
+    --,null as tc_2_3
+    ,tcfu_2_3 as tc_2_3
     ,tcfu_2_3_crit_a2 as tc_2_3_crit_a2
     ,tcfu_2_3_how as tc_2_3_how
     ,tcfu_2_3_how_often as tc_2_3_how_often
-    ,null as tc_2_4
-    ,tcfu_2_4 as tcfu_2_4
+    --,null as tc_2_4
+    ,tcfu_2_4 as tc_2_4
     ,tcfu_2_4_crit_a2 as tc_2_4_crit_a2
     ,tcfu_2_4_who__1_mother as tc_2_4_who__1_mother
     ,tcfu_2_4_who__2_father as tc_2_4_who__2_father
@@ -523,12 +523,12 @@ select
     ,tcfu_2_4_how__3_knife as tc_2_4_how__3_knife
     ,tcfu_2_4_how__4_other as tc_2_4_how__4_other
     ,tcfu_2_4_how_often as tc_2_4_how_often
-    ,null as tc_2_5
-    ,tcfu_2_5 as tcfu_2_5
+    --,null as tc_2_5
+    ,tcfu_2_5 as tc_2_5
     ,tcfu_2_5_crit_a2 as tc_2_5_crit_a2
     ,tcfu_2_5_how_often as tc_2_5_how_often
-    ,null as tc_3_1
-    ,tcfu_3_1 as tcfu_3_1
+    --,null as tc_3_1
+    ,tcfu_3_1 as tc_3_1
     ,tcfu_3_1_crit_a2 as tc_3_1_crit_a2
     ,tcfu_3_1_who__1_mother as tc_3_1_who__1_mother
     ,tcfu_3_1_who__2_father as tc_3_1_who__2_father
@@ -547,8 +547,8 @@ select
     ,tcfu_3_1_how__5_bat_club as tc_3_1_how__5_bat_club
     ,tcfu_3_1_how__6_other as tc_3_1_how__6_other
     ,tcfu_3_1_how_often as tc_3_1_how_often
-    ,null as tc_3_2
-    ,tcfu_3_2 as tcfu_3_2
+    --,null as tc_3_2
+    ,tcfu_3_2 as tc_3_2
     ,tcfu_3_2_crit_a2 as tc_3_2_crit_a2
     ,tcfu_3_2_who__1_mother as tc_3_2_who__1_mother
     ,tcfu_3_2_who__2_father as tc_3_2_who__2_father
@@ -567,8 +567,8 @@ select
     ,tcfu_3_2_how__5_bat_club as tc_3_2_how__5_bat_club
     ,tcfu_3_2_how__6_other as tc_3_2_how__6_other
     ,tcfu_3_2_how_often as tc_3_2_how_often
-    ,null as tc_3_3
-    ,tcfu_3_3 as tcfu_3_3
+    --,null as tc_3_3
+    ,tcfu_3_3 as tc_3_3
     ,tcfu_3_3_crit_a2 as tc_3_3_crit_a2
     ,tcfu_3_3_who__1_mother as tc_3_3_who__1_mother
     ,tcfu_3_3_who__2_father as tc_3_3_who__2_father
@@ -576,8 +576,8 @@ select
     ,tcfu_3_3_who__4_grandparent as tc_3_3_who__4_grandparent
     ,tcfu_3_3_who__5_otherrelative as tc_3_3_who__5_otherrelative
     ,tcfu_3_3_how_often as tc_3_3_how_often
-    ,null as tc_4_1
-    ,tcfu_4_1 as tcfu_4_1
+    --,null as tc_4_1
+    ,tcfu_4_1 as tc_4_1
     ,tcfu_4_1_crit_a2 as tc_4_1_crit_a2
     ,tcfu_4_1_who__1_mother as tc_4_1_who__1_mother
     ,tcfu_4_1_who__2_father as tc_4_1_who__2_father
@@ -596,8 +596,8 @@ select
     ,tcfu_4_1_how__5_bat_club as tc_4_1_how__5_bat_club
     ,tcfu_4_1_how__6_other as tc_4_1_how__6_other
     ,tcfu_4_1_how_often as tc_4_1_how_often
-    ,null as tc_4_2
-    ,tcfu_4_2 as tcfu_4_2
+    --,null as tc_4_2
+    ,tcfu_4_2 as tc_4_2
     ,tcfu_4_2_crit_a2 as tc_4_2_crit_a2
     ,tcfu_4_2_who__1_mother as tc_4_2_who__1_mother
     ,tcfu_4_2_who__2_father as tc_4_2_who__2_father
@@ -616,12 +616,12 @@ select
     ,tcfu_4_2_how__5_bat_club as tc_4_2_how__5_bat_club
     ,tcfu_4_2_how__6_other as tc_4_2_how__6_other
     ,tcfu_4_2_how_often as tc_4_2_how_often
-    ,null as tc_4_3
-    ,tcfu_4_3 as tcfu_4_3
+    --,null as tc_4_3
+    ,tcfu_4_3 as tc_4_3
     ,tcfu_4_3_crit_a2 as tc_4_3_crit_a2
     ,tcfu_4_3_how_often as tc_4_3_how_often
-    ,null as tc_5
-    ,tcfu_5 as tcfu_5
+    --,null as tc_5
+    ,tcfu_5 as tc_5
     ,tcfu_5_crit_a2 as tc_5_crit_a2
     ,tcfu_5_who__1_mother as tc_5_who__1_mother
     ,tcfu_5_who__2_father as tc_5_who__2_father
@@ -642,8 +642,8 @@ select
     ,tcfu_5_how__7_prostitution as tc_5_how__7_prostitution
     ,tcfu_5_how__8_other as tc_5_how__8_other
     ,tcfu_5_how_often as tc_5_how_often
-    ,null as tc_6_1
-    ,tcfu_6_1 as tcfu_6_1
+    --,null as tc_6_1
+    ,tcfu_6_1 as tc_6_1
     ,tcfu_6_1_crit_a2 as tc_6_1_crit_a2
     ,tcfu_6_1_who__1_older_boy as tc_6_1_who__1_older_boy
     ,tcfu_6_1_who__2_younger_boy as tc_6_1_who__2_younger_boy
@@ -656,8 +656,8 @@ select
     ,tcfu_6_1_who__9_unkkid as tc_6_1_who__9_unkkid
     ,tcfu_6_1_who__10_unkadult as tc_6_1_who__10_unkadult
     ,tcfu_6_1_who__99_else as tc_6_1_who__99_else
-    ,null as tc_6_2
-    ,tcfu_6_2 as tcfu_6_2
+    --,null as tc_6_2
+    ,tcfu_6_2 as tc_6_2
     ,tcfu_6_2_who__1_older_boy as tc_6_2_who__1_older_boy
     ,tcfu_6_2_who__2_younger_boy as tc_6_2_who__2_younger_boy
     ,tcfu_6_2_who__3_boy_same_grade as tc_6_2_who__3_boy_same_grade
@@ -670,8 +670,8 @@ select
     ,tcfu_6_2_who__10_unkadult as tc_6_2_who__10_unkadult
     ,tcfu_6_2_who__99_else as tc_6_2_who__99_else
     ,tcfu_6_2_how_often as tc_6_2_how_often
-    ,null as tc_7
-    ,tcfu_7 as tcfu_7
+    --,null as tc_7
+    ,tcfu_7 as tc_7
     ,tcfu_7_crit_a1 as tc_7_crit_a1
     ,tcfu_7_crit_a2 as tc_7_crit_a2
     ,tcfu_7_how_often as tc_7_how_often
