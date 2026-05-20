@@ -38,6 +38,12 @@ left join rcap_pfh_child pfhc
     on pfhc.source_subject_id = sa2.source_subject_id
     and pfhc.event_name like 'baseline%'
 ---
-where si.si_tube_id ilike '%\_1\_1';
+where si.si_tube_id ilike '%\_1\_1'
+order by 
+    sa1.subject_id,
+    age_days_between(
+        ctrn_main_dem.dem_ch_dob::date,
+        si.si_freeze_dt_tm::date
+    )
 ;
 

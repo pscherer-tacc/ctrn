@@ -165,6 +165,16 @@ left join rcap_demographics ctrn_main_dem
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = sa2.source_subject_id
     and pfhc.event_name like 'baseline%'
+
+order by
+    sa1.subject_id,
+    case 
+        when ctau_union.event_name like 'baseline%' then age_days_between(ctrn_main_dem.dem_ch_dob::date, ctau_sched.sched_base_complete_date::date)
+        when ctau_union.event_name like 'one_month%' then age_days_between(ctrn_main_dem.dem_ch_dob::date, ctau_sched.sched_1mo_complete_date::date)
+        when ctau_union.event_name like 'six_month%' then age_days_between(ctrn_main_dem.dem_ch_dob::date, ctau_sched.sched_6mo_complete_date::date)
+        when ctau_union.event_name like 'one_year%' then age_days_between(ctrn_main_dem.dem_ch_dob::date, ctau_sched.sched_1yr_date::date)
+        when ctau_union.event_name like '24_month%' then age_days_between(ctrn_main_dem.dem_ch_dob::date, ctau_sched.sched_2yr_complete_date::date)
+    end
 ;
 
 
