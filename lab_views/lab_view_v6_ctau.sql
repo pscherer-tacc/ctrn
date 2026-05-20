@@ -1,8 +1,8 @@
 --------- CTAU part of the lab view
-
+---
 ------ Important: run the whole query (CTE + query) 
 ------ starting with "with ctau_instruments_union ..."
-
+---
 -- Below is a common table expression (CTE) uniting all source_subject_id-event_name pairs.
 -- The CTE will be used as a main/"central" table to which other tables will 
 -- be joined.
@@ -52,12 +52,12 @@ select
         when ctau_union.event_name like '24_month%' then ctau_sched.sched_2yr_complete
     end as complete,
     case 
-        when ctau_union.event_name like 'baseline%' then '00_baseline'
-        when ctau_union.event_name like 'one_month%' then '01_month'
-        when ctau_union.event_name like 'six_month%' then '06_month'
-        when ctau_union.event_name like 'one_year%' then '12_month'
-        when ctau_union.event_name like '18_month%' then '18_month'
-        when ctau_union.event_name like '24_month' then '24_month'
+        when ctau_union.event_name like 'baseline%' then '00_baseline_ctau'
+        when ctau_union.event_name like 'one_month%' then '01_one_month_ctau'
+        when ctau_union.event_name like 'six_month%' then '06_six_month_ctau'
+        when ctau_union.event_name like 'one_year%' then '12_month_ctau'
+        when ctau_union.event_name like '18_month%' then '18_month_ctau'
+        when ctau_union.event_name like '24_month' then '24_month_ctau'
     end as visit,
     case
         when pfhc.hc_sex_birth_cert = '1' then 'F'
@@ -66,7 +66,7 @@ select
     end as sex,
     pfhc.hc_race,
     pfhc.hc_hispanic,
-
+---
     tlfb.tlfb_drink_mo,
     tlfb.tlfb_drink_days,
     tlfb.tlfb_drink_per_day,
@@ -76,7 +76,7 @@ select
     tlfb.tlfb_smoke_days,
     tlfb.tlfb_cig_per_day,
     tlfb.tlfb_thc_days,
-
+---
     aud.audit_q1_sc,
 	aud.audit_q2_sc,
 	aud.audit_q3_sc,
@@ -88,7 +88,7 @@ select
     aud.audit_q9_sc,
     aud.audit_q10_sc,
     aud.audit_score,
-
+---
     sui.sui_1,
     sui.sui_2,
 	sui.sui_3,
@@ -97,7 +97,7 @@ select
 --- sui.sui_6,		         Unstructured text needs to be deidentified or removed prior to public sharing
  	sui.sui_7,
 	sui.sui_8,
-    
+---    
     age_years_between(
         deq.deq_alc_use_dt::date,
         ctrn_main_dem.dem_ch_dob::date
