@@ -5,10 +5,12 @@ SELECT
     ,event_name
     ,MAX(sched_ctrn_id) OVER (PARTITION BY source_subject_id) as sched_ctrn_id
     ,sched_base_complete
+    ,sched_1mo_complete
     ,sched_6mo_complete
     ,sched_1yr_complete
     ,sched_2yr_complete
     ,sched_base_complete_date
+    ,sched_1mo_complete_date
     ,sched_6mo_complete_date
     ,sched_1yr_date
     ,sched_2yr_complete_date

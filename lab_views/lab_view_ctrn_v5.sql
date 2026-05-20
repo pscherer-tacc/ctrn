@@ -43,21 +43,21 @@
 ---
 ---  
 select
-    sa1.subject_id
-	,si.source_subject_id as ctau_source_subject_id -- PII CTAU record_id; Remove after curation
-    ,sched.sched_ctrn_id		-- PII CTRN Main record_id; Remove after curation
-    ,si.si_tube_id
+    subject_id
+	,source_subject_id as ctau_source_subject_id -- PII CTAU record_id; Remove after curation
+    ,sched_ctrn_id		-- PII CTRN Main record_id; Remove after curation
+    ,si_tube_id
 	,event_name       -- event_name from a corresponding CTRN Main record for this and the following case 
 	,case
-	  when event_name like 'baseline%' then to_char(sched.sched_base_complete_date,'mm/dd/yyyy')
+	  when event_name like 'baseline%' then to_char(sched_base_complete_date,'mm/dd/yyyy')
 ---   when event_name like 'one_month%' then to_char(sched.sched_1mo_complete_date,'mm/dd/yyyy') Do we need to include these for lab analysis?
-	  when event_name like 'six_month%' then to_char(sched.sched_6mo_complete_date,'mm/dd/yyyy')
-	  when event_name like 'one_year%' then to_char(sched.sched_1yr_date,'mm/dd/yyyy')
+	  when event_name like 'six_month%' then to_char(sched_6mo_complete_date,'mm/dd/yyyy')
+	  when event_name like 'one_year%' then to_char(sched_1yr_date,'mm/dd/yyyy')
 ---   when event_name like '18_month%' then to_char(sched.sched_18mo_complete_date,'mm/dd/yyyy') Do we need to include these for lab analysis?
-	  when event_name like '24_month%' then to_char(sched.sched_2yr_complete_date,'mm/dd/yyyy')
+	  when event_name like '24_month%' then to_char(sched_2yr_complete_date,'mm/dd/yyyy')
 	end as sched_ctrn_complete_date -- PII. Remove after curation.                             -- PII. CTRN visit completion date; remove after curation
-    ,si.si_freeze_dt_tm,     -- PII. Best date to use for sample collection; remove before sharing 
-    ,dem.dem_ch_dob  -- PII; Remove after curation
+    ,si_freeze_dt_tm,     -- PII. Best date to use for sample collection; remove before sharing 
+    ,dem_ch_dob  -- PII; Remove after curation
     ,case 
       when event_name like 'baseline%' then age_days_between(dem.dem_ch_dob::date, sched.sched_base_complete_date)
 ---   C age_days_between(dem.dem_ch_dob::date, sched.sched_1mo_complete_date) Do we need to include these for lab analysis?
@@ -83,13 +83,10 @@ select
 	  when event_name like '18_month%' then '18_month'
       when event_name like '24_month%' then '24_month'
     end as visit
-    ,case 
-      when pfhc.hc_sex_birth_cert='1' then 'F'
-      when pfhc.hc_sex_birth_cert='2' then 'M'
-      else null
-    end as sex
-    ,pfhc.hc_race as race
-    ,pfhc.hc_hispanic as hispanic
+    ,sex
+    ,hc_race as race
+    ,hc_hispanic as hispanic
+    
     ,pfha_u.instrument
     ,pfha_u.parent1_relationship
     ,pfha_u.parent1_sex
