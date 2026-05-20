@@ -16,7 +16,7 @@
 --- as
 select
     dem.dem_guid as subjectkey          -- only used for NIH projects; may be omitted for CTRN Main studies
-    ,sa1.subject_id as src_subject_id   -- only for validation; DELETE before sharing
+    ,sa1.subject_id
 	,case
 		when tesip.event_name like 'baseline%' then to_char(sched_main.sched_base_complete_date, 'mm/dd/yyyy')
 		when tesip.event_name like 'one_month%' then to_char(sched_main.sched_1mo_complete_date, 'mm/dd/yyyy')
