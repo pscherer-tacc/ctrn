@@ -215,13 +215,57 @@ select
     tc.tc_7_how_often,
     tp.tp_7_1_age_first,
     tc.tc_7_worst,
+    case
+      when tc.tc_1_1_worst = '1' then '1_1'
+      when tc.tc_1_2_worst = '1' then '1_2'
+      when tc.tc_1_3_worst = '1' then '1_3'
+      when tc.tc_1_4_worst = '1' then '1_4'
+      when tc.tc_1_5_worst = '1' then '1_5'
+      when tc.tc_1_6_worst = '1' then '1_6'
+      when tc.tc_2_1_worst = '1' then '2_1'
+      when tc.tc_2_2_worst = '1' then '2_2'
+      when tc.tc_2_3_worst = '1' then '2_3'
+      when tc.tc_2_4_worst = '1' then '2_4'
+      when tc.tc_2_5_worst = '1' then '2_5'
+      when tc.tc_3_1_worst = '1' then '3_1'
+      when tc.tc_3_2_worst = '1' then '3_2'
+      when tc.tc_3_3_worst = '1' then '3_3'
+      when tc.tc_4_1_worst = '1' then '4_1'
+      when tc.tc_4_2_worst = '1' then '4_2'
+      when tc.tc_4_3_worst = '1' then '4_3'
+      when tc.tc_5_worst = '1' then '5'
+      when tc.tc_7_worst = '1' then '7'
+      else null
+    end as tc_8_1_worst,
     tc.tc_8_1 as tc_worst,    -- Classification of the worst trauma within the period prior to the visit
     tc.tc_8_1_less_than_1mo as tc_worst_less_than_1mo,
 	tc.tc_8_2,                -- PII, date for calculating worst age and duration; remove after curation 
     age_years_between(tc.tc_8_2::date, dem.dem_ch_dob::date) as worst_age_yrs,
     age_days_between(tc.tc_8_2::date, tc.tc_interview_date::date) AS worst_days_b4visit,
     tc.tcfu_8_3 as tc_8_worst_ever,
-	tc.tc_8_4,         -- PII, date of the most recent trauma reported at baseline; used to calculate age and recency; remove after curation
+	tc.tc_8_4,         -- PII, date of the most recent trauma reported at baseline; used to calculate age and recency; remove after curation  
+    case
+      when tc.tc_1_1_most_recent = '1' then '1_1'
+      when tc.tc_1_2_most_recent = '1' then '1_2'
+      when tc.tc_1_3_most_recent = '1' then '1_3'
+      when tc.tc_1_4_most_recent = '1' then '1_4'
+      when tc.tc_1_5_most_recent = '1' then '1_5'
+      when tc.tc_1_6_most_recent = '1' then '1_6'
+      when tc.tc_2_1_most_recent = '1' then '2_1'
+      when tc.tc_2_2_most_recent = '1' then '2_2'
+      when tc.tc_2_3_most_recent = '1' then '2_3'
+      when tc.tc_2_4_most_recent = '1' then '2_4'
+      when tc.tc_2_5_most_recent = '1' then '2_5'
+      when tc.tc_3_1_most_recent = '1' then '3_1'
+      when tc.tc_3_2_most_recent = '1' then '3_2'
+      when tc.tc_3_3_most_recent = '1' then '3_3'
+      when tc.tc_4_1_most_recent = '1' then '4_1'
+      when tc.tc_4_2_most_recent = '1' then '4_2'
+      when tc.tc_4_3_most_recent = '1' then '4_3'
+      when tc.tc_5_most_recent = '1' then '5'
+      when tc.tc_7_most_recent = '1' then '7'
+      else null
+    end as tc_8_3_most_recent,
     tc.tc_8_3 AS most_recent,   -- Classification of the most recent trauma
     tc.tc_8_3_less_than_1mo as tc_most_recent_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
     age_years_between(tc.tc_8_4::date, dem.dem_ch_dob::date) as most_recent_trauma_age_yrs, -- Remove dates before sharing publicly
