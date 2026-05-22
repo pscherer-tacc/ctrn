@@ -630,4 +630,16 @@ left join rcap_casss_child casch
 left join rcap_casss_college cascol
     on cascol.source_subject_id = ctrn_union.source_subject_id
     and cascol.event_name = ctrn_union.event_name
+order by
+    sa1.subject_id,
+    case 
+      when ctrn_union.event_name like 'baseline%' then age_days_between(dem.dem_ch_dob::date, sched.sched_base_complete_date)
+      when ctrn_union.event_name like 'one_month%' then age_days_between(dem.dem_ch_dob::date, sched.sched_1mo_complete_date)
+      when ctrn_union.event_name like 'six_month%' then age_days_between(dem.dem_ch_dob::date, sched.sched_6mo_complete_date)
+      when ctrn_union.event_name like 'one_year%' then age_days_between(dem.dem_ch_dob::date, sched.sched_1yr_complete_date)
+      when ctrn_union.event_name like '18_month%' then age_days_between(dem.dem_ch_dob::date, sched.sched_18mo_complete_date)
+      when ctrn_union.event_name like '24_month%' then age_days_between(dem.dem_ch_dob::date, sched.sched_2yr_complete_date)
+    end
 ;
+
+
