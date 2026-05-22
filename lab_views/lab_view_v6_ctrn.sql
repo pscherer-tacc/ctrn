@@ -204,7 +204,8 @@ select
     tp.tp_5_1_age_first,
     tp.tp_5_2_age_first,
     tc.tc_5_worst,
-    tc.tc_6_1, -- Repeated bullying
+    tc.tc_6_1, -- Repeated bullying,
+	tc.tc_6_1_how_often,
     tp.tp_6_1_age_first,
     tc.tc_6_2, -- Cyberbullying
     tc.tc_6_2_how_often,
