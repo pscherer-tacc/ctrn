@@ -445,7 +445,7 @@ select
     end as tc_8_1_worst,
     age_years_between(tesic_u.tc_8_2::date, dem.dem_ch_dob::date) as worst_age_yrs,
     age_days_between(tesic_u.tc_8_2::date, tesic_u.tc_interview_date::date) AS worst_days_b4visit,
-    tesic_u.tcfu_8_3,
+    tesic_u.tcfu_8_3,  -- This variable needs to be initialized with tc_8_1_worst at baseline and updated with the new tc_8_1_worst when tcfu_8_3 is "1"
     --tesic_u.tc_8_worst_ever,
     tesic_u.tc_1_1_most_recent,
     tesic_u.tc_1_2_most_recent,
@@ -486,7 +486,7 @@ select
         when tc_4_3_most_recent = '1' then '4_3'
         when tc_5_most_recent = '1' then '5'
         when tc_7_most_recent = '1' then '7'
-    end as tc_8_3_most_recent,
+    end as tc_8_3_most_recent, 
     age_years_between(tesic_u.tc_8_4::date, dem.dem_ch_dob::date) as recent_age_yrs,
     age_days_between(tesic_u.tc_8_4::date, tesic_u.tc_interview_date::date) as recent_days_b4visit
 from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
