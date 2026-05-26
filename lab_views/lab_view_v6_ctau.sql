@@ -46,7 +46,7 @@ select
     end as age_days_interview,
     case
         when ctau_union.event_name like 'baseline%' then ctau_sched.sched_base_complete
-        when ctau_union.event_name like 'one_month%' then ctau_sched.sched_6mo_complete
+        when ctau_union.event_name like 'one_month%' then ctau_sched.sched_1mo_complete
         when ctau_union.event_name like 'six_month%' then ctau_sched.sched_6mo_complete
         when ctau_union.event_name like 'one_year%' then ctau_sched.sched_1yr_complete
         when ctau_union.event_name like '24_month%' then ctau_sched.sched_2yr_complete
@@ -176,5 +176,3 @@ order by
         when ctau_union.event_name like '24_month%' then age_days_between(ctrn_main_dem.dem_ch_dob::date, ctau_sched.sched_2yr_complete_date::date)
     end
 ;
-
-
