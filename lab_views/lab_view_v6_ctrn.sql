@@ -4,13 +4,21 @@ as (
     select source_subject_id, event_name
     from view_tesic_union
     union
-    select source_subject_id, event_name
+    select source_subject_id,
+    case 
+        when event_name = 'baseline_parent_arm_1' then 'baseline_both_arm_1'
+        else event_name
+    end as event_name
     from rcap_tesip
     union
     select source_subject_id, event_name
     from rcap_pfh_adult_child
     union
-    select source_subject_id, event_name
+    select source_subject_id,
+    case 
+        when event_name = 'baseline_parent_arm_1' then 'baseline_both_arm_1'
+        else event_name
+    end as event_name
     from rcap_pfh_parent
 --    
     -- Uniting rcap_child_assistance table adds many 
@@ -686,5 +694,3 @@ order by
       when ctrn_union.event_name like '24_month%' then age_days_between(dem.dem_ch_dob::date, sched.sched_2yr_complete_date)
     end
 ;
-
-
