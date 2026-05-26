@@ -250,7 +250,8 @@ select
 	tc.tc_8_2,                -- PII, date for calculating worst age and duration; remove after curation 
     age_years_between(tc.tc_8_2::date, dem.dem_ch_dob::date) as worst_age_yrs,
     age_days_between(tc.tc_8_2::date, tc.tc_interview_date::date) AS worst_days_b4visit,
-    tc.tcfu_8_3 as tc_8_worst_ever,
+    tc.tcfu_8_3,   -- This is a checkbox indicating that the trauma identified in tcfu_8_1 was the "worst ever". 
+	-- tc_8_worst_ever,  -- This variable needs to be initialized with tc_8_1_worst at baseline and updated with the new tc_8_1_worst when tcfu_8_3 is "1"
 	tc.tc_8_4,         -- PII, date of the most recent trauma reported at baseline; used to calculate age and recency; remove after curation  
     case
       when tc.tc_1_1_most_recent = '1' then '1_1'
