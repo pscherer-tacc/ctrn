@@ -653,13 +653,15 @@ left join rcap_pfh_child pfhc
     and pfhc.event_name like 'baseline%'
 left join view_pfh_adult_child_parent_union pfha_u
     on pfha_u.source_subject_id = ctrn_union.source_subject_id
-    and pfha_u.event_name = ctrn_union.event_name
+    --and pfha_u.event_name = ctrn_union.event_name
+    and ctrn_union.event_name like 'baseline%'
 left join view_tesic_union tc
     on tc.source_subject_id = ctrn_union.source_subject_id
     and tc.event_name = ctrn_union.event_name
 left join rcap_tesip tp
     on tp.source_subject_id = ctrn_union.source_subject_id
-    and tp.event_name = ctrn_union.event_name
+    --and tp.event_name = ctrn_union.event_name
+    and ctrn_union.event_name like 'baseline%'
 left join rcap_child_assistance chass
     on chass.source_subject_id = ctrn_union.source_subject_id
     and chass.event_name = ctrn_union.event_name
