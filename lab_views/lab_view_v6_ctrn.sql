@@ -95,123 +95,126 @@ select
       when pfhc.hc_sex_birth_cert::text = '2' then 'M'
       else null
     end as sex,
-    pfhc.hc_race as race,
+    pfhc.hc_race as race,                  -- 1, American Indian or Alaska Native | 2, Asian | 3, Native Hawaiian or Other Pacific Islander | 4, Black or African American | 5, White | 6, More Than One Race
     pfhc.hc_hispanic as hispanic,
 --
-    pfha_u.instrument,
-    pfha_u.parent1_relationship,
-    pfha_u.parent1_sex,
-    pfha_u.parent1_educ,
-    pfha_u.parent2_gender,
-    pfha_u.parent2_educ,
-    pfha_u.alc_abuse__0_child,
+    pfha_u.instrument,                     -- Indicates whether the personal family history was completed by the parent or adult 18-20 yr old participant  
+    pfha_u.parent1_relationship,           -- 1, Biological parent | 2, Adoptive parent | 3, Foster parent | 4, Stepparent | 5, Other legal guardian
+    pfha_u.parent1_sex,                    -- 1, Female | 2, Male
+    pfha_u.parent1_educ,   -- Highest level of education: 1, Did not complete high school | 2, High school diploma or GED | 3, Some college or 2-year degree | 4, 4-year college graduate | 5, Some school beyond college | 6, Graduate or professional degree
+    pfha_u.parent2_gender as parent2_sex,  -- Correctly reflects survey question "What is the sex of your child's other parent?" 1, Female | 2, Male
+    pfha_u.parent2_educ,   -- Highest level of education: 1, Did not complete high school | 2, High school diploma or GED | 3, Some college or 2-year degree | 4, 4-year college graduate | 5, Some school beyond college | 6, Graduate or professional degree
+    --- Checkboxes for alcohol abuse by family members 
+	pfha_u.alc_abuse__0_child,
     pfha_u.alc_abuse__1_you,
     pfha_u.alc_abuse__2_othpar,
     pfha_u.alc_abuse__3_brother,
     pfha_u.alc_abuse__4_sister,
+	--- Checkboxes for thc abuse by family members
     pfha_u.thc_abuse__0_child,
     pfha_u.thc_abuse__1_you,
     pfha_u.thc_abuse__2_othpar,
     pfha_u.thc_abuse__3_brother,
     pfha_u.thc_abuse__4_sister,
+	--- Checkboxes for drug abuse by family members
     pfha_u.drug_abuse__0_child,
     pfha_u.drug_abuse__1_you,
     pfha_u.drug_abuse__2_othpar,
     pfha_u.drug_abuse__3_brother,
     pfha_u.drug_abuse__4_sister,
---
+--  tesi_c and tesi_p trauma categories 
     tc.tc_1_1, -- In a bad accident
     tc.tc_1_1_crit_a1,
 	tc.tc_1_1_how_often,
     tp.tp_1_1_age_first,
-    tc.tc_1_1_worst, -- Worst checkboxes from baseline and tcfu; the coalesced variable name should be entered as tc_8_1.
+    -- tc.tc_1_1_worst, -- Worst checkboxes from baseline and tcfu are commented; the coalesced variable name should be entered as tc_8_1.
     tc.tc_1_2, -- Saw a bad accident
     tc.tc_1_2_crit_a1,
     tc.tc_1_2_how_often,
     tp.tp_1_2_age_first,
-    tc.tc_1_2_worst,
+    -- tc.tc_1_2_worst,
     tc.tc_1_3,  -- Bad storm, flood, earthquake 
     tc.tc_1_3_crit_a1,
     tc.tc_1_3_how_often,
     tp.tp_1_3_age_first,
-    tc.tc_1_3_worst,
+    -- tc.tc_1_3_worst,
     tc.tc_1_4, -- Serious illness/death of another
     tc.tc_1_4_crit_a1,
     tc.tc_1_4_how_often,
     tp.tp_1_4a_age_first,
     tp.tp_1_4b_age_first,
-    tc.tc_1_4_worst,
+    -- tc.tc_1_4_worst,
     tc.tc_1_5, -- Hospitalization
     tc.tc_1_5_crit_a1,
     tc.tc_1_5_how_often,
     tp.tp_1_5_age_first,
-    tc.tc_1_5_worst,
+    -- tc.tc_1_5_worst,
     tc.tc_1_6, -- Separation from parents or guardian
     tc.tc_1_6_crit_a1,
     tc.tc_1_6_how_often,
     tp.tp_1_6_age_first,
-    tc.tc_1_6_worst,
+    -- tc.tc_1_6_worst,
     tc.tc_2_1, -- Attacked and badly hurt)
     tc.tc_2_1_crit_a1,
     tc.tc_2_1_how_often,
     tp.tp_2_1_age_first,
-    tc.tc_2_1_worst,
+    -- tc.tc_2_1_worst,
     tc.tc_2_2, -- Threats to hurt you
     tc.tc_2_2_crit_a1,
     tc.tc_2_2_how_often,
     tp.tp_2_2_age_first,
-    tc.tc_2_2_worst,
+    -- tc.tc_2_2_worst,
     tc.tc_2_3,  -- Robbed
     tc.tc_2_3_crit_a1,
     tc.tc_2_3_how_often,
     tp.tp_2_3_age_first,
-    tc.tc_2_3_worst,
+    -- tc.tc_2_3_worst,
     tc.tc_2_4, -- Kidnapping
     tc.tc_2_4_crit_a1,
     tc.tc_2_4_how_often,
     tp.tp_2_4_age_first,
-    tc.tc_2_4_worst,
+    -- tc.tc_2_4_worst,
     tc.tc_2_5, -- Dog or animal attack
     tc.tc_2_5_crit_a1,
     tc.tc_2_5_how_often,
     tp.tp_2_5_age_first,
-    tc.tc_2_5_worst,
+    -- tc.tc_2_5_worst,
     tc.tc_3_1, -- Physical family violence
 	tc.tc_3_1_crit_a1,
     tc.tc_3_1_how_often,
     tp.tp_3_1_age_first,
-    tc.tc_3_1_worst,
+    -- tc.tc_3_1_worst,
     tc.tc_3_2, -- Frequent family arguments
     tc.tc_3_2_crit_a1,
     tc.tc_3_2_how_often,
     tp.tp_3_2_age_first,
-    tc.tc_3_2_worst,
+    -- tc.tc_3_2_worst,
     tc.tc_3_3, -- Family member jailed or arrested 
     tc.tc_3_3_crit_a1,
     tc.tc_3_3_how_often,
     tp.tp_3_3_age_first,
-    tc.tc_3_3_worst,
+    -- tc.tc_3_3_worst,
     tc.tc_4_1,  -- Witness physical violence outside home
     tc.tc_4_1_crit_a1,
     tc.tc_4_1_how_often,
     tp.tp_4_1_age_first,
-    tc.tc_4_1_worst,
+    -- tc.tc_4_1_worst,
     tc.tc_4_2, -- Witness nonphysical violence outside home 
     tc.tc_4_2_crit_a1,
     tc.tc_4_2_how_often,
     tp.tp_4_2_age_first,
-    tc.tc_4_2_worst,
+    -- tc.tc_4_2_worst,
     tc.tc_4_3, -- Violence on TV or media
     tc.tc_4_3_crit_a1,
     tc.tc_4_3_how_often,
     tp.tp_4_3_age_first,
-    tc.tc_4_3_worst,
+    -- tc.tc_4_3_worst,
     tc.tc_5, -- Touched inappropriately
   	tc.tc_5_crit_a1,
     tc.tc_5_how_often,
     tp.tp_5_1_age_first,
     tp.tp_5_2_age_first,
-    tc.tc_5_worst,
+    -- tc.tc_5_worst,
     tc.tc_6_1, -- Repeated bullying,
 	tc.tc_6_1_how_often,
     tp.tp_6_1_age_first,
@@ -222,7 +225,7 @@ select
     tc.tc_7_crit_a1,
     tc.tc_7_how_often,
     tp.tp_7_1_age_first,
-    tc.tc_7_worst,
+    -- tc.tc_7_worst,
     case
       when tc.tc_1_1_worst = '1' then '1_1'
       when tc.tc_1_2_worst = '1' then '1_2'
@@ -244,8 +247,8 @@ select
       when tc.tc_5_worst = '1' then '5'
       when tc.tc_7_worst = '1' then '7'
       else null
-    end as tc_8_1_worst,
-    tc.tc_8_1 as tc_worst,    -- Classification of the worst trauma within the period prior to the visit
+    end as tc_8_1_worst,       -- Classification of the worst trauma within the period prior to the visit
+    -- tc.tc_8_1 as tc_worst,  -- PII (Unstructured text) removed and replaced by tc_8_1_worst trauma category   
     tc.tc_8_1_less_than_1mo as tc_worst_less_than_1mo,
 	tc.tc_8_2,                -- PII, date for calculating worst age and duration; remove after curation 
     age_years_between(tc.tc_8_2::date, dem.dem_ch_dob::date) as worst_age_yrs,
@@ -274,8 +277,8 @@ select
       when tc.tc_5_most_recent = '1' then '5'
       when tc.tc_7_most_recent = '1' then '7'
       else null
-    end as tc_8_3_most_recent,
-    tc.tc_8_3 AS most_recent,   -- Classification of the most recent trauma
+    end as tc_8_3_most_recent,   -- Classification of the most recent trauma is only reported in the baseline tesi_c
+    -- tc.tc_8_3,   PII (Unstructured text) removed and replaced by tc_8_3_most_recent trauma category 
     tc.tc_8_3_less_than_1mo as tc_most_recent_less_than_1mo, -- "1" indicates that the most recent trauma was less than 1 month prior to this visit 
     age_years_between(tc.tc_8_4::date, dem.dem_ch_dob::date) as most_recent_trauma_age_yrs, -- Remove dates before sharing publicly
     age_days_between(tc.tc_8_4::date, tc.tc_interview_date::date) as recent_days_b4visit,
@@ -309,7 +312,7 @@ select
     ) as tc_bullying_cnt,
 ---
     --- TBD: Nazan's cumulative trauma variety index (unique trauma counts) TBD
-    --- ,tc_cumvaridx_unintentional	      -- unique cumulative count of tc_1_1 thru tc_1_6 and tc_2_5 criteria a1   
+    --- ,tc_cumvaridx_unintentional	       -- unique cumulative count of tc_1_1 thru tc_1_6 and tc_2_5 criteria a1   
     --- ,tc_cumvaridx_interpers_direct     -- unique cumulative count of tc_2_1 thru tc_2_4 and tc_5 criteria a1
     --- ,tc_cumvaridx_interpers_witn_home  -- unique cumulative count of tc_3_1 thru tc_3_3 criteria a1
  	--- ,tc_cumvaridx_interpers_witn_comm  -- unique cumulative count of tc_4_1 thru tc_4_3 criteria a1
@@ -473,7 +476,7 @@ select
     casch.casch_sec2_q4b,	-- My teacher(s) explains things that I don't understand. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     casch.casch_sec2_q5a,	-- My teacher(s) shows me how to do things. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch.casch_sec2_q5b,	-- My teacher(s) shows me how to do things. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch.casch_sec2_q6a,    -- My teacher(s) helps me solve problems by giving me information. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch.casch_sec2_q6a,   -- My teacher(s) helps me solve problems by giving me information. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch.casch_sec2_q6b,	-- My teacher(s) helps me solve problems by giving me information. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     casch.casch_sec2_q7a,	-- My teacher(s) tells me I did a good job when I've done something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch.casch_sec2_q7b,	-- My teacher(s) tells me I did a good job when I've done something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
@@ -483,7 +486,7 @@ select
     casch.casch_sec2_q9b,	-- My teacher(s) tells me how well I do on tasks. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     casch.casch_sec2_q10a,	-- My teacher(s) makes sure I have what I need for school. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch.casch_sec2_q10b,	-- My teacher(s) makes sure I have what I need for school. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch.casch_sec2_q11a,   -- My teacher(s) takes time to help me learn to do something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch.casch_sec2_q11a,  -- My teacher(s) takes time to help me learn to do something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch.casch_sec2_q11b,	-- My teacher(s) takes time to help me learn to do something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     casch.casch_sec2_q12a,	-- My teacher(s) spends time with me when I need help. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch.casch_sec2_q12b,	-- My teacher(s) spends time with me when I need help. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
