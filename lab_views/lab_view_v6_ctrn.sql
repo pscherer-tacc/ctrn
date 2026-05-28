@@ -1,4 +1,4 @@
---------- CTAU part of the lab view
+--------- CTRN part of the lab view  lab_view_v6_ctrn.sql
 with ctrn_main_instruments_union
 as (
     select source_subject_id, event_name
