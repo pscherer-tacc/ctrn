@@ -6,6 +6,7 @@ select
     tesic_u.source_subject_id,
     tesic_u.event_name,
     tesic_u.language,
+    pfhc.language as pfhc_language, -- Need this to see when duplicates are coming from the pfh_child table
     dim_dem_lang.dem_ch_lang_language,
     case 
         when dim_dem_lang.dem_ch_lang_language is null
@@ -15,7 +16,24 @@ select
         when dim_dem_lang.dem_ch_lang_language != 'other' and dim_dem_lang.dem_ch_lang_language != tesic_u.language
             then 'the preferred language does NOT match the instrument''s language'
         else 'OK'
-    end as language_discrepancy_flag
+    end as language_discrepancy_flag,
+    tesic_u.tc_1_1,
+    -- tesic_u.tc_8_1,
+    -- tesic_u.tc_8_2,
+    tesic_u.tc_interview_date,
+    dem.dem_ch_dob,
+    case
+        when tesic_u.event_name like 'baseline%' then nda_months_between(sched_main.sched_base_complete_date, dem.dem_ch_dob)
+		when tesic_u.event_name like 'six_month%' then nda_months_between(sched_main.sched_6mo_complete_date, dem.dem_ch_dob)
+		when tesic_u.event_name like 'one_year%' then nda_months_between(sched_main.sched_1yr_complete_date, dem.dem_ch_dob)
+		when tesic_u.event_name like '18_month%' then nda_months_between(sched_main.sched_18mo_complete_date, dem.dem_ch_dob)
+		when tesic_u.event_name like '24_month%' then nda_months_between(sched_main.sched_2yr_complete_date, dem.dem_ch_dob)
+    end as interview_age,
+    case 
+        when pfhc.hc_sex_birth_cert='1' then 'F'
+        when pfhc.hc_sex_birth_cert='2' then 'M'
+        else null
+    end as sex
 from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
 inner join subject_alias sa1
     on sa1.source_subject_id = tesic_u.source_subject_id
@@ -26,14 +44,11 @@ left join rcap_demographics dem
     on dem.source_subject_id = tesic_u.source_subject_id
 left join dim_dem_ch_lang dim_dem_lang -- Joining the dimension table
     on dim_dem_lang.dem_ch_lang_value = dem.dem_ch_lang
-    --and dim_dem_lang.dem_ch_lang_language = tesic_u.language
-left join rcap_scheduling_form sched_main 
+left join rcap_scheduling_form sched_main
     on sched_main.source_subject_id = tesic_u.source_subject_id 
 left join rcap_pfh_child pfhc
     on pfhc.source_subject_id = tesic_u.source_subject_id
-    --and pfhc.language = dim_dem_lang.dem_ch_lang_language -- the dimension table
     and pfhc.event_name like 'baseline%'
-    and pfhc.language = tesic_u.language -- !!!! experimental condition 
 ;
 
 
@@ -48,16 +63,25 @@ with cte as (
     having count(*) > 1
 )
 
-select *,
+select
     case 
         when cte.subject_id_cte is not null then 'YES'
         else 'NO'
-    end as potential_duplicate
+    end as potential_duplicate,
+    *
 from tesic_test_view tesic
 left join cte
     on cte.subject_id_cte = tesic.subject_id
     and cte.event_name_cte = tesic.event_name
 
 where cte.subject_id_cte is not null -- !!!! To show only duplicated records
-order by subject_id, event_name
+
+order by
+    case 
+        when cte.subject_id_cte is not null then 'YES'
+        else 'NO'
+    end, -- potential duplicates
+    subject_id, 
+    event_name,
+    language_discrepancy_flag
 ;
