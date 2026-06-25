@@ -58,12 +58,12 @@ select
   end as race
 	,pfhc.hc_hispanic
 	,case															-- Renaming events as visits to facilitate sequencing as per 4/30/2026 request by Jeff
-		when caps.event_name like 'baseline%' then '00_baseline'      
-		when caps.event_name like 'one_month%' then '01_one_month'
-		when caps.event_name like 'six_month%' then '06_six_month'
-		when caps.event_name like 'one_year%' then '12_month'
-		when caps.event_name like '18_month%' then '18_month'
-		when caps.event_name like '24_month%' then '24_month'
+		when crafftn.event_name like 'baseline%' then '00_baseline'      
+		when crafftn.event_name like 'one_month%' then '01_one_month'
+		when crafftn.event_name like 'six_month%' then '06_six_month'
+		when crafftn.event_name like 'one_year%' then '12_month'
+		when crafftn.event_name like '18_month%' then '18_month'
+		when crafftn.event_name like '24_month%' then '24_month'
 	end as visit
 	,crafftn.crafftn_1
 	,crafftn.crafftn_2
