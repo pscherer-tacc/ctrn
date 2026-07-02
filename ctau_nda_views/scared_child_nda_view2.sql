@@ -84,12 +84,12 @@ SELECT dem.dem_guid AS subjectkey,
 	scared_child.scaredc_39 AS scared_39,
 	scared_child.scaredc_40 AS scared_40,
 	scared_child.scaredc_41 AS scared_41,
-	COALESCE(CAST(base.brpt_scared_tot_score AS INTEGER), 999) AS scared_total,
-	COALESCE(CAST(base.brpt_scared_paso_score AS INTEGER), 999) AS scared_pd_score,
-	COALESCE(CAST(base.brpt_scared_ga_score AS INTEGER), 999) AS scared_gad_score,
-	COALESCE(CAST(base.brpt_scared_sep_score AS INTEGER), 999) AS scared_sad_score,
-	COALESCE(CAST(base.brpt_scared_soc_score AS INTEGER), 999) AS scared_socad_score,
-	COALESCE(CAST(base.brpt_scared_sch_score AS INTEGER), 999) AS scared_ssa_score,
+---	COALESCE(CAST(base.brpt_scared_tot_score AS INTEGER), 999) AS scared_total,    -- Commented out baseline report summaries; replace with calculations utilizing RCap source data entries.
+---	COALESCE(CAST(base.brpt_scared_paso_score AS INTEGER), 999) AS scared_pd_score,
+---	COALESCE(CAST(base.brpt_scared_ga_score AS INTEGER), 999) AS scared_gad_score,
+---	COALESCE(CAST(base.brpt_scared_sep_score AS INTEGER), 999) AS scared_sad_score,
+---	COALESCE(CAST(base.brpt_scared_soc_score AS INTEGER), 999) AS scared_socad_score,
+---	COALESCE(CAST(base.brpt_scared_sch_score AS INTEGER), 999) AS scared_ssa_score,
 	CASE
 		WHEN scared_child.event_name LIKE 'baseline%' THEN 'baseline'
 		WHEN scared_child.event_name LIKE 'one_month%' THEN 'one_month'
@@ -114,8 +114,8 @@ LEFT JOIN rcap_pfh_child AS pfhc
 	AND pfhc.event_name like 'baseline%'
 LEFT JOIN rcap_pfh_parent AS pfhp
     on pfhp.source_subject_id = scared_child.source_subject_id
-LEFT JOIN rcap_baseline_report AS base
-	on base.source_subject_id = scared_child.source_subject_id
+--- LEFT JOIN rcap_baseline_report AS base
+---	on base.source_subject_id = scared_child.source_subject_id
 WHERE scared_child.scaredc_complete='2'
 	AND scared_child.event_name NOT LIKE '18_month%'
 --ORDER BY sa1.subject_id
