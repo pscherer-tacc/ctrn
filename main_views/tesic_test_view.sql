@@ -5,18 +5,26 @@ select
     sa1.subject_id,
     tesic_u.source_subject_id,
     tesic_u.event_name,
-    tesic_u.language,
-    pfhc.language as pfhc_language, -- Need this to see when duplicates are coming from the pfh_child table
-    dim_dem_lang.dem_ch_lang_language,
     case 
         when dim_dem_lang.dem_ch_lang_language is null
-            then 'no preferred language provided'
+            then '1. no preferred language provided'
         when dim_dem_lang.dem_ch_lang_language = 'other'
-            then 'the preferred language is NOT English or Spanish'
-        when dim_dem_lang.dem_ch_lang_language != 'other' and dim_dem_lang.dem_ch_lang_language != tesic_u.language
-            then 'the preferred language does NOT match the instrument''s language'
+            then '2. the preferred language is NOT English or Spanish'
+        when dim_dem_lang.dem_ch_lang_language != 'other' 
+            and dim_dem_lang.dem_ch_lang_language != tesic_u.language
+            then '3. the preferred language does NOT match tesic''s language'
+        when dim_dem_lang.dem_ch_lang_language != 'other'
+            and dim_dem_lang.dem_ch_lang_language != pfhc.language
+            then '4. the preferred language does NOT match pfhc''s language'
+        when dim_dem_lang.dem_ch_lang_language != 'other'
+            and dim_dem_lang.dem_ch_lang_language != tesic_u.language
+            and dim_dem_lang.dem_ch_lang_language != pfhc.language
+            then '5. the preferred language matches neither tesic''s nor pfhc''s ones'
         else 'OK'
     end as language_discrepancy_flag,
+    dim_dem_lang.dem_ch_lang_language as preferred_language,
+    tesic_u.language as tesic_language,
+    pfhc.language as pfhc_language, -- Need this to see when duplicates are coming from the pfh_child table
     tesic_u.tc_1_1,
     -- tesic_u.tc_8_1,
     -- tesic_u.tc_8_2,
