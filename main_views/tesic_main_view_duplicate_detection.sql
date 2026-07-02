@@ -1,25 +1,70 @@
----- TESIC MAIN View (a unioned view that includes tesic baseline and follow-ups from CTRN Main project)
---- Name of the view: tesic_MAIN_view
---- This view includes date calculations and fields for cross-checking and curation. Curation fields and associated data must be removed 
---- prior to sharing outside of the CTRN's IRB-approved community. The export from this query includes incomplete records which are curated as follows:
---- 	1) Records with NULL interview dates are removed
----		2) Records with NULL sex are removed
----		3) Remove duplicate incomplete records where sched_[event_name]_complete not equal "1"(complete) or "8"(sufficiently complete)
----     
----
---- Query the data from the view
---- select * from tesic_MAIN_view
---- where interview_date is not null;
----
 --- The body of the view
---- create or replace view tesic_ctrn_view
---- as
+---- MAIN QUERY with the Common Table Expression
+with cte as (
+    select 
+        subject_id as subject_id_cte, 
+        event_name as event_name_cte
+    from tesic_ctrn_view_duplicate_detection
+    group by subject_id, event_name
+    having count(*) > 1
+)
+
+select
+    case 
+        when cte.subject_id_cte is not null then 'YES'
+        else 'NO'
+    end as potential_duplicate,
+    *
+from tesic_ctrn_view_duplicate_detection tesic
+left join cte
+    on cte.subject_id_cte = tesic.subject_id
+    and cte.event_name_cte = tesic.event_name
+--where cte.subject_id_cte is not null -- !!!! To show only duplicated records
+order by
+    case 
+        when cte.subject_id_cte is not null then 'YES'
+        else 'NO'
+    end, -- potential duplicates
+    subject_id, 
+    event_name,
+    language_discrepancy_flag
+;
+
+
+
+
+
+-- the creation of the view
+create or replace view tesic_ctrn_view_duplicate_detection
+as
 select
     sa1.subject_id,
     tesic_u.source_subject_id,
+
+    tesic_u.event_name as event_name, -- only for validation/curation
+    case 
+        when dim_dem_lang.dem_ch_lang_language is null
+            then '1. no preferred language provided'
+        when dim_dem_lang.dem_ch_lang_language = 'other'
+            then '2. the preferred language neither English nor Spanish'
+        when dim_dem_lang.dem_ch_lang_language != 'other' 
+            and dim_dem_lang.dem_ch_lang_language != tesic_u.language
+            then '3. the preferred language does NOT match tesic''s language'
+        when dim_dem_lang.dem_ch_lang_language != 'other'
+            and dim_dem_lang.dem_ch_lang_language != pfhc.language
+            then '4. the preferred language does NOT match pfhc''s language'
+        when dim_dem_lang.dem_ch_lang_language != 'other'
+            and dim_dem_lang.dem_ch_lang_language != tesic_u.language
+            and dim_dem_lang.dem_ch_lang_language != pfhc.language
+            then '5. the preferred language matches neither tesic''s nor pfhc''s ones'
+        else 'OK'
+    end as language_discrepancy_flag, -- only for validation/curation
+    dim_dem_lang.dem_ch_lang_language as preferred_language, -- only for validation/curation
+    tesic_u.language as tesic_language,-- only for validation/curation
+    pfhc.language as pfhc_language, -- -- only for validation/curation; need this to see when duplicates are coming from the pfh_child table
+
     tesic_u.tc_administrator,
     tesic_u.tc_administrator_other,
-
 --- TBD: Add the sched_main.sched_[visit]_complete status (the "complete" status used for curating incomplete records)
     tesic_u.tc_interview_date,
     dem.dem_ch_dob,
@@ -494,14 +539,11 @@ inner join subject_alias sa1
 	and tesic_u.event_name not like 'unscheduled%'
 left join rcap_demographics dem
     on dem.source_subject_id = tesic_u.source_subject_id
--- left join dim_dem_ch_lang dim_dem_lang -- Joining the dimension table
---     on dim_dem_lang.dem_ch_lang_value = dem.dem_ch_lang
+left join dim_dem_ch_lang dim_dem_lang -- Joining the dimension table
+    on dim_dem_lang.dem_ch_lang_value = dem.dem_ch_lang
 left join rcap_scheduling_form sched_main 
     on sched_main.source_subject_id = tesic_u.source_subject_id 
 left join rcap_pfh_child pfhc
     on pfhc.source_subject_id = tesic_u.source_subject_id
     and pfhc.language = dim_dem_lang.dem_ch_lang_language -- the dimension table
     and pfhc.event_name like 'baseline%';
-
-
-
