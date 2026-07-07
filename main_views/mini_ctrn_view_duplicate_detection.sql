@@ -13,7 +13,7 @@ select
         when mini_duplicates.source_subject_id is not null then 'YES'
         else 'NO'
     end,  
-    mini_view.* 
+    mini_view.*
 from mini_ctrn_view mini_view
 left join (
     select source_subject_id, event_name
@@ -32,12 +32,6 @@ order by
     mini_view.source_subject_id,
     mini_view.event_name
 ;
-
-
-select source_subject_id, event_name
-from mini_ctrn_view
-group by source_subject_id, event_name
-having count(*) > 1;
 
 
 --- The body of the view
