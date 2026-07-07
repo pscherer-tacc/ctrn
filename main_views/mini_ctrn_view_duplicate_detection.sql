@@ -12,7 +12,7 @@ select
     case 
         when mini_duplicates.source_subject_id is not null then 'YES'
         else 'NO'
-    end,  
+    end as duplicate_detection,  
     mini_view.*
 from mini_ctrn_view mini_view
 left join (
