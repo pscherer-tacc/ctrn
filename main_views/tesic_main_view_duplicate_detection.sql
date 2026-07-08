@@ -1,68 +1,37 @@
 --- The body of the view
----- MAIN QUERY with the Common Table Expression
-with cte as (
-    select 
-        subject_id as subject_id_cte, 
-        event_name as event_name_cte
-    from tesic_ctrn_view_duplicate_detection
-    group by subject_id, event_name
-    having count(*) > 1
-)
-
+---- MAIN QUERY
 select
-    case 
-        when cte.subject_id_cte is not null then 'YES'
+    case
+        when tesic_duplicates.source_subject_id is not null then 'YES'
         else 'NO'
     end as potential_duplicate,
-    *
-from tesic_ctrn_view_duplicate_detection tesic
-left join cte
-    on cte.subject_id_cte = tesic.subject_id
-    and cte.event_name_cte = tesic.event_name
---where cte.subject_id_cte is not null -- !!!! To show only duplicated records
-order by
+    tesic_view.*
+from tesic_ctrn_view tesic_view
+left join (
+    select source_subject_id, event_name
+    from tesic_ctrn_view
+    group by source_subject_id, event_name
+    having count(*) > 1
+) tesic_duplicates
+    on tesic_duplicates.source_subject_id = tesic_view.source_subject_id
+    and tesic_duplicates.event_name = tesic_view.event_name
+order by 
     case 
-        when cte.subject_id_cte is not null then 'YES'
+        when tesic_duplicates.source_subject_id is not null then 'YES'
         else 'NO'
-    end, -- potential duplicates
-    subject_id, 
-    event_name,
-    language_discrepancy_flag
+    end,
+    tesic_view.source_subject_id,
+    tesic_view.event_name
 ;
 
 
-
-
-
 -- the creation of the view
-create or replace view tesic_ctrn_view_duplicate_detection
+create or replace view tesic_ctrn_view
 as
 select
     sa1.subject_id,
     tesic_u.source_subject_id,
-
-    tesic_u.event_name as event_name, -- only for validation/curation
-    case 
-        when dim_dem_lang.dem_ch_lang_language is null
-            then '1. no preferred language provided'
-        when dim_dem_lang.dem_ch_lang_language = 'other'
-            then '2. the preferred language neither English nor Spanish'
-        when dim_dem_lang.dem_ch_lang_language != 'other' 
-            and dim_dem_lang.dem_ch_lang_language != tesic_u.language
-            then '3. the preferred language does NOT match tesic''s language'
-        when dim_dem_lang.dem_ch_lang_language != 'other'
-            and dim_dem_lang.dem_ch_lang_language != pfhc.language
-            then '4. the preferred language does NOT match pfhc''s language'
-        when dim_dem_lang.dem_ch_lang_language != 'other'
-            and dim_dem_lang.dem_ch_lang_language != tesic_u.language
-            and dim_dem_lang.dem_ch_lang_language != pfhc.language
-            then '5. the preferred language matches neither tesic''s nor pfhc''s ones'
-        else 'OK'
-    end as language_discrepancy_flag, -- only for validation/curation
-    dim_dem_lang.dem_ch_lang_language as preferred_language, -- only for validation/curation
-    tesic_u.language as tesic_language,-- only for validation/curation
-    pfhc.language as pfhc_language, -- -- only for validation/curation; need this to see when duplicates are coming from the pfh_child table
-
+    tesic_u.event_name,
     tesic_u.tc_administrator,
     tesic_u.tc_administrator_other,
 --- TBD: Add the sched_main.sched_[visit]_complete status (the "complete" status used for curating incomplete records)
@@ -75,6 +44,7 @@ select
 		when tesic_u.event_name like '18_month%' then nda_months_between(sched_main.sched_18mo_complete_date, dem.dem_ch_dob)
 		when tesic_u.event_name like '24_month%' then nda_months_between(sched_main.sched_2yr_complete_date, dem.dem_ch_dob)
     end as interview_age,
+    nda_months_between(tesic_u.tc_interview_date, dem.dem_ch_dob) as interview_age_tc,
     case 
         when pfhc.hc_sex_birth_cert='1' then 'F'
         when pfhc.hc_sex_birth_cert='2' then 'M'
@@ -530,7 +500,35 @@ select
         when tc_7_most_recent = '1' then '7'
     end as tc_8_3_most_recent, 
     age_years_between(tesic_u.tc_8_4::date, dem.dem_ch_dob::date) as recent_age_yrs,
-    age_days_between(tesic_u.tc_8_4::date, tesic_u.tc_interview_date::date) as recent_days_b4visit
+    age_days_between(tesic_u.tc_8_4::date, tesic_u.tc_interview_date::date) as recent_days_b4visit,
+    ---- Criteria A1 trauma count subtotals
+    (
+        coalesce(tesic_u.tc_1_1_crit_a1::int, 0) + coalesce(tesic_u.tc_1_2_crit_a1::int, 0)
+        + coalesce(tesic_u.tc_1_3_crit_a1::int, 0) + coalesce(tesic_u.tc_1_4_crit_a1::int, 0)
+        + coalesce(tesic_u.tc_1_5_crit_a1::int, 0) + coalesce(tesic_u.tc_1_6_crit_a1::int, 0)
+        + coalesce(tesic_u.tc_2_5_crit_a1::int, 0)
+    ) as tc_unintentional_a1_cnt,
+
+    (
+        coalesce(tesic_u.tc_2_1_crit_a1::int, 0) + coalesce(tesic_u.tc_2_2_crit_a1::int, 0)
+        + coalesce(tesic_u.tc_2_3_crit_a1::int, 0) + coalesce(tesic_u.tc_2_4_crit_a1::int, 0)
+        + coalesce(tesic_u.tc_5_crit_a1::int, 0)
+    ) as tc_interpers_direct_a1_cnt,
+
+    (
+        coalesce(tesic_u.tc_3_1_crit_a1::int, 0) + coalesce(tesic_u.tc_3_2_crit_a1::int, 0)
+        + coalesce(tesic_u.tc_3_3_crit_a1::int, 0)
+    ) as tc_interpers_witn_home_a1_cnt,
+
+    (
+        coalesce(tesic_u.tc_4_1_crit_a1::int, 0) + coalesce(tesic_u.tc_4_2_crit_a1::int, 0)
+        + coalesce(tesic_u.tc_4_3_crit_a1::int, 0)
+    ) as tc_interpers_witn_comm_a1_cnt,
+
+    (
+        coalesce(tesic_u.tc_6_1::int, 0)
+        + coalesce(tesic_u.tc_6_2::int, 0)
+    ) as tc_bullying_cnt
 from view_tesic_union tesic_u -- Attention! The view (not the table) is utilized
 inner join subject_alias sa1
     on sa1.source_subject_id = tesic_u.source_subject_id
@@ -539,11 +537,8 @@ inner join subject_alias sa1
 	and tesic_u.event_name not like 'unscheduled%'
 left join rcap_demographics dem
     on dem.source_subject_id = tesic_u.source_subject_id
-left join dim_dem_ch_lang dim_dem_lang -- Joining the dimension table
-    on dim_dem_lang.dem_ch_lang_value = dem.dem_ch_lang
 left join rcap_scheduling_form sched_main 
     on sched_main.source_subject_id = tesic_u.source_subject_id 
 left join rcap_pfh_child pfhc
     on pfhc.source_subject_id = tesic_u.source_subject_id
-    and pfhc.language = dim_dem_lang.dem_ch_lang_language -- the dimension table
     and pfhc.event_name like 'baseline%';
