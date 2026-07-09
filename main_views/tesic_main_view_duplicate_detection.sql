@@ -34,7 +34,20 @@ select
     tesic_u.event_name,
     tesic_u.tc_administrator,
     tesic_u.tc_administrator_other,
---- TBD: Add the sched_main.sched_[visit]_complete status (the "complete" status used for curating incomplete records)
+    case
+        when tesic_u.event_name like 'baseline%' then sched_main.sched_base_complete_date
+		when tesic_u.event_name like 'six_month%' then sched_main.sched_6mo_complete_date
+		when tesic_u.event_name like 'one_year%' then sched_main.sched_1yr_complete_date
+		when tesic_u.event_name like '18_month%' then sched_main.sched_18mo_complete_date
+		when tesic_u.event_name like '24_month%' then sched_main.sched_2yr_complete_date
+    end as interview_date,
+    case
+        when tesic_u.event_name like 'baseline%' then sched_main.sched_base_complete
+		when tesic_u.event_name like 'six_month%' then sched_main.sched_6mo_complete
+		when tesic_u.event_name like 'one_year%' then sched_main.sched_1yr_complete
+		when tesic_u.event_name like '18_month%' then sched_main.sched_18mo_complete
+		when tesic_u.event_name like '24_month%' then sched_main.sched_2yr_complete
+    end as status,
     tesic_u.tc_interview_date,
     dem.dem_ch_dob,
     case
