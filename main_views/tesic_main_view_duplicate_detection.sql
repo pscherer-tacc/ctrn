@@ -1,10 +1,25 @@
+---- TESIC MAIN View (a unioned view that includes tesic baseline and follow-ups from CTRN Main project with duplicate detection)
+--- Name of the view: tesic_MAIN_view
+--- This view includes date calculations and fields for cross-checking and curation. Curation fields and associated data must be removed 
+--- prior to sharing outside of the CTRN's IRB-approved community. The export from this query includes incomplete records which are curated as follows:
+--- 	1) Records with NULL schedule [visit]_complete_dates are removed
+---     2) Records with NULL dem_ch_dob are removed
+---		3) Records with NULL sex are removed
+---		4) Duplicate and incomplete records where sched_[event_name]_complete NOT EQUAL "1"(complete) or "8"(sufficiently complete) are reported for possible correction and removed
+---     5) Variables containing pii/phi and/or unstructured text are removed as per comments below
+---     6) Variables used solely for curation/administration are removed as per comments below
+---
+--- Query the data from the view
+--- select * from tesic_MAIN_view
+--- where interview_date is not null;
+---
 --- The body of the view
 ---- MAIN QUERY
 select
     case
         when tesic_duplicates.source_subject_id is not null then 'YES'
         else 'NO'
-    end as potential_duplicate,
+    end as potential_duplicate,      -- Use to identify and remove duplicate and incomplete records; remove after curation
     tesic_view.*
 from tesic_ctrn_view tesic_view
 left join (
@@ -20,8 +35,8 @@ order by
         when tesic_duplicates.source_subject_id is not null then 'YES'
         else 'NO'
     end,
-    tesic_view.source_subject_id,
-    tesic_view.event_name
+    tesic_view.source_subject_id,   -- PII; remove after curation
+    tesic_view.event_name           -- Remove after curation
 ;
 
 
@@ -29,27 +44,27 @@ order by
 create or replace view tesic_ctrn_view
 as
 select
-    sa1.subject_id,
-    tesic_u.source_subject_id,
-    tesic_u.event_name,
-    tesic_u.tc_administrator,
-    tesic_u.tc_administrator_other,
+    sa1.subject_id,                 
+    tesic_u.source_subject_id,       -- PII; remove after curation
+    tesic_u.event_name,              -- Remove after curation
+    tesic_u.tc_administrator,        -- Remove after curation
+    tesic_u.tc_administrator_other,  -- Remove after curation
     case
         when tesic_u.event_name like 'baseline%' then sched_main.sched_base_complete_date
 		when tesic_u.event_name like 'six_month%' then sched_main.sched_6mo_complete_date
 		when tesic_u.event_name like 'one_year%' then sched_main.sched_1yr_complete_date
 		when tesic_u.event_name like '18_month%' then sched_main.sched_18mo_complete_date
 		when tesic_u.event_name like '24_month%' then sched_main.sched_2yr_complete_date
-    end as interview_date,
+    end as interview_date,            -- PII; remove after curation
     case
         when tesic_u.event_name like 'baseline%' then sched_main.sched_base_complete
 		when tesic_u.event_name like 'six_month%' then sched_main.sched_6mo_complete
 		when tesic_u.event_name like 'one_year%' then sched_main.sched_1yr_complete
 		when tesic_u.event_name like '18_month%' then sched_main.sched_18mo_complete
 		when tesic_u.event_name like '24_month%' then sched_main.sched_2yr_complete
-    end as status,
-    tesic_u.tc_interview_date,
-    dem.dem_ch_dob,
+    end as status,                    -- Remove after curation
+    tesic_u.tc_interview_date,        -- PII; remove after curation
+    dem.dem_ch_dob,                   -- PII; remove after curation
     case
         when tesic_u.event_name like 'baseline%' then nda_months_between(sched_main.sched_base_complete_date, dem.dem_ch_dob)
 		when tesic_u.event_name like 'six_month%' then nda_months_between(sched_main.sched_6mo_complete_date, dem.dem_ch_dob)
@@ -412,13 +427,13 @@ select
     -- tesic_u.tc_7_brief,
     tesic_u.tc_7_crit_a2,
     tesic_u.tc_7_how_often,
-    tesic_u.tc_8_1,
-    tesic_u.tc_8_2,
+    tesic_u.tc_8_1,               -- PII; remove after curation
+    tesic_u.tc_8_2,               -- PII; remove after curation
     tesic_u.tc_8_1_less_than_1mo,
-    tesic_u.tc_8_3,
-    tesic_u.tc_8_4,
+    tesic_u.tc_8_3,               -- PII; remove after curation
+    tesic_u.tc_8_4,               -- PII; remove after curation
     tesic_u.tc_8_3_less_than_1mo,
-    tesic_u.tc_complete,
+    tesic_u.tc_complete,          -- Remove after curation
 	--- TBD: Integration of Luke/Nazan calculations for "cumulative variety indices (tc_cumvaridx_*)" (name replaces "cumulative load")
     -- tesic_u.tc_start_timestamp,
     -- tesic_u.tc_cumload_life_unintentional,
@@ -427,25 +442,26 @@ select
     -- tesic_u.tc_cumload_life_interpers_witn_comm,
     -- tesic_u.tc_cumload_life_bullying,
     -- tesic_u.tc_cumload_life_overall,
-    tesic_u.tc_1_1_worst,
-    tesic_u.tc_1_2_worst,
-    tesic_u.tc_1_3_worst,
-    tesic_u.tc_1_4_worst,
-    tesic_u.tc_1_5_worst,
-    tesic_u.tc_1_6_worst,
-    tesic_u.tc_2_1_worst,
-    tesic_u.tc_2_2_worst,
-    tesic_u.tc_2_3_worst,
-    tesic_u.tc_2_4_worst,
-    tesic_u.tc_2_5_worst,
-    tesic_u.tc_3_1_worst,
-    tesic_u.tc_3_2_worst,
-    tesic_u.tc_3_3_worst,
-    tesic_u.tc_4_1_worst,
-    tesic_u.tc_4_2_worst,
-    tesic_u.tc_4_3_worst,
-    tesic_u.tc_5_worst,
-    tesic_u.tc_7_worst,
+	-- Comment or remove the following "worst" variables after curation
+    tesic_u.tc_1_1_worst,    -- Remove after curation
+    tesic_u.tc_1_2_worst,    -- Remove after curation
+    tesic_u.tc_1_3_worst,    -- Remove after curation
+    tesic_u.tc_1_4_worst,    -- Remove after curation
+    tesic_u.tc_1_5_worst,    -- Remove after curation
+    tesic_u.tc_1_6_worst,    -- Remove after curation
+    tesic_u.tc_2_1_worst,    -- Remove after curation
+    tesic_u.tc_2_2_worst,    -- Remove after curation
+    tesic_u.tc_2_3_worst,    -- Remove after curation
+    tesic_u.tc_2_4_worst,    -- Remove after curation
+    tesic_u.tc_2_5_worst,    -- Remove after curation
+    tesic_u.tc_3_1_worst,    -- Remove after curation
+    tesic_u.tc_3_2_worst,    -- Remove after curation
+    tesic_u.tc_3_3_worst,    -- Remove after curation
+    tesic_u.tc_4_1_worst,    -- Remove after curation
+    tesic_u.tc_4_2_worst,    -- Remove after curation
+    tesic_u.tc_4_3_worst,    -- Remove after curation
+    tesic_u.tc_5_worst,      -- Remove after curation
+    tesic_u.tc_7_worst,      -- Remove after curation
     case
         when tc_1_1_worst = '1' then '1_1'
         when tc_1_2_worst = '1' then '1_2'
@@ -472,25 +488,26 @@ select
     age_days_between(tesic_u.tc_8_2::date, tesic_u.tc_interview_date::date) AS worst_days_b4visit,
     tesic_u.tcfu_8_3,  -- This variable needs to be initialized with tc_8_1_worst at baseline and updated with the new tc_8_1_worst when tcfu_8_3 is "1"
     --tesic_u.tc_8_worst_ever,
-    tesic_u.tc_1_1_most_recent,
-    tesic_u.tc_1_2_most_recent,
-    tesic_u.tc_1_3_most_recent,
-    tesic_u.tc_1_4_most_recent,
-    tesic_u.tc_1_5_most_recent,
-    tesic_u.tc_1_6_most_recent,
-    tesic_u.tc_2_1_most_recent,
-    tesic_u.tc_2_2_most_recent,
-    tesic_u.tc_2_3_most_recent,
-    tesic_u.tc_2_4_most_recent,
-    tesic_u.tc_2_5_most_recent,
-    tesic_u.tc_3_1_most_recent,
-    tesic_u.tc_3_2_most_recent,
-    tesic_u.tc_3_3_most_recent,
-    tesic_u.tc_4_1_most_recent,
-    tesic_u.tc_4_2_most_recent,
-    tesic_u.tc_4_3_most_recent,
-    tesic_u.tc_5_most_recent,
-    tesic_u.tc_7_most_recent,
+	-- Comment or remove the following "most_recent" variables after curation
+    tesic_u.tc_1_1_most_recent,   -- Remove after curation 
+    tesic_u.tc_1_2_most_recent,   -- Remove after curation
+    tesic_u.tc_1_3_most_recent,   -- Remove after curation
+    tesic_u.tc_1_4_most_recent,   -- Remove after curation
+    tesic_u.tc_1_5_most_recent,   -- Remove after curation
+    tesic_u.tc_1_6_most_recent,   -- Remove after curation
+    tesic_u.tc_2_1_most_recent,   -- Remove after curation
+    tesic_u.tc_2_2_most_recent,   -- Remove after curation
+    tesic_u.tc_2_3_most_recent,   -- Remove after curation
+    tesic_u.tc_2_4_most_recent,   -- Remove after curation
+    tesic_u.tc_2_5_most_recent,   -- Remove after curation
+    tesic_u.tc_3_1_most_recent,   -- Remove after curation
+    tesic_u.tc_3_2_most_recent,   -- Remove after curation
+    tesic_u.tc_3_3_most_recent,   -- Remove after curation
+    tesic_u.tc_4_1_most_recent,   -- Remove after curation
+    tesic_u.tc_4_2_most_recent,   -- Remove after curation
+    tesic_u.tc_4_3_most_recent,   -- Remove after curation
+    tesic_u.tc_5_most_recent,     -- Remove after curation
+    tesic_u.tc_7_most_recent,     -- Remove after curation
     case
         when tc_1_1_most_recent = '1' then '1_1'
         when tc_1_2_most_recent = '1' then '1_2'
