@@ -45,22 +45,22 @@ select
 		when tesic_u.event_name like '24_month%' then '24_month'
 	end as visit
     ,tesic_u.tc_1_1
-    ,tesic_u.tcfu_1_1
+    --,tesic_u.tcfu_1_1 -- commented on 09/01/26
     ,tesic_u.tc_1_1_crit_a1
     ,tesic_u.tc_1_1_crit_a2
     ,tesic_u.tc_1_1_how_often
     ,tesic_u.tc_1_2
-    ,tesic_u.tcfu_1_2
+    --,tesic_u.tcfu_1_2
     ,tesic_u.tc_1_2_crit_a1
     ,tesic_u.tc_1_2_crit_a2
     ,tesic_u.tc_1_2_how_often
     ,tesic_u.tc_1_3
-    ,tesic_u.tcfu_1_3
+    --,tesic_u.tcfu_1_3 -- commented on 09/01/26
     ,tesic_u.tc_1_3_crit_a1
     ,tesic_u.tc_1_3_crit_a2
     ,tesic_u.tc_1_3_how_often
     ,tesic_u.tc_1_4
-    ,tesic_u.tcfu_1_4
+    --,tesic_u.tcfu_1_4 -- commented on 09/01/26
     ,tesic_u.tc_1_4_crit_a1
     ,tesic_u.tc_1_4_crit_a2
     ,tesic_u.tc_1_4_who__1_mother
@@ -73,17 +73,17 @@ select
     ,tesic_u.tc_1_4_who__8_else
     ,tesic_u.tc_1_4_how_often
     ,tesic_u.tc_1_5
-    ,tesic_u.tcfu_1_5
+    --,tesic_u.tcfu_1_5 -- commented on 09/01/26
     ,tesic_u.tc_1_5_crit_a1
     ,tesic_u.tc_1_5_crit_a2
     ,tesic_u.tc_1_5_how_often
     ,tesic_u.tc_1_6
-    ,tesic_u.tcfu_1_6
+    --,tesic_u.tcfu_1_6 -- commented on 09/01/26
     ,tesic_u.tc_1_6_crit_a1
     ,tesic_u.tc_1_6_crit_a2
     ,tesic_u.tc_1_6_how_often
     ,tesic_u.tc_2_1
-    ,tesic_u.tcfu_2_1
+    --,tesic_u.tcfu_2_1 -- commented on 09/01/26
     ,tesic_u.tc_2_1_crit_a1
     ,tesic_u.tc_2_1_crit_a2
     ,tesic_u.tc_2_1_who__1_mother
@@ -104,7 +104,7 @@ select
     ,tesic_u.tc_2_1_how__6_other
     ,tesic_u.tc_2_1_how_often
     ,tesic_u.tc_2_2
-    ,tesic_u.tcfu_2_2
+    -- ,tesic_u.tcfu_2_2 -- commented on 09/01/26
     ,tesic_u.tc_2_2_crit_a2		-- Are we missing the tc_2_3_crit_a1?
     ,tesic_u.tc_2_2_who__1_mother
     ,tesic_u.tc_2_2_who__2_father
@@ -124,13 +124,13 @@ select
     ,tesic_u.tc_2_2_how__6_other
     ,tesic_u.tc_2_2_how_often
     ,tesic_u.tc_2_3
-    ,tesic_u.tcfu_2_3
+    --,tesic_u.tcfu_2_3 -- commented on 09/01/26
 	,tesic_u.tc_2_3_crit_a1
     ,tesic_u.tc_2_3_crit_a2
     ,tesic_u.tc_2_3_how
     ,tesic_u.tc_2_3_how_often
     ,tesic_u.tc_2_4
-    ,tesic_u.tcfu_2_4
+    --,tesic_u.tcfu_2_4 -- commented on 09/01/26
 	,tesic_u.tc_2_4_crit_a1
     ,tesic_u.tc_2_4_crit_a2		
     ,tesic_u.tc_2_4_who__1_mother
@@ -147,12 +147,12 @@ select
     ,tesic_u.tc_2_4_how__4_other
     ,tesic_u.tc_2_4_how_often
     ,tesic_u.tc_2_5
-    ,tesic_u.tcfu_2_5
+    --,tesic_u.tcfu_2_5 -- commented on 09/01/26
 	,tesic_u.tc_2_5_crit_a1	
 	,tesic_u.tc_2_5_crit_a2		
     ,tesic_u.tc_2_5_how_often
     ,tesic_u.tc_3_1
-    ,tesic_u.tcfu_3_1
+    --,tesic_u.tcfu_3_1 -- commented on 09/01/26
 	,tesic_u.tc_3_1_crit_a1
     ,tesic_u.tc_3_1_crit_a2 	
     ,tesic_u.tc_3_1_who__1_mother
@@ -173,7 +173,7 @@ select
     ,tesic_u.tc_3_1_how__6_other
     ,tesic_u.tc_3_1_how_often
     ,tesic_u.tc_3_2
-    ,tesic_u.tcfu_3_2
+    --,tesic_u.tcfu_3_2 -- commented on 09/01/26
 	,tesic_u.tc_3_2_crit_a1
     ,tesic_u.tc_3_2_crit_a2		-- Are we missing the tc_3_2_crit_a2_crit_a1?
     ,tesic_u.tc_3_2_who__1_mother
@@ -194,7 +194,7 @@ select
     ,tesic_u.tc_3_2_how__6_other
     ,tesic_u.tc_3_2_how_often
     ,tesic_u.tc_3_3
-    ,tesic_u.tcfu_3_3
+    --,tesic_u.tcfu_3_3 -- commented on 09/01/26
     ,tesic_u.tc_3_3_crit_a1
     ,tesic_u.tc_3_3_crit_a2
     ,tesic_u.tc_3_3_who__1_mother
@@ -204,7 +204,7 @@ select
     ,tesic_u.tc_3_3_who__5_otherrelative
     ,tesic_u.tc_3_3_how_often
     ,tesic_u.tc_4_1
-    ,tesic_u.tcfu_4_1
+    --,tesic_u.tcfu_4_1 -- commented on 09/01/26
 	,tesic_u.tc_4_1_crit_a1
     ,tesic_u.tc_4_1_crit_a2
     ,tesic_u.tc_4_1_who__1_mother
@@ -225,7 +225,7 @@ select
     ,tesic_u.tc_4_1_how__6_other
     ,tesic_u.tc_4_1_how_often
     ,tesic_u.tc_4_2
-    ,tesic_u.tcfu_4_2
+    --,tesic_u.tcfu_4_2 -- commented on 09/01/26
 	,tesic_u.tc_4_2_crit_a1
     ,tesic_u.tc_4_2_crit_a2
     ,tesic_u.tc_4_2_who__1_mother
@@ -246,12 +246,12 @@ select
     ,tesic_u.tc_4_2_how__6_other
     ,tesic_u.tc_4_2_how_often
     ,tesic_u.tc_4_3
-    ,tesic_u.tcfu_4_3
+    --,tesic_u.tcfu_4_3 -- commented on 09/01/26
 	,tesic_u.tc_4_3_crit_a1
     ,tesic_u.tc_4_3_crit_a2
     ,tesic_u.tc_4_3_how_often
     ,tesic_u.tc_5 as tc_5_exp
-    ,tesic_u.tcfu_5
+    --,tesic_u.tcfu_5 -- commented on 09/01/26
 	,tesic_u.tc_5_crit_a1
     ,tesic_u.tc_5_crit_a2
     ,tesic_u.tc_5_who__1_mother
@@ -274,7 +274,7 @@ select
     ,tesic_u.tc_5_how__8_other
     ,tesic_u.tc_5_how_often
     ,tesic_u.tc_6_1
-    ,tesic_u.tcfu_6_1
+    --,tesic_u.tcfu_6_1 -- commented on 09/01/26
     ,tesic_u.tc_6_1_crit_a2
     ,tesic_u.tc_6_1_who__1_older_boy
     ,tesic_u.tc_6_1_who__2_younger_boy
@@ -288,7 +288,7 @@ select
     ,tesic_u.tc_6_1_who__10_unkadult
     ,tesic_u.tc_6_1_who__99_else
     ,tesic_u.tc_6_2
-    ,tesic_u.tcfu_6_2
+    --,tesic_u.tcfu_6_2 -- commented on 09/01/26
     ,tesic_u.tc_6_2_who__1_older_boy
     ,tesic_u.tc_6_2_who__2_younger_boy
     ,tesic_u.tc_6_2_who__3_boy_same_grade
@@ -302,7 +302,7 @@ select
     ,tesic_u.tc_6_2_who__99_else
     ,tesic_u.tc_6_2_how_often
     ,tesic_u.tc_7 as tc_7_cyber
-    ,tesic_u.tcfu_7
+    -- ,tesic_u.tcfu_7 -- commented on 09/01/26
     ,tesic_u.tc_7_crit_a1
     ,tesic_u.tc_7_crit_a2
     ,tesic_u.tc_7_how_often
