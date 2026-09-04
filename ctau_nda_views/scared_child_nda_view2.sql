@@ -84,7 +84,14 @@ SELECT dem.dem_guid AS subjectkey,
 	scared_child.scaredc_39 AS scared_39,
 	scared_child.scaredc_40 AS scared_40,
 	scared_child.scaredc_41 AS scared_41,
----	COALESCE(CAST(base.brpt_scared_tot_score AS INTEGER), 999) AS scared_total,    -- Commented out baseline report summaries; replace with calculations utilizing RCap source data entries.
+--- NDA required fields; set equal to "999". Replace with calculations based on RCap source data entries (not the Baseline report entries commented below).
+	scared_total,
+	scared_pd_score,
+	scared_gad_score,
+	scared_sad_score,
+	scared_socad_score,
+	scared_ssa_score,
+---	COALESCE(CAST(base.brpt_scared_tot_score AS INTEGER), 999) AS scared_total,    -- NDA required fields; set equal to "999". Replace with calculations utilizing RCap source data entries.
 ---	COALESCE(CAST(base.brpt_scared_paso_score AS INTEGER), 999) AS scared_pd_score,
 ---	COALESCE(CAST(base.brpt_scared_ga_score AS INTEGER), 999) AS scared_gad_score,
 ---	COALESCE(CAST(base.brpt_scared_sep_score AS INTEGER), 999) AS scared_sad_score,
