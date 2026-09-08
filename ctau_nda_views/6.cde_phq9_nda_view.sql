@@ -48,7 +48,7 @@ select
 		when phqa.language = 'sp' then '70' -- Spanish for the United States
 		else '1' -- English
 	end as phq9_10
-	,phqa.phqa_complete
+	,phqa.phqa_complete  -- only for validation; delete before submission
 from rcap_phqa phqa -- Attention! rcap_phqa is not a CTAU table.
 inner join rcap_ctau_scheduling_form sched -- to keep CTAU participants only
 	on sched.sched_ctrn_id = phqa.source_subject_id
