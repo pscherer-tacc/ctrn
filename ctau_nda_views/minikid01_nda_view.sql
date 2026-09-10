@@ -132,12 +132,7 @@ select
 	mini_u1__1_current as mini_u1_current,		
 	mini_v1__1_current as mini_v1_current,
 	mini_w1 as mini_kidsum_medrulout,
-	case
-	    when mini_x1__1_not_ruled_out='1' then '1'  -- yes
-		when mini_x1__1_not_ruled_out='0' then '2'	-- no
-		when mini_x1__1_not_ruled_out='99' then '3'	-- uncertain
-		else null
-	end as mini_x1_not_ruled_out,
+	mini_x1__1_not_ruled_out as mini_x1_not_ruled_out,
 	mini_primary_dx
 from rcap_miniss_v2 as mini -- attention! rcap_miniss_v2 is NOT a ctau table.
 inner join rcap_ctau_scheduling_form as sched -- to keep ctau participants only
