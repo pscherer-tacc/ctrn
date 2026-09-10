@@ -131,7 +131,10 @@ select
 	mini_t1__1_current as mini_t1_current,
 	mini_u1__1_current as mini_u1_current,		
 	mini_v1__1_current as mini_v1_current,
-	mini_w1 as mini_kidsum_medrulout,
+    case
+	    when mini_w1='1' then '1'
+	    else null
+	end as mini_kidsum_medrulout,   -- NDA does not support values other than 1
 	mini_x1__1_not_ruled_out as mini_x1_not_ruled_out,
 	mini_primary_dx
 from rcap_miniss_v2 as mini -- attention! rcap_miniss_v2 is NOT a ctau table.
