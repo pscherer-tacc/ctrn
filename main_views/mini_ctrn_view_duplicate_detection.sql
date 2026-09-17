@@ -156,8 +156,56 @@ select
 	mini.mini_v1__1_current,
 	mini.mini_w1,
 	mini.mini_x1__1_not_ruled_out,
-	mini.mini_primary_dx,
-	mini.mini_lang
+	-- mini.mini_primary_dx,
+	mini.mini_lang,
+	case
+		when mini.mini_primary_dx = 'mini_ss_a_1_v2_hid1' then 'mini_a1 Depressive Episode'
+		when mini.mini_primary_dx = 'mini_ss_a_2_v2_hid1' then 'mini_a2 Depressive Disorder'
+		when mini.mini_primary_dx = 'mini_ss_a_2_v2_hid2' then 'mini_a2 Depressive Disorder'
+		when mini.mini_primary_dx = 'mini_ss_a_2_v2_hid3' then 'mini_a2 Depressive Disorder'
+		when mini.mini_primary_dx = 'mini_ss_b_1_v2' then 'mini_b1 Suicidality'
+		when mini.mini_primary_dx = 'mini_ss_b_3_v2_hid1' then 'mini_b2 Suicide Behavior Disorder'
+		when mini.mini_primary_dx = 'mini_ss_b_3_v2_hid2' then 'mini_b2 Suicide Behavior Disorder'
+		when mini.mini_primary_dx = 'mini_ss_c_1_v2' then 'mini_c1 Manic Episode'
+		when mini.mini_primary_dx = 'mini_ss_c_2_v2' then 'mini_c2 Hypomanic Episode'
+		when mini.mini_primary_dx = 'mini_ss_c_3_v2_hid1' then 'mini_c3 Bipolar I (ICD-10-CM: F31.0 - F31.76)'
+		when mini.mini_primary_dx = 'mini_ss_c_3_v2_hid2' then 'mini_c3 Bipolar I (ICD-10-CM: F31.0 - F31.76)'
+		when mini.mini_primary_dx = 'mini_ss_c_5_v2_hid1' then 'mini_c5 Bipolar II (ICD-10-CM: F31.81)'
+		when mini.mini_primary_dx = 'mini_ss_c_5_v2_hid2' then 'mini_c5 Bipolar II (ICD-10-CM: F31.81)'
+		when mini.mini_primary_dx = 'mini_ss_c_7_v2_hid1' then 'mini_c7 Bipolar Related (ICD-10-CM: F31.89)'
+		when mini.mini_primary_dx = 'mini_ss_c_7_v2_hid2' then 'mini_c7 Bipolar Related (ICD-10-CM: F31.89)'
+		when mini.mini_primary_dx = 'mini_ss_d_1_v2_hid1' then 'mini_d1 Panic (ICD-10-CM: F41.0 / F40.01)'
+		when mini.mini_primary_dx = 'mini_ss_d_1_v2_hid2' then 'mini_d1 Panic (ICD-10-CM: F41.0 / F40.01)'
+		when mini.mini_primary_dx = 'mini_ss_e_1_v2_hid1' then 'mini_e1 Agoraphobia (ICD-10-CM: F40.00 / F40.01 / F40.02)'
+		when mini.mini_primary_dx = 'mini_ss_f_1_v2_hid1' then 'mini_f1 Separation Anxiety (ICD-10-CM: F93.0)'
+		when mini.mini_primary_dx = 'mini_ss_g_1_v2_hid1' then 'mini_g1 Social Anxiety/Phobia (ICD-10-CM: F40.10 / F40.11)'
+		when mini.mini_primary_dx = 'mini_ss_h_1_v2_hid1' then 'mini_h1 Specific Phobia (ICD-10-CM: F40.218 - F40.298)'
+		when mini.mini_primary_dx = 'mini_ss_i_1_v2_hid1' then 'mini_i1 OCD (ICD-10-CM: F42.2)'
+		when mini.mini_primary_dx = 'mini_ss_j_1_v2_hid1' then 'mini_j1 PTSD (ICD-10-CM: F43.10)'
+		when mini.mini_primary_dx = 'mini_ss_k_1_v2_hid1' then 'mini_k1 Alcohol Use AUD (ICD-10-CM: F10.10 - F10.21)'
+		when mini.mini_primary_dx = 'mini_ss_l_1_v2_hid1' then 'mini_l1 Substance Use (ICD-10-CM: F11.10 - F19.21)'
+		when mini.mini_primary_dx = 'mini_ss_m_1_v2_hid1' then 'mini_m1 Tic - Tourette''s (ICD-10-CM: F95.2)'
+		when mini.mini_primary_dx = 'mini_ss_m_3_v2_hid1' then 'mini_m3 Tic - Motor (ICD-10-CM: F95.1)'
+		when mini.mini_primary_dx = 'mini_ss_m_5_v2_hid1' then 'mini_m5 Tic - Vocal (ICD-10-CM: F95.1) '
+		when mini.mini_primary_dx = 'mini_ss_m_7_v2_hid1' then 'mini_m7 Tic - Provisional (ICD-10-CM: F95.0)'
+		when mini.mini_primary_dx = 'mini_ss_n_1_v2_hid1' then 'mini_n1 ADHD - Combined (ICD-10-CM: F90.2)'
+		when mini.mini_primary_dx = 'mini_ss_n_3_v2_hid1' then 'mini_n3 ADHD - Inattentive (ICD-10-CM: F90.0)'
+		when mini.mini_primary_dx = 'mini_ss_n_5_v2_hid1' then 'mini_n5 ADHD - Hyperactive (ICD-10-CM: F90.1)'
+		when mini.mini_primary_dx = 'mini_ss_o_1_v2_hid1' then 'mini_o1 Conduct (ICD-10-CM: F91.1 / F91.2 / F91.9)'
+		when mini.mini_primary_dx = 'mini_ss_p_1_v2_hid1' then 'mini_p1 Oppositional (ICD-10-CM: F91.3)'
+		when mini.mini_primary_dx = 'mini_ss_q_1_v2_hid1' then 'mini_q1 Psychotic (ICD-10-CM: F20.xx - F29)'
+		when mini.mini_primary_dx = 'mini_ss_q_1_v2_hid2' then 'mini_q1 Psychotic (ICD-10-CM: F20.xx - F29)'
+		when mini.mini_primary_dx = 'mini_ss_q_3_v2_hid1' then 'mini_q3 Depressive+Psychotic (ICD-10-CM: F32.3 / F33.3)'
+		when mini.mini_primary_dx = 'mini_ss_q_3_v2_hid2' then 'mini_q3 Depressive+Psychotic (ICD-10-CM: F32.3 / F33.3)'
+		when mini.mini_primary_dx = 'mini_ss_q_5_v2_hid1' then 'mini_q5 Bipolar I+Psychotic (ICD-10-CM: F31.2 / F31.5 / F31.64)'
+		when mini.mini_primary_dx = 'mini_ss_q_5_v2_hid2' then 'mini_q5 Bipolar I+Psychotic (ICD-10-CM: F31.2 / F31.5 / F31.64)'
+		when mini.mini_primary_dx = 'mini_ss_r_1_v2_hid1' then 'mini_r1 Anorexia(ICD-10-CM: F50.01 / F50.02)'
+		when mini.mini_primary_dx = 'mini_ss_s_1_v2_hid1' then 'mini_s1 Bulimia (ICD-10-CM: F50.2)'
+		when mini.mini_primary_dx = 'mini_ss_t_1_v2_hid1' then 'mini_t1 Binge-Eating (ICD-10-CM: F50.81)'
+		when mini.mini_primary_dx = 'mini_ss_u_1_v2_hid1' then 'mini_u1 Generalized Anxiety (ICD-10-CM: F41.1)'
+		when mini.mini_primary_dx = 'mini_ss_v_1_v2_hid1' then 'mini_v1 Adjustment (ICD-10-CM: F43.20 - F43.25)'
+		when mini.mini_primary_dx = 'mini_ss_x_1_v2_hid1' then 'mini x1 Autism (F84.0)'
+	end as mini_primary_dx
 from rcap_miniss_v2 mini
 inner join subject_alias sa1
     on sa1.source_subject_id = mini.source_subject_id
