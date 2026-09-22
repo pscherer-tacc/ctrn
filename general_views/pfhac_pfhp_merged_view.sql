@@ -95,7 +95,14 @@ select
     hc18_suicide_death__0_child as suicide_death__0_child,
     hc18_complete as complete,
     project_id,
-    event_name,
+    case 
+        when event_name like 'baseline%' then 'baseline'
+        when event_name like 'one_month%' then 'one_month'
+        when event_name like 'six_month%' then 'six_month'
+        when event_name like 'one_year%' then 'one_year'
+        when event_name like '18_month%' then '18_month'
+        when event_name like '24_month%' then '24_month'
+    end as event_name,
     survey_identifier,
     hc18_pet_type__2_cat as pet_type__2_cat,
     hc18_pet_type__3_rodent as pet_type__3_rodent,
@@ -252,7 +259,14 @@ select
     hp_suicide_death__0_child as suicide_death__0_child,
     hp_complete as complete,
     project_id,
-    event_name,
+    case 
+        when event_name like 'baseline%' then 'baseline'
+        when event_name like 'one_month%' then 'one_month'
+        when event_name like 'six_month%' then 'six_month'
+        when event_name like 'one_year%' then 'one_year'
+        when event_name like '18_month%' then '18_month'
+        when event_name like '24_month%' then '24_month'
+    end as event_name,
     survey_identifier,
     hp_pet_type__2_cat as pet_type__2_cat,
     hp_pet_type__3_rodent as pet_type__3_rodent,
