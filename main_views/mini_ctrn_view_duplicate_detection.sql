@@ -3,9 +3,9 @@
 --- This view includes date calculations and fields for cross-checking and curation. Curation fields and associated data must be removed 
 --- prior to sharing outside of the CTRN's IRB-approved community. The export from this query includes incomplete records which are curated as follows:
 --- 	1) Records with NULL interview dates are removed
----		2) Records with NULL sex are removed
----		3) Remove duplicate incomplete records where sched_[event_name]_complete not equal "1"(complete) or "8"(sufficiently complete)
----     4) Report any remaining records for correction if sched_[event_name]_complete not equal "1"(complete) or "8"(sufficiently complete), but they contain data 
+---		2) Duplicate incomplete records where sched_[event_name]_complete not equal "1"(complete) or "8"(sufficiently complete) arw removed
+---		3) Records with NULL sex are retained but reported to Data Core for correction if the record was marked complete or sufficiently complete
+---     4) Remove all pii/phi variables and data as per line comments below  
 ---
 -- Query the data from the view
 select
