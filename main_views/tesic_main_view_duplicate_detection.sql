@@ -1,13 +1,14 @@
 ---- TESIC MAIN View (a unioned view that includes tesic baseline and follow-ups from CTRN Main project with duplicate detection)
 --- Name of the view: tesic_MAIN_view
 --- This view includes date calculations and fields for cross-checking and curation. Curation fields and associated data must be removed 
---- prior to sharing outside of the CTRN's IRB-approved community. The export from this query includes incomplete records which are curated as follows:
+--- prior to sharing outside of the CTRN's IRB-approved community. The export from this query export is curated as follows:
 --- 	1) Records with NULL schedule [visit]_complete_dates are removed
 ---     2) Records with NULL dem_ch_dob are removed
----		3) Duplicate and incomplete records where sched_[event_name]_complete not equal "1"(complete) or "8"(sufficiently complete) arw removed
----		4) Records with NULL sex are retained but reported to Data Core for correction if the record was marked complete or sufficiently complete
----     5) Variables containing pii/phi and/or unstructured text are removed as per comments below
----     6) Variables used solely for curation/administration are removed as per comments below
+---		3) Incomplete records where sched_[event_name]_complete NOT EQUAL "1"(complete) or "8"(sufficiently complete) are removed
+---     4) Any remaining duplicate and partial duplicate records are removed with the goal of the curated data products containing 1 record per event per participant. 
+---		5) "Complete" and "sufficiently complete" records with NULL sex are retained and reported to the Data Core team for correction
+---     6) Variables containing pii/phi and/or unstructured text are removed as per comments below
+---     7) Variables used solely for curation/administration are removed as per comments below
 ---
 --- Query the data from the view
 --- select * from tesic_MAIN_view
