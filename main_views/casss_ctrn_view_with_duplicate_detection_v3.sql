@@ -10,11 +10,11 @@
 --- casch section 5 ("people in my school") <-> no match in cascol; retain separate variables   
 ---
 --- This view includes date calculations and fields for cross-checking and curation. Curation fields and associated data must be removed 
---- prior to sharing outside of the CTRN's IRB-approved community. The export from this query includes incomplete records which are curated as follows:
+--- prior to sharing outside of the CTRN's IRB-approved community. The export from this query export is curated as follows:
 --- 	1) Records with NULL schedule [visit]_complete_dates are removed
 ---     2) Records with NULL dem_ch_dob are removed
 ---		3) Incomplete records where sched_[event_name]_complete NOT EQUAL "1"(complete) or "8"(sufficiently complete) are removed
----     4) Any remaining duplicate and partial duplicate records are removed with the goal of the curated data product to contain 1 record per event per participant. 
+---     4) Any remaining duplicate and partial duplicate records are removed with the goal of the curated data products containing 1 record per event per participant. 
 ---		5) "Complete" and "sufficiently complete" records with NULL sex are retained and reported to the Data Core team for correction
 ---     6) Variables containing pii/phi and/or unstructured text are removed as per comments below
 ---     7) Variables used solely for curation/administration are removed as per comments below
