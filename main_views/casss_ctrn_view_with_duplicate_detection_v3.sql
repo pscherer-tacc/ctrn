@@ -3,10 +3,10 @@
 ---
 --- This view merges similar sections and variables of CASCOL with CASSS vs earlier CASSS data products which displayed this data
 --- as separate variables. The mapping for the merged sections are as follows:
---- casch section 1 ("parent") <-> cascol section 1 ("family")
+--- casch section 1 ("parent") <-> cascol section 1 ("family") AS casss_*
 --- casch section 2 ("teacher") <-> no match in cascol; retain separate variables
---- casch section 3 ("classmate") <-> cascol section 3 ("friends")
---- casch section 4 ("close friend") <-> cascol section 2 ("best friend")
+--- casch section 3 ("classmate") <-> cascol section 3 ("friends") AS casss_*
+--- casch section 4 ("close friend") <-> cascol section 2 ("best friend") AS casss_*
 --- casch section 5 ("people in my school") <-> no match in cascol; retain separate variables   
 ---
 --- This view includes date calculations and fields for cross-checking and curation. Curation fields and associated data must be removed 
@@ -86,7 +86,7 @@ select
 	case 
         when pfhc.hc_race='1' then 'American Indian or Alaska Native'
         when pfhc.hc_race='2' then 'Asian'
-        when pfhc.hc_race='3' then 'Native Hawaian or Pacific Islander'
+        when pfhc.hc_race='3' then 'Native Hawaiian or Pacific Islander'
         when pfhc.hc_race='4' then 'Black or African American'
         when pfhc.hc_race='5' then 'White'
         when pfhc.hc_race='6' then 'Multi-racial'
@@ -101,33 +101,33 @@ select
 		when casss_merged.event_name like '18_month%' then '18_month'
 		when casss_merged.event_name like '24_month%' then '24_month'
 	end as visit,
-
-    casch_sec1_q1a,  -- My parent(s) show they are proud of me. - How often 1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q1b,  -- My parent(s) show they are proud of me. - Important 1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q2a,  -- My parent(s) understand me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q2b,  -- My parent(s) understand me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q3a,  -- My parent(s) listen to me when I need to talk. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q3b,  -- My parent(s) listen to me when I need to talk. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q4a,  -- My parent(s) make suggestions when I don't know what to do. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q4b,  -- My parent(s) make suggestions when I don't know what to do. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q5a,  -- My parent(s) give me good advice. How often?	1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q5b,  -- My parent(s) give me good advice. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q6a,  -- My parent(s) help me solve problems by giving me information. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q6b,  -- My parent(s) help me solve problems by giving me information. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q7a,  -- My parent(s) tell me I did a good job when I do something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q7b,  -- My parent(s) tell me I did a good job when I do something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q8a,  -- My parent(s) nicely tell me when I make mistakes. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q8b,  -- My parent(s) nicely tell me when I make mistakes. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q9a,  -- My parent(s) reward me when I've done something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q9b,  -- My parent(s) reward me when I've done something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q10a, -- My parent(s) help me practice my activities. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q10b,	-- My parent(s) help me practice my activities. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q11a,	-- My parent(s) take time to help me decide things. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q11b,	-- My parent(s) take time to help me decide things. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec1_q12a,	-- My parent(s) get me many of the things I need. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec1_q12b,	-- My parent(s) get me many of the things I need. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+--- Merging and renaming common child and college variables to casss_*
+    casch_sec1_q1a AS casss_sec1_q1a,  -- My parent(s) show they are proud of me. - How often 1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q1b AS casss_sec1_q1b,  -- My parent(s) show they are proud of me. - Important 1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q2a AS casss_sec1_q2a,  -- My parent(s) understand me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q2b AS casss_sec1_q2b,  -- My parent(s) understand me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q3a AS casss_sec1_q3a,  -- My parent(s) listen to me when I need to talk. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q3b AS casss_sec1_q3b,  -- My parent(s) listen to me when I need to talk. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q4a AS casss_sec1_q4a,  -- My parent(s) make suggestions when I don't know what to do. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q4b AS casss_sec1_q4b,  -- My parent(s) make suggestions when I don't know what to do. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q5a AS casss_sec1_q5a,  -- My parent(s) give me good advice. How often?	1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q5b AS casss_sec1_q5b,  -- My parent(s) give me good advice. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q6a AS casss_sec1_q6a,  -- My parent(s) help me solve problems by giving me information. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q6b AS casss_sec1_q6b,  -- My parent(s) help me solve problems by giving me information. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q7a AS casss_sec1_q7a,  -- My parent(s) tell me I did a good job when I do something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q7b AS casss_sec1_q7b,  -- My parent(s) tell me I did a good job when I do something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q8a AS casss_sec1_q8a,  -- My parent(s) nicely tell me when I make mistakes. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q8b AS casss_sec1_q8b,  -- My parent(s) nicely tell me when I make mistakes. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q9a AS casss_sec1_q9a,  -- My parent(s) reward me when I've done something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q9b AS casss_sec1_q9b,  -- My parent(s) reward me when I've done something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q10a AS casss_sec1_q10a, -- My parent(s) help me practice my activities. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q10b AS casss_sec1_q10b,	-- My parent(s) help me practice my activities. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q11a AS casss_sec1_q11a,	-- My parent(s) take time to help me decide things. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q11b AS casss_sec1_q11b,	-- My parent(s) take time to help me decide things. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec1_q12a AS casss_sec1_q12a,	-- My parent(s) get me many of the things I need. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec1_q12b AS casss_sec1_q12b,	-- My parent(s) get me many of the things I need. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     cascol_sec1_q13, -- 13. How often do you see your family? 1, Daily | 2, Weekly | 3, Monthly | 4, Yearly
-
+--- Section 2 just child
     casch_sec2_q1a,	-- My teacher(s) cares about me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch_sec2_q1b,	-- My teacher(s) cares about me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     casch_sec2_q2a,	-- My teacher(s) treats me fairly - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
@@ -152,57 +152,57 @@ select
     casch_sec2_q11b,	-- My teacher(s) takes time to help me learn to do something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     casch_sec2_q12a,	-- My teacher(s) spends time with me when I need help. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch_sec2_q12b,	-- My teacher(s) spends time with me when I need help. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-
-    casch_sec3_q1a,	-- My classmate(s) treat me nicely. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q1b,	-- My classmate(s) treat me nicely. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q2a,	-- My classmate(s) like most of my ideas and opinions. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q2b,	-- My classmate(s) like most of my ideas and opinions. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q3a,	-- My classmate(s) pay attention to me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q3b,	-- My classmate(s) pay attention to me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q4a,	-- My classmate(s) give me ideas when I don't know what to do. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q4b,	-- My classmate(s) give me ideas when I don't know what to do. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q5a,	-- My classmate(s) give me information so I can learn new things. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q5b,	-- My classmate(s) give me information so I can learn new things. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q6a,	-- My classmate(s) give me good advice. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q6b,	-- My classmate(s) give me good advice. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q7a,	-- My classmate(s) tell me I did a good job when I've done something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q7b,	-- My classmate(s) tell me I did a good job when I've done something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q8a,	-- My classmate(s) nicely tell me when I make mistakes. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q8b,	-- My classmate(s) nicely tell me when I make mistakes. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q9a,	-- My classmate(s) notice when I have worked hard. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q9b,	-- My classmate(s) notice when I have worked hard. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q10a,	-- My classmate(s) ask me to join activities. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q10b,	-- My classmate(s) ask me to join activities. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q11a,	-- My classmate(s) spend time doing things with me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q11b,	-- My classmate(s) spend time doing things with me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec3_q12a,	-- My classmate(s) help me with projects in class. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec3_q12b,	-- My classmate(s) help me with projects in class. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+--- Section 3 merges child and college into casss_*
+    casch_sec3_q1a AS casss_sec3_q1a,	-- My classmate(s) treat me nicely. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q1b AS casss_sec3_q1b,	-- My classmate(s) treat me nicely. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q2a AS casss_sec3_q2a,	-- My classmate(s) like most of my ideas and opinions. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q2b AS casss_sec3_q2b,	-- My classmate(s) like most of my ideas and opinions. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q3a AS casss_sec3_q3a,	-- My classmate(s) pay attention to me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q3b AS casss_sec3_q3b,	-- My classmate(s) pay attention to me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q4a AS casss_sec3_q4a,	-- My classmate(s) give me ideas when I don't know what to do. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q4b AS casss_sec3_q4b,	-- My classmate(s) give me ideas when I don't know what to do. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q5a AS casss_sec3_q5a,	-- My classmate(s) give me information so I can learn new things. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q5b AS casss_sec3_q5b,	-- My classmate(s) give me information so I can learn new things. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q6a AS casss_sec3_q6a,	-- My classmate(s) give me good advice. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q6b AS casss_sec3_q6b,	-- My classmate(s) give me good advice. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q7a AS casss_sec3_q7a,	-- My classmate(s) tell me I did a good job when I've done something well. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q7b AS casss_sec3_q7b,	-- My classmate(s) tell me I did a good job when I've done something well. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q8a AS casss_sec3_q8a,	-- My classmate(s) nicely tell me when I make mistakes. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q8b AS casss_sec3_q8b,	-- My classmate(s) nicely tell me when I make mistakes. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q9a AS casss_sec3_q9a,	-- My classmate(s) notice when I have worked hard. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q9b AS casss_sec3_q9b,	-- My classmate(s) notice when I have worked hard. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q10a AS casss_sec3_q10a,	-- My classmate(s) ask me to join activities. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q10b AS casss_sec3_q10b,	-- My classmate(s) ask me to join activities. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q11a AS casss_sec3_q11a,	-- My classmate(s) spend time doing things with me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q11b AS casss_sec3_q11b,	-- My classmate(s) spend time doing things with me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec3_q12a AS casss_sec3_q12a,	-- My classmate(s) help me with projects in class. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec3_q12b AS casss_sec3_q12b,	-- My classmate(s) help me with projects in class. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     cascol_sec3_q13,	 -- How often do you see these friends?		1, Daily | 2, Weekly | 3, Monthly | 4, Yearly | 5, Never | 99, Not Applicable
-
-    casch_sec4_q1a,	-- My close friend understands my feelings. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q1b,	-- My close friend understands my feelings. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q2a,	-- My close friend sticks up for me if others are treating me badly. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q2b,	-- My close friend sticks up for me if others are treating me badly. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q3a,	-- My close friend spends time with me when I'm lonely. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q3b,	-- My close friend spends time with me when I'm lonely. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q4a,	-- My close friend gives me ideas when I don't know what to do. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q4b,	-- My close friend gives me ideas when I don't know what to do. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q5a,	-- My close friend gives me good advice. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q5b,	-- My close friend gives me good advice. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q6a,	-- My close friend explains things that I don't understand. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q6b,	-- My close friend explains things that I don't understand. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q7a,	-- My close friend tells me he or she likes what I do. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q7b,	-- My close friend tells me he or she likes what I do. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q8a,	-- My close friend nicely tells me when I make mistakes. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q8b,	-- My close friend nicely tells me when I make mistakes. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q9a,	-- My close friend nicely tells me the truth about how I do on things. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q9b,	-- My close friend nicely tells me the truth about how I do on things. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q10a,	-- My close friend helps me when I need it. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q10b,	-- My close friend helps me when I need it. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q11a,	-- My close friend shares his or her things with me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q11b,	-- My close friend shares his or her things with me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
-    casch_sec4_q12a,	-- My close friend takes time to help me solve my problems. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
-    casch_sec4_q12b,	-- My close friend takes time to help me solve my problems. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+--- Section 4 merges child and college into casss_*
+    casch_sec4_q1a AS casss_sec4_q1a,	-- My close friend understands my feelings. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q1b AS casss_sec4_q1b,	-- My close friend understands my feelings. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q2a AS casss_sec4_q2a,	-- My close friend sticks up for me if others are treating me badly. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q2b AS casss_sec4_q2b,	-- My close friend sticks up for me if others are treating me badly. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q3a AS casss_sec4_q3a,	-- My close friend spends time with me when I'm lonely. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q3b AS casss_sec4_q3b,	-- My close friend spends time with me when I'm lonely. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q4a AS casss_sec4_q4a,	-- My close friend gives me ideas when I don't know what to do. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q4b AS casss_sec4_q4b,	-- My close friend gives me ideas when I don't know what to do. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q5a AS casss_sec4_q5a,	-- My close friend gives me good advice. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q5b AS casss_sec4_q5b,	-- My close friend gives me good advice. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q6a AS casss_sec4_q6a,	-- My close friend explains things that I don't understand. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q6b AS casss_sec4_q6b,	-- My close friend explains things that I don't understand. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q7a AS casss_sec4_q7a,	-- My close friend tells me he or she likes what I do. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q7b AS casss_sec4_q7b,	-- My close friend tells me he or she likes what I do. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q8a AS casss_sec4_q8a,	-- My close friend nicely tells me when I make mistakes. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q8b AS casss_sec4_q8b,	-- My close friend nicely tells me when I make mistakes. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q9a AS casss_sec4_q9a,	-- My close friend nicely tells me the truth about how I do on things. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q9b AS casss_sec4_q9b,	-- My close friend nicely tells me the truth about how I do on things. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q10a AS casss_sec4_q10a,	-- My close friend helps me when I need it. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q10b AS casss_sec4_q10b,	-- My close friend helps me when I need it. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q11a AS casss_sec4_q11a,	-- My close friend shares his or her things with me. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q11b AS casss_sec4_q11b,	-- My close friend shares his or her things with me. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
+    casch_sec4_q12a AS casss_sec4_q12a,	-- My close friend takes time to help me solve my problems. - How often		1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
+    casch_sec4_q12b AS casss_sec4_q12b,	-- My close friend takes time to help me solve my problems. - Important		1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
     cascol_sec2_q13,	 -- Who were you thinking of when you rated "My Best Friend/Significant Other?"		1, Best Friend | 2, Significant Other | 3, Other | 99, Not Applicable
     cascol_sec2_q14,	 -- How often do you see this person?		1, Daily | 2, Weekly | 3, Monthly | 4, Yearly | 5, Never | 99, Not Applicable
     
