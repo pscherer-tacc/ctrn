@@ -53,7 +53,7 @@ select
 	,case 
         when pfhc.hc_race='1' then 'American Indian or Alaska Native'
         when pfhc.hc_race='2' then 'Asian'
-    	when pfhc.hc_race='3' then 'Native Hawaian or Pacific Islander'
+    	when pfhc.hc_race='3' then 'Native Hawaiian or Pacific Islander'
 	 	when pfhc.hc_race='4' then 'Black or African American'
     	when pfhc.hc_race='5' then 'White'
     	when pfhc.hc_race='6' then 'Multi-racial'
