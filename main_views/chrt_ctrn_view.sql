@@ -108,7 +108,7 @@ select
     chrt.chrt_13,
     chrt.chrt_14,
     chrt.chrt_15,
-    chrt.chrt_16,
+    chrt.chrt_16
 from rcap_chrt16 chrt
 inner join subject_alias sa1
     on sa1.source_subject_id = chrt.source_subject_id
