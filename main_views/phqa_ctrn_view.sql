@@ -106,8 +106,7 @@ select
 	phqa.phqa_10,
 	phqa.phqa_11,
 	phqa.phqa_12,
-	phqa.phqa_13,
-	phqa.phqa_complete
+	phqa.phqa_13
 from rcap_phqa phqa
 inner join subject_alias sa1
     on sa1.source_subject_id = phqa.source_subject_id
