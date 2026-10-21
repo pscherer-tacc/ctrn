@@ -25,7 +25,7 @@ left join (
 	having count(*) > 1
 ) phqa_duplicates
 	on phqa_duplicates.source_subject_id = phqa_view.source_subject_id
-	and phqa_duplicates.event_name = phqatn_view.event_name
+	and phqa_duplicates.event_name = phqa_view.event_name
 --where interview_date is not null
 order by
 	case
@@ -93,21 +93,21 @@ select
 		when phqa.event_name like '18_month%' then '18_month'
 		when phqa.event_name like '24_month%' then '24_month'
 	end as visit,
-	,phqa.phq_2_val as phq9_1
-	,phqa.phq_1_val as phq9_2
-	,phqa.phq_3_val as phq9_3
-	,phqa.phq_4_val as phq9_4
-	,phqa.phq_5_val as phq9_5
-	,phqa.phq_6_val as phq9_6
-	,phqa.phq_7_val as phq9_7	
-	,phqa.phq_8_val as phq9_8
-	,phqa.phq_9_val as phq9_9
-	,phqa.phq9_score
-	,phqa.phqa_10
-	,phqa.phqa_11
-	,phqa.phqa_12
-	,phqa.phqa_13
-	,phqa.phqa_complete
+	phqa.phq_2_val as phqa_1,
+	phqa.phq_1_val as phqa_2,
+	phqa.phq_3_val as phqa_3,
+	phqa.phq_4_val as phqa_4,
+	phqa.phq_5_val as phqa_5,
+	phqa.phq_6_val as phqa_6,
+	phqa.phq_7_val as phqa_7,	
+	phqa.phq_8_val as phqa_8,
+	phqa.phq_9_val as phqa_9,
+	phqa.phq9_score,
+	phqa.phqa_10,
+	phqa.phqa_11,
+	phqa.phqa_12,
+	phqa.phqa_13,
+	phqa.phqa_complete
 from rcap_phqa phqa
 inner join subject_alias sa1
     on sa1.source_subject_id = phqa.source_subject_id
