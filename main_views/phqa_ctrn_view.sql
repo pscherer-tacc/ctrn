@@ -93,8 +93,8 @@ select
 		when phqa.event_name like '18_month%' then '18_month'
 		when phqa.event_name like '24_month%' then '24_month'
 	end as visit,
-	phqa.phq_2_val as phqa_1,
-	phqa.phq_1_val as phqa_2,
+	phqa.phq_1_val as phqa_1,
+	phqa.phq_2_val as phqa_2,
 	phqa.phq_3_val as phqa_3,
 	phqa.phq_4_val as phqa_4,
 	phqa.phq_5_val as phqa_5,
