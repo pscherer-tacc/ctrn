@@ -186,7 +186,7 @@ select
 		when mini.mini_primary_dx = 'mini_ss_i_1_v2_hid1' then 'mini_i1 OCD (ICD-10-CM: F42.2) - Current (Past mo)'
 		when mini.mini_primary_dx = 'mini_ss_j_1_v2_hid1' then 'mini_j1 PTSD (ICD-10-CM: F43.10) - Current (Past mo)'
 		when mini.mini_primary_dx = 'mini_ss_k_1_v2_hid1' then 'mini_k1 Alcohol Use AUD (ICD-10-CM: F10.10 - F10.21) - Past 12 mo'
-		when mini.mini_primary_dx = 'mini_ss_l_1_v2_hid1' then 'mini_l1 Substance Use (ICD-10-CM: F11.10 - F19.21) - Past 12 mo'
+		when mini.mini_primary_dx = 'mini_ss_l_1_v2_hid1' then 'mini_l1 Substance Use Non-alcohol (ICD-10-CM: F11.10 - F19.21) - Past 12 mo'
 		when mini.mini_primary_dx = 'mini_ss_m_1_v2_hid1' then 'mini_m1 Tic - Tourette''s (ICD-10-CM: F95.2) - Current'
 		when mini.mini_primary_dx = 'mini_ss_m_3_v2_hid1' then 'mini_m3 Tic - Motor (ICD-10-CM: F95.1) - Current'
 		when mini.mini_primary_dx = 'mini_ss_m_5_v2_hid1' then 'mini_m5 Tic - Vocal (ICD-10-CM: F95.1) - Current'
@@ -205,7 +205,7 @@ select
 		when mini.mini_primary_dx = 'mini_ss_r_1_v2_hid1' then 'mini_r1 Anorexia(ICD-10-CM: F50.01 / F50.02) - Current (Past 3 mo)'
 		when mini.mini_primary_dx = 'mini_ss_s_1_v2_hid1' then 'mini_s1 Bulimia (ICD-10-CM: F50.2) - Current (Past 3 mo)'
 		when mini.mini_primary_dx = 'mini_ss_t_1_v2_hid1' then 'mini_t1 Binge-Eating (ICD-10-CM: F50.81) - Current (Past 3 mo)'
-		when mini.mini_primary_dx = 'mini_ss_u_1_v2_hid1' then 'mini_u1 Generalized Anxiety (ICD-10-CM: F41.1) - Current (Past 3 mo)'
+		when mini.mini_primary_dx = 'mini_ss_u_1_v2_hid1' then 'mini_u1 Generalized Anxiety (ICD-10-CM: F41.1) - Current (Past 6 mo)'
 		when mini.mini_primary_dx = 'mini_ss_v_1_v2_hid1' then 'mini_v1 Adjustment (ICD-10-CM: F43.20 - F43.25) - Current'
 		when mini.mini_primary_dx = 'mini_ss_x_1_v2_hid1' then 'mini x1 Autism (F84.0) Cannot be ruled out'
 	end as mini_primary_dx
