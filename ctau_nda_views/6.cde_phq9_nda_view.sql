@@ -38,8 +38,8 @@ select
 	,phqa.phq_2_val as phq9_1
 	,phqa.phq_1_val as phq9_2
 	,phqa.phq_3_val as phq9_3
-	,phqa.phq_4_val as phq9_4
-	,phqa.phq_5_val as phq9_5
+	,phqa.phq_4_val as phq9_5
+	,phqa.phq_5_val as phq9_4
 	,phqa.phq_6_val as phq9_6
 	,phqa.phq_7_val as phq9_7	
 	,phqa.phq_8_val as phq9_8
