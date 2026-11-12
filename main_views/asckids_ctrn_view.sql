@@ -7,8 +7,9 @@
 ---		3) Incomplete records where sched_[event_name]_complete NOT EQUAL "1"(complete) or "8"(sufficiently complete) are removed
 ---     4) Any remaining duplicate and partial duplicate records are removed with the goal of the curated data products containing 1 record per event per participant. 
 ---		5) "Complete" and "sufficiently complete" records with NULL sex are retained and reported to the Data Core team for correction
----     6) Variables containing pii/phi and/or unstructured text are removed as per comments below
----     7) Variables used solely for curation/administration are removed as per comments below
+---		6) "Complete" and "sufficiently complete" records with ALL NULL asck.asc_* values are omitted; asckids is not a required instrument for visit completion. 
+---     7) Variables containing pii/phi and/or unstructured text are removed as per comments below
+---     8) Variables used solely for curation/administration are removed as per comments below
 --- Note that there should be just 1 record per subject_id as data is only collected at baseline.
 --- 
 --- Query the data from the view
