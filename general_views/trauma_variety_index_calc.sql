@@ -1,4 +1,4 @@
----------- Trauma Variety Index
+---------- Lifetime Trauma Variety Index Calculation
 
 /*
 Notes from Luke (Message in Teams from July 7th, 4:31 PM):
@@ -15,8 +15,6 @@ tesic_cumload_life_overall = tesic_cumload_life_unintentional + tesic_cumload_li
  
 tesic_cumload_life_bullying = tesic_6_1 + tesic_6_2
 */
-
-
 
 
 -- Step 1: Calculate all [type_of_trauma]_exp_ever variables
@@ -129,51 +127,4 @@ as
     from lifetime_trauma_variety_index_type_domain
 )
 
-select count(*) from lifetime_trauma_variety_index_overall --crit_a1_trauma_domains
-;
-
-
-
------------------------------- OLD CODE BELOW
-
-
--- Step 1: Calculate all [type_of_trauma]_exp_ever variables
-with crit_a1_exp_ever 
-as (
-    select 
-        tcu.source_subject_id,
-        tcu.event_name,
-        dim_event_name.event_id,
-        tc_1_1_crit_a1,
-        max(coalesce(tc_1_1_crit_a1::int, 0)) over (partition by tcu.source_subject_id order by dim_event_name.event_id) as tc_1_1_a1_exp_ever,
-        tc_1_2_crit_a1,
-        max(coalesce(tc_1_2_crit_a1::int, 0)) over (partition by tcu.source_subject_id order by dim_event_name.event_id) as tc_1_2_a1_exp_ever,
-        tc_1_3_crit_a1,
-        max(coalesce(tc_1_3_crit_a1::int, 0)) over (partition by tcu.source_subject_id order by dim_event_name.event_id) as tc_1_3_a1_exp_ever,
-        tc_1_4_crit_a1,
-        max(coalesce(tc_1_4_crit_a1::int, 0)) over (partition by tcu.source_subject_id order by dim_event_name.event_id) as tc_1_4_a1_exp_ever,
-        tc_1_5_crit_a1,
-        max(coalesce(tc_1_5_crit_a1::int, 0)) over (partition by tcu.source_subject_id order by dim_event_name.event_id) as tc_1_5_a1_exp_ever,
-        tc_1_6_crit_a1,
-        max(coalesce(tc_1_6_crit_a1::int, 0)) over (partition by tcu.source_subject_id order by dim_event_name.event_id) as tc_1_6_a1_exp_ever,
-        tc_2_5_crit_a1,
-        max(coalesce(tc_2_5_crit_a1::int, 0)) over (partition by tcu.source_subject_id order by dim_event_name.event_id) as tc_2_5_a1_exp_ever
-    from view_tesic_union tcu
-    left join dim_ctrn_event_name dim_event_name
-        on dim_event_name.event_name = tcu.event_name
-),
-
--- Step 2: Calculate cumulative Type Domains
-crit_a1_trauma_domains
-as (
-    select *,
-        (
-            tc_1_1_a1_exp_ever + tc_1_2_a1_exp_ever + tc_1_3_a1_exp_ever +
-            tc_1_4_a1_exp_ever + tc_1_5_a1_exp_ever + tc_1_6_a1_exp_ever +
-            tc_2_5_a1_exp_ever
-        ) as unintentional
-    from crit_a1_exp_ever
-)
-
-select count(*) from crit_a1_trauma_domains
-;
+select * from lifetime_trauma_variety_index_overall;
