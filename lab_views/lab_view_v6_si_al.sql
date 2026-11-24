@@ -49,9 +49,9 @@ left join rcap_demographics ctrn_main_dem
 left join rcap_pfh_child pfhc 
     on pfhc.source_subject_id = sa2.source_subject_id
     and pfhc.event_name like 'baseline%'
-left join rcap_ctau_sample_info biosample
-	on biosample.source_subject_id = si.source_subject_id
-	and biosample.event_name = si.event_name
+left join rcap_ctau_biosample biosample
+    on biosample.source_subject_id = si.source_subject_id
+    and biosample.event_name = si.event_name
 ---
 where si.si_tube_id ilike '%\_1\_1'
 order by 
