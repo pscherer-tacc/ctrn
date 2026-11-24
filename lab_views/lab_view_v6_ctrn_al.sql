@@ -52,6 +52,166 @@ as (
     union
     select source_subject_id, event_name
     from rcap_casss_college
+	union
+	select source_subject_id, event_name
+	from rcap_asc_kids
+	union
+	select source_subject_id, event_name
+	from rcap_cdrisc
+),
+asc_scores as (
+	SELECT
+        asc_kids.source_subject_id,
+        asc_kids.event_name,
+        asc_kids.last_updated_ts,
+        (
+            NULLIF(asc_kids.asc_1::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_2::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_3::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_4::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_5::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_6::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_7::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_8::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_9::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_10::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_11::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_12::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_13::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_14::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_15::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_16::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_17::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_18::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_19::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_20::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_21::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_22::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_23::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_24::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_25::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_26::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_27::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_28::TEXT, '')::INTEGER +
+            NULLIF(asc_kids.asc_29::TEXT, '')::INTEGER
+        ) AS report_asc_severity_score
+	FROM rcap_asc_kids AS asc_kids
+),
+scared_scores as (
+	    SELECT
+        scared.source_subject_id,
+        scared.event_name,
+        scared.last_updated_ts,
+        /* Generalized anxiety */
+        (
+            NULLIF(scared.scaredc_5::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_7::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_14::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_21::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_23::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_28::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_33::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_35::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_37::TEXT, '')::INTEGER
+        ) AS report_scared_ga_score,
+        /* Panic/somatic symptoms */
+        (
+            NULLIF(scared.scaredc_1::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_6::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_9::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_12::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_15::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_18::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_19::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_22::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_24::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_27::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_30::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_34::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_38::TEXT, '')::INTEGER
+        ) AS report_scared_paso_score,
+        /* Total SCARED-C score */
+        (
+            NULLIF(scared.scaredc_1::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_2::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_3::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_4::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_5::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_6::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_7::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_8::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_9::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_10::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_11::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_12::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_13::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_14::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_15::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_16::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_17::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_18::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_19::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_20::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_21::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_22::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_23::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_24::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_25::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_26::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_27::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_28::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_29::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_30::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_31::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_32::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_33::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_34::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_35::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_36::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_37::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_38::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_39::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_40::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_41::TEXT, '')::INTEGER
+        ) AS report_scared_tot_score,
+        /* Social anxiety */
+        (
+            NULLIF(scared.scaredc_3::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_10::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_26::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_32::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_39::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_40::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_41::TEXT, '')::INTEGER
+        ) AS report_scared_soc_score,
+        /* Significant school avoidance */
+        (
+            NULLIF(scared.scaredc_2::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_11::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_17::TEXT, '')::INTEGER +
+            NULLIF(scared.scaredc_36::TEXT, '')::INTEGER
+        ) AS report_scared_sch_score
+    FROM rcap_scared_child AS scared
+    WHERE scared.scaredc_complete = '2'
+),
+cdrisc_scores as (
+	 SELECT
+        cdrisc.source_subject_id,
+        cdrisc.event_name,
+        cdrisc.last_updated_ts,
+        (
+            NULLIF(cdrisc.cdrisc_1_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_2_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_3_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_4_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_5_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_6_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_7_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_8_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_9_mtx::TEXT, '')::INTEGER +
+            NULLIF(cdrisc.cdrisc_10_mtx::TEXT, '')::INTEGER
+        ) AS score_cdrisc_total
+    FROM rcap_cdrisc AS cdrisc
 )
 select
     sa1.subject_id,
@@ -330,16 +490,23 @@ select
     chass.ctx_ipsy_hosp,   -- Child admitted to psych hospital
     chass.ctx_ipsy_meds,   -- Child prescribed psych meds
     mini.mini_primary_dx,  -- Primary diagnosis
-	mini.mini_a2_hid1,
-	mini.mini_a2_hid2,
-	mini.mini_a2_hid3,
-	mini.mini_b3_hid1,
-	mini.mini_b3_hid2,
-	mini.mini_u1_hid1,
-	mini.mini_c3_hid1,
-	mini.mini_c3_hid2,
-	mini.mini_c5_hid1,
-	mini.mini_c5_hid2,
+	mini.mini_a2_hid1,     -- Major Depressive Disorder
+	mini.mini_a2_hid2,     -- 
+	mini.mini_a2_hid3,	   -- 
+	mini.mini_b3_hid1,	   -- Suicide Behavior Disorder
+	mini.mini_b3_hid2,	   -- Suicide Behavior Disorder
+	mini.mini_u1_hid1,	   -- Generalized Anxiety Disorder
+	mini.mini_c3_hid1,	   -- Bipolar I Disorder Current
+	mini.mini_c3_hid2,	   -- Bipolar I Disorder Past
+	mini.mini_c5_hid1,	   -- Bipolar II Disoder Current
+	mini.mini_c5_hid2,	   -- Bipolar II Disorder Past
+	asc_score.report_asc_severity_score,     -- asc severity score
+	scared_score.report_scared_ga_score,     -- scared ga score
+	scared_score.report_scared_paso_score,   -- scared paso score
+	scared_score.report_scared_tot_score,    -- scared tot score
+	scared_score.report_scared_soc_score,    -- scared soc score
+	scared_score.report_scared_sch_score,    -- scared sch score
+	cdrisc_score.score_cdrisc_total,
 --- Fields from capsca (main)
     caps.caps_summary_a,            -- Criterian A met? 1=yes  
 	-- Unless otherwise noted, scales are 0-4 where 0="absent", 1="mild/subthreshold, 2="moderate", 3="severe", 4="extreme/incapacitating"
@@ -451,6 +618,53 @@ select
     chrt16.chrt_14,     -- I have been having thoughts of killing myself.
     chrt16.chrt_15,     -- I have thoughts about how I might kill myself.
     chrt16.chrt_16,     -- I have a plan to kill myself.
+	    -- CHRT propensity: items 1–9
+    (
+        NULLIF(chrt16.chrt_1::text, '')::integer +
+        NULLIF(chrt16.chrt_2::text, '')::integer +
+        NULLIF(chrt16.chrt_3::text, '')::integer +
+        NULLIF(chrt16.chrt_4::text, '')::integer +
+        NULLIF(chrt16.chrt_5::text, '')::integer +
+        NULLIF(chrt16.chrt_6::text, '')::integer +
+        NULLIF(chrt16.chrt_7::text, '')::integer +
+        NULLIF(chrt16.chrt_8::text, '')::integer +
+        NULLIF(chrt16.chrt_9::text, '')::integer
+    ) AS score_chrt_propensity,
+    -- CHRT impulsivity: items 10–11
+    (
+        NULLIF(chrt16.chrt_10::text, '')::integer +
+        NULLIF(chrt16.chrt_11::text, '')::integer
+    ) AS score_chrt_impulsivity,
+    -- CHRT irritability: items 12–13
+    (
+        NULLIF(chrt16.chrt_12::text, '')::integer +
+        NULLIF(chrt16.chrt_13::text, '')::integer
+    ) AS score_chrt_irritability,
+    -- CHRT suicidal thoughts: items 14–16
+    (
+        NULLIF(chrt16.chrt_14::text, '')::integer +
+        NULLIF(chrt16.chrt_15::text, '')::integer +
+        NULLIF(chrt16.chrt_16::text, '')::integer
+    ) AS score_chrt_suicidal_thoughts,
+    -- CHRT total: items 1–16
+    (
+        NULLIF(chrt16.chrt_1::text, '')::integer +
+        NULLIF(chrt16.chrt_2::text, '')::integer +
+        NULLIF(chrt16.chrt_3::text, '')::integer +
+        NULLIF(chrt16.chrt_4::text, '')::integer +
+        NULLIF(chrt16.chrt_5::text, '')::integer +
+        NULLIF(chrt16.chrt_6::text, '')::integer +
+        NULLIF(chrt16.chrt_7::text, '')::integer +
+        NULLIF(chrt16.chrt_8::text, '')::integer +
+        NULLIF(chrt16.chrt_9::text, '')::integer +
+        NULLIF(chrt16.chrt_10::text, '')::integer +
+        NULLIF(chrt16.chrt_11::text, '')::integer +
+        NULLIF(chrt16.chrt_12::text, '')::integer +
+        NULLIF(chrt16.chrt_13::text, '')::integer +
+        NULLIF(chrt16.chrt_14::text, '')::integer +
+        NULLIF(chrt16.chrt_15::text, '')::integer +
+        NULLIF(chrt16.chrt_16::text, '')::integer
+    ) AS score_chrt_total,
 --- Additional data:  casss child
     casch.casch_sec1_q1a,  -- My parent(s) show they are proud of me. - How often 1, Never | 2, Almost Never | 3, Some of the time | 4, Most of the time | 5, Almost Always | 6, Always | 99, Not Applicable
     casch.casch_sec1_q1b,  -- My parent(s) show they are proud of me. - Important 1, Not Important | 2, Important | 3, Very Important | 99, Not Applicable
@@ -699,6 +913,15 @@ left join rcap_casss_child casch
 left join rcap_casss_college cascol
     on cascol.source_subject_id = ctrn_union.source_subject_id
     and cascol.event_name = ctrn_union.event_name
+left join asc_scores asc_score
+    on asc_score.source_subject_id = ctrn_union.source_subject_id
+    and asc_score.event_name = ctrn_union.event_name
+left join scared_scores scared_score
+    on scared_score.source_subject_id = ctrn_union.source_subject_id
+    and scared_score.event_name = ctrn_union.event_name
+left join cdrisc_scores cdrisc_score
+    on cdrisc_score.source_subject_id = ctrn_union.source_subject_id
+    and cdrisc_score.event_name = ctrn_union.event_name
 order by
     sa1.subject_id,
     case 
