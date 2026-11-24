@@ -289,23 +289,23 @@ select
         + coalesce(tc.tc_1_5_crit_a1::int, 0) + coalesce(tc.tc_1_6_crit_a1::int, 0)
         + coalesce(tc.tc_2_5_crit_a1::int, 0)
     ) as tc_unintentional_a1_cnt,
-
+    ---
     (
         coalesce(tc.tc_2_1_crit_a1::int, 0) + coalesce(tc.tc_2_2_crit_a1::int, 0)
         + coalesce(tc.tc_2_3_crit_a1::int, 0) + coalesce(tc.tc_2_4_crit_a1::int, 0)
         + coalesce(tc.tc_5_crit_a1::int, 0)
     ) as tc_interpers_direct_a1_cnt,
-
+    ---
     (
         coalesce(tc.tc_3_1_crit_a1::int, 0) + coalesce(tc.tc_3_2_crit_a1::int, 0)
         + coalesce(tc.tc_3_3_crit_a1::int, 0)
     ) as tc_interpers_witn_home_a1_cnt,
-
+    ---
     (
         coalesce(tc.tc_4_1_crit_a1::int, 0) + coalesce(tc.tc_4_2_crit_a1::int, 0)
         + coalesce(tc.tc_4_3_crit_a1::int, 0)
     ) as tc_interpers_witn_comm_a1_cnt,
-
+    ---
     (
         coalesce(tc.tc_6_1::int, 0)
         + coalesce(tc.tc_6_2::int, 0)
